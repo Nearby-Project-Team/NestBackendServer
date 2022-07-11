@@ -9,7 +9,6 @@ import { MySQLConfigService } from './common/configs/typeorm/typeorm.config';
 import { ApplicationModule } from './modules/application.module';
 import { RedisModule } from './common/redis/redis.module';
 import { REDIS } from './common/redis/redis.constants';
-import { RedisClientType } from 'redis';
 import * as RedisStore from 'connect-redis';
 import * as session from 'express-session';
 import * as passport from 'passport';
