@@ -1,14 +1,12 @@
 
 import { Module } from '@nestjs/common';
-import * as Redis from 'redis';
-import { REDIS } from './redis.constants';
-
+import { REDIS, getRedisClient } from './redis.constants';
 
 @Module({
     providers: [
         {
-        provide: REDIS,
-        useValue: Redis.createClient({ port: 6379, host: 'localhost' }),
+            provide: REDIS,
+            useFactory: getRedisClient,
         },
     ],
     exports: [REDIS],

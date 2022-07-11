@@ -1,12 +1,18 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { Module, NestModule, Inject, MiddlewareConsumer } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { MySqlConfigModule } from './common/configs/typeorm.module';
-import { MySQLConfigService } from './common/configs/typeorm.config';
+import { MySqlConfigModule } from './common/configs/typeorm/typeorm.module';
+import { MySQLConfigService } from './common/configs/typeorm/typeorm.config';
 import { ApplicationModule } from './modules/application.module';
+import { RedisModule } from './common/redis/redis.module';
+import { REDIS } from './common/redis/redis.constants';
+import { RedisClientType } from 'redis';
+import * as RedisStore from 'connect-redis';
+import * as session from 'express-session';
+import * as passport from 'passport';
 
 @Module({
   imports: [
@@ -21,9 +27,33 @@ import { ApplicationModule } from './modules/application.module';
       inject: [MySQLConfigService]
     }),
     AuthModule, 
-    ApplicationModule
+    ApplicationModule,
+    RedisModule
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  constructor(@Inject(REDIS) private readonly redis: RedisStore.Client) {}
+
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(
+        session({
+          store: new (RedisStore(session))({ client: this.redis, logErrors: true }),
+          saveUninitialized: false,
+          secret: 'key',
+          resave: false,
+          cookie: {
+            sameSite: true,
+            httpOnly: false,
+            maxAge: 14 * 24 * 60 * 60 * 1000,
+          },
+        }),
+        passport.initialize(),
+        passport.session(),
+      )
+      .forRoutes('*');
+  }
+
+}
