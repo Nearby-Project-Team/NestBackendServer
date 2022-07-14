@@ -75,6 +75,6 @@ export class CaregiverEntity extends BaseEntity {
     voice_model: VoiceModelEntity[]
 
     @OneToMany(type => VerificationEntity, (verification) => verification.caregiver_id)
-    verification_id: VerificationEntity[]
+    verification_id!: VerificationEntity[]
 
 }

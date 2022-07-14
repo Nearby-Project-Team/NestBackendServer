@@ -13,6 +13,5 @@ export class CreateInitialElderlyData implements Seeder {
                     { name: 'HanWoo' }
                 ])
                 .execute()
-
     }
 };
