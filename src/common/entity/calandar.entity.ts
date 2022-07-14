@@ -9,7 +9,7 @@ import {
 } from 'typeorm';
 
 @Entity({name: 'Calandar'})
-export class CalandarEntity extends BaseEntity{
+export class CalandarEntity extends BaseEntity {
 
     @PrimaryGeneratedColumn('uuid')
     uuid: string
@@ -18,6 +18,18 @@ export class CalandarEntity extends BaseEntity{
         type: 'longtext'
     })
     contents: string
+
+    @Column({
+        type: 'varchar',
+        length: 50
+    })
+    ScheduleDate: string
+
+    @Column({
+        type: 'varchar',
+        length: 50
+    })
+    notificationType
 
     @CreateDateColumn()
     createdAt: Date

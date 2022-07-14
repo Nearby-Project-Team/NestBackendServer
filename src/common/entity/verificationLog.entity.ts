@@ -10,7 +10,7 @@ import {
 } from 'typeorm';
 
 @Entity({name: 'UserVerificationLog'})
-export class VerificationEntity extends BaseEntity{
+export class VerificationEntity extends BaseEntity {
 
     @PrimaryGeneratedColumn('uuid')
     uuid: string
