@@ -1,13 +1,58 @@
-import { Module } from '@nestjs/common';
+import { Module, NestModule, Inject, MiddlewareConsumer } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthService } from './auth/auth.service';
-import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
+import { MySqlConfigModule } from './common/configs/typeorm/typeorm.module';
+import { MySQLConfigService } from './common/configs/typeorm/typeorm.config';
+import { ApplicationModule } from './modules/application.module';
+import { RedisModule } from './common/redis/redis.module';
+import { REDIS } from './common/redis/redis.constants';
+import * as RedisStore from 'connect-redis';
+import * as session from 'express-session';
+import * as passport from 'passport';
 
 @Module({
-  imports: [AuthModule],
-  controllers: [AppController, AuthController],
-  providers: [AppService, AuthService],
+  imports: [
+    ConfigModule.forRoot({ 
+      isGlobal: true,
+      envFilePath: (process.env.NODE_ENV === 'production') ? './env/.production.env'
+      : (process.env.NODE_ENV === 'stage') ? './env/.stage.env' : './env/.development.env'
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [MySqlConfigModule],
+      useClass: MySQLConfigService,
+      inject: [MySQLConfigService]
+    }),
+    AuthModule, 
+    ApplicationModule,
+    RedisModule
+  ],
+  controllers: [AppController],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  constructor(@Inject(REDIS) private readonly redis: RedisStore.Client) {}
+
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply(
+        session({
+          store: new (RedisStore(session))({ client: this.redis, logErrors: true }),
+          saveUninitialized: false,
+          secret: 'key',
+          resave: false,
+          cookie: {
+            sameSite: true,
+            httpOnly: false,
+            maxAge: 14 * 24 * 60 * 60 * 1000,
+          },
+        }),
+        passport.initialize(),
+        passport.session(),
+      )
+      .forRoutes('*');
+  }
+
+}
