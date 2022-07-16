@@ -29,7 +29,7 @@ export class CalandarEntity extends BaseEntity {
         type: 'varchar',
         length: 50
     })
-    notificationType
+    notificationType: string
 
     @CreateDateColumn()
     createdAt: Date
