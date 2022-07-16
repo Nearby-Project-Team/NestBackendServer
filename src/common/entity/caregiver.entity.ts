@@ -15,7 +15,7 @@ import { VoiceFileEntity } from './voiceFile.entity';
 import { VoiceModelEntity } from './voiceModel.entity';
 import { VerificationEntity } from './verificationLog.entity';
 
-@Entity('Caregiver')
+@Entity({ name: 'Caregiver' })
 export class CaregiverEntity extends BaseEntity {
     @PrimaryGeneratedColumn("uuid")
     uuid: string

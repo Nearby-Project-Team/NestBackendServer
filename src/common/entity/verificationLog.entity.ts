@@ -9,7 +9,7 @@ import {
     JoinColumn
 } from 'typeorm';
 
-@Entity({name: 'UserVerificationLog'})
+@Entity({ name: 'UserVerificationLog' })
 export class VerificationEntity extends BaseEntity {
 
     @PrimaryGeneratedColumn('uuid')

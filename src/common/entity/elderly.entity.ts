@@ -14,7 +14,7 @@ import {
     OneToMany
 } from 'typeorm';
 
-@Entity({name: 'Elderly'})
+@Entity({ name: 'Elderly' })
 export class ElderlyEntity extends BaseEntity{
 
     @PrimaryGeneratedColumn("uuid")

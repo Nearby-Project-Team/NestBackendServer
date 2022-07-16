@@ -9,7 +9,7 @@ import {
     JoinColumn
 } from 'typeorm';
 
-@Entity({name: 'Calandar'})
+@Entity({ name: 'Calandar' })
 export class CalandarEntity extends BaseEntity {
 
     @PrimaryGeneratedColumn('uuid')
