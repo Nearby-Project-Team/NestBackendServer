@@ -5,7 +5,8 @@ import {
     Entity,
     CreateDateColumn,
     BaseEntity,
-    ManyToOne
+    ManyToOne,
+    JoinColumn
 } from 'typeorm';
 
 @Entity({name: 'Calandar'})
@@ -35,6 +36,9 @@ export class CalandarEntity extends BaseEntity {
     createdAt: Date
     
     @ManyToOne(type => ElderlyEntity, (elderly) => elderly.calandar)
+    @JoinColumn({
+        name: 'elderly_id'
+    })
     elderly_id: ElderlyEntity
 
 };
