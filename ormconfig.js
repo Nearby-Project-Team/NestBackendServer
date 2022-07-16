@@ -5,5 +5,5 @@ module.exports = {
     port: 3306,
     database: 'nearby',
     entities: ['src/**/**/*.entity{.ts,.js}'],
-    seeds: ['src/seeds/**/*{.ts,.js}']
+    seeds: ['src/seeds/*{.ts,.js}']
 }
