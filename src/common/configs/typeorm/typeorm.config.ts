@@ -14,7 +14,7 @@ export class MySQLConfigService implements TypeOrmOptionsFactory {
             port: +this.configService.get<number>('DATABASE_PORT'),
             host: this.configService.get<string>('DATABASE_HOST'),
             database: this.configService.get<string>('DATABASE_NAME'),
-            entities: ['src/**/**/**/*.entity{.ts,.js}'],
+            entities: ['src/**/**/*.entity{.ts,.js}'],
             synchronize: true
         }
     }
