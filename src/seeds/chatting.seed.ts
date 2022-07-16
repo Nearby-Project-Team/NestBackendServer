@@ -10,7 +10,9 @@ export class CreateInitialChattingData implements Seeder {
                 .into(ChattingEntity)
                 .values([
                     { contents: 'Hello!', sender: false },
-                    { contents: 'World!', sender: true }
+                    { contents: 'World!', sender: true },
+                    { contents: 'Kueeek', sender: false },
+                    { contents: 'Bueuukg', sender: true }
                 ])
                 .execute();
     }
