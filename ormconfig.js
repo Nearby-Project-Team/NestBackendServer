@@ -4,6 +4,6 @@ module.exports = {
     password: 'n3@rbYP@sswD12#$',
     port: 3306,
     database: 'nearby',
-    entities: ['dist/**/**/*.entity{.ts,.js}'],
+    entities: ['src/**/**/*.entity{.ts,.js}'],
     seeds: ['src/seeds/**/*{.ts,.js}']
 }
