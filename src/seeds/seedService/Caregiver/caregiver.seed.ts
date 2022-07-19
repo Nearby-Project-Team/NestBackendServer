@@ -12,20 +12,20 @@ export class CaregiverSeederService {
         private readonly caregiverRepository: Repository<CaregiverEntity>
     ) {}
 
-    createCaregiverEntity(caregiver: ICaregiverEntity) {
-        let _u = new CaregiverEntity();
-        _u.email = caregiver.email;
-        _u.name = caregiver.name;
-        _u.password = caregiver.password;
-        _u.phone_number = caregiver.phone_number;
-        _u.status = caregiver.status;
-        return _u;
-    }
+    // createCaregiverEntity(caregiver: ICaregiverEntity) {
+    //     let _u = new CaregiverEntity();
+    //     _u.email = caregiver.email;
+    //     _u.name = caregiver.name;
+    //     _u.password = caregiver.password;
+    //     _u.phone_number = caregiver.phone_number;
+    //     _u.status = caregiver.status;
+    //     return _u;
+    // }
 
     create(): Array<Promise<boolean>> {
         return CaregiverSeedData.map(async (caregiver: ICaregiverEntity) => {
             try {
-                let _u = this.createCaregiverEntity(caregiver);
+                let _u = this.caregiverRepository.create(caregiver);
                 await this.caregiverRepository.save(_u);
                 return true;
             } catch(err) {
