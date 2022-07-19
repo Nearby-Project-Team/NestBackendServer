@@ -65,7 +65,7 @@ export class CaregiverEntity extends BaseEntity {
         this.password = await hash(this.password, salt);
     }
 
-    @OneToMany(type => ElderlyEntity, (elderly) => elderly.cargiver_id)
+    @OneToMany(type => ElderlyEntity, (elderly) => elderly.caregiver_id)
     elderly: ElderlyEntity[]
 
     @OneToMany(type => VoiceFileEntity, (voice_file) => voice_file.caregiver_id)

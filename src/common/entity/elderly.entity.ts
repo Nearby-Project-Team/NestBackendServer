@@ -39,7 +39,7 @@ export class ElderlyEntity extends BaseEntity{
     @JoinColumn({
         name: 'caregiver_id'
     })
-    cargiver_id: CaregiverEntity
+    caregiver_id: CaregiverEntity
 
     @OneToMany(type => CalandarEntity, (calandar) => calandar.elderly_id)
     calandar: CalandarEntity[]

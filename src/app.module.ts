@@ -1,30 +1,19 @@
 import { Module, NestModule, Inject, MiddlewareConsumer } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { MySqlConfigModule } from './common/configs/typeorm/typeorm.module';
-import { MySQLConfigService } from './common/configs/typeorm/typeorm.config';
 import { ApplicationModule } from './modules/application.module';
 import { RedisModule } from './common/redis/redis.module';
 import { REDIS } from './common/redis/redis.constants';
+import { MySQLDBProviderModule } from './providers/database/mysql/provider.module';
 import * as RedisStore from 'connect-redis';
 import * as session from 'express-session';
 import * as passport from 'passport';
 
+
 @Module({
   imports: [
-    ConfigModule.forRoot({ 
-      isGlobal: true,
-      envFilePath: (process.env.NODE_ENV === 'production') ? './env/.production.env'
-      : (process.env.NODE_ENV === 'stage') ? './env/.stage.env' : './env/.development.env'
-    }),
-    TypeOrmModule.forRootAsync({
-      imports: [MySqlConfigModule],
-      useClass: MySQLConfigService,
-      inject: [MySQLConfigService]
-    }),
+    MySQLDBProviderModule,
     AuthModule, 
     ApplicationModule,
     RedisModule
