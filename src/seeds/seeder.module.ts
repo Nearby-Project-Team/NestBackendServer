@@ -8,6 +8,9 @@ import { Seeder } from './seeder.service';
         MySQLDBProviderModule,
         DataSeederModule
     ],
-    providers: [ Logger, Seeder ]
+    providers: [ 
+        Logger, 
+        Seeder 
+    ]
 })
 export class SeederModule {}

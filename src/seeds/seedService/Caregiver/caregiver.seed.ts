@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CaregiverEntity } from '../../../common/entity/caregiver.entity';
 import { Repository } from 'typeorm';
