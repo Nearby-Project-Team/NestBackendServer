@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
-import { join } from 'path';
+import { CaregiverEntity } from '../../entity/caregiver.entity';
+import { ElderlyEntity } from '../../entity/elderly.entity';
+import { ChattingEntity } from '../../entity/chatting.entity';
+import { CalandarEntity } from '../../entity/calandar.entity';
+import { VerificationEntity } from '../../entity/verificationLog.entity';
+import { VoiceFileEntity } from '../../entity/voiceFile.entity';
+import { VoiceModelEntity } from '../../entity/voiceModel.entity';
 
 @Injectable()
 export class MySQLConfigService implements TypeOrmOptionsFactory {
@@ -15,8 +21,16 @@ export class MySQLConfigService implements TypeOrmOptionsFactory {
             port: +this.configService.get<number>('DATABASE_PORT'),
             host: this.configService.get<string>('DATABASE_HOST'),
             database: this.configService.get<string>('DATABASE_NAME'),
-            entities: [ "dist/common/entity/*.entity.ts" ],
-            synchronize: true
+            entities: [ 
+                CaregiverEntity,
+                ElderlyEntity,
+                ChattingEntity,
+                CalandarEntity,
+                VerificationEntity,
+                VoiceFileEntity,
+                VoiceModelEntity
+            ],
+            synchronize: process.env.NODE_ENV === 'development' ? true : false
         }
     }
 
