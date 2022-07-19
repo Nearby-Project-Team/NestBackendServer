@@ -10,7 +10,6 @@ import * as RedisStore from 'connect-redis';
 import * as session from 'express-session';
 import * as passport from 'passport';
 
-
 @Module({
   imports: [
     MySQLDBProviderModule,

@@ -16,8 +16,6 @@ import { MySqlConfigModule } from '../../../common/configs/typeorm/typeorm.modul
             useClass: MySQLConfigService,
             inject: [ MySQLConfigService ]
         })
-    ],
-    providers: [ MySQLConfigService ],
-    exports: [ MySQLConfigService ]
+    ]
 })
 export class MySQLDBProviderModule {}

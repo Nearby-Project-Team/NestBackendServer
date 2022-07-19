@@ -4,7 +4,11 @@ import { CaregiverEntity } from '../../../common/entity/caregiver.entity';
 import { CaregiverSeederService } from './caregiver.seed';
 
 @Module({
-    imports: [ TypeOrmModule.forFeature([ CaregiverEntity ]) ],
+    imports: [ 
+        TypeOrmModule.forFeature([ 
+            CaregiverEntity 
+        ]) 
+    ],
     providers: [ CaregiverSeederService ],
     exports: [ CaregiverSeederService ]
 })
