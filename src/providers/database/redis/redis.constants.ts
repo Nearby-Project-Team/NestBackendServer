@@ -1,4 +1,4 @@
-import { getRedisConfig } from '../configs/redis/redis.config';
+import { getRedisConfig } from '../../../common/configs/redis/redis.config';
 import { createClient } from 'redis';
 
 export const REDIS = Symbol('AUTH:REDIS');
