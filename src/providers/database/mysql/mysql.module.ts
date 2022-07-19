@@ -1,7 +1,7 @@
 import { Module } from "@nestjs/common";
 import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { MySQLConfigService } from "../../../common/configs/typeorm/typeorm.config";
+import { MySQLConfigService } from '../../../common/configs/typeorm/typeorm.config';
 import { MySqlConfigModule } from '../../../common/configs/typeorm/typeorm.module';
 
 @Module({
@@ -16,6 +16,8 @@ import { MySqlConfigModule } from '../../../common/configs/typeorm/typeorm.modul
             useClass: MySQLConfigService,
             inject: [ MySQLConfigService ]
         })
-    ]
+    ],
+    providers: [ MySQLConfigService ],
+    exports: [ MySQLConfigService ]
 })
 export class MySQLDBProviderModule {}
