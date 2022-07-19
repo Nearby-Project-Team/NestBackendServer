@@ -27,7 +27,8 @@ export class CaregiverEntity extends BaseEntity {
     name: string
 
     @Column({
-        type: 'varchar', 
+        type: 'varchar',
+        unique: true,
         length: 100
     })
     email: string
@@ -46,6 +47,7 @@ export class CaregiverEntity extends BaseEntity {
 
     @Column({
         type: 'varchar',
+        unique: true,
         length: 30
     })
     phone_number: string
