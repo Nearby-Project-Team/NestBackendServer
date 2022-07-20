@@ -56,6 +56,14 @@ export class AppError extends Error {
                     userMessage: 'Invalid Datatypes has detected!'
                 }
                 break;
+            case AppErrorTypeEnum.USER_NOT_VERIFIED:
+                res = {
+                    type: AppErrorTypeEnum.USER_NOT_VERIFIED,
+                    httpStatus: HttpStatus.BAD_REQUEST,
+                    errorMessage: 'User not verified yet',
+                    userMessage: 'User not verified yet'
+                };
+                break;
         }
         return res;
     }
