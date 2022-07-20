@@ -18,7 +18,7 @@ export class AuthController {
   ) {
     const u = await this.authService.login(body);
     res.cookie('accessToken', u.accessToken);
-    res.cookie('refreshToken', u.refreshToken);
+    // Add Refresh Token later
     return result;
   }
 

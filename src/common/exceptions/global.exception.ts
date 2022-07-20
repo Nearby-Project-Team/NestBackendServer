@@ -27,9 +27,7 @@ export class GlobalErrorDispatcher implements ExceptionFilter {
             return res.status(HttpStatus.UNAUTHORIZED).json(exception.message);
         } else if (exception.status === 403) {
             return res.status(HttpStatus.FORBIDDEN).json(exception.message);
-        }
-        
-        else {
+        } else {
             console.error(exception.message);
             console.error(exception.stack);
             return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
