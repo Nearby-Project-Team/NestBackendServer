@@ -14,9 +14,12 @@ export class AuthController {
   async login(
     @Body() body: LoginRequestDto,
     @User() result: LoginSuccessDto,
-    @Res({ passthrough: true }) res: Response
+    @Res({ passthrough: true }) res
   ) {
-    
+    const u = await this.authService.login(body);
+    res.cookie('accessToken', u.accessToken);
+    res.cookie('refreshToken', u.refreshToken);
+    return result;
   }
 
 }
