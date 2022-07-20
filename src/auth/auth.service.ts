@@ -6,7 +6,8 @@ import { Repository } from 'typeorm';
 @Injectable()
 export class AuthService {
     constructor (
-        @InjectRepository(CaregiverEntity) private cgRepository: Repository<CaregiverEntity>,
+        @InjectRepository(CaregiverEntity) 
+        private cgRepository: Repository<CaregiverEntity>,
     ) {}
 
     
