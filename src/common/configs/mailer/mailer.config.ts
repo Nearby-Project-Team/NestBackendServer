@@ -4,7 +4,7 @@ import { MailerOptions, MailerOptionsFactory } from '@nestjs-modules/mailer';
 import path from 'path';
 
 export class MailerConfigService implements MailerOptionsFactory {
-    constructor(private readonly configService: ConfigService) {}
+    constructor(private configService: ConfigService) {}
 
     createMailerOptions(): MailerOptions {
         const mailer_email = this.configService.get<string>('MAILER_ADDRESS');
