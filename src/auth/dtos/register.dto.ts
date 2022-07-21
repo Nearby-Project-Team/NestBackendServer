@@ -17,7 +17,6 @@ export class RegisterDto {
     public readonly name: string;
 
     @IsString()
-    @IsPhoneNumber()
     public readonly phone_number: string;
 
 }
