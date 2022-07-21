@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { AppError } from "../error/ErrorEntity/AppError";
 import { RequestError } from "../error/ErrorEntity/RequestError";
+import HostId from "hostid";
 
 @Catch()
 export class GlobalErrorDispatcher implements ExceptionFilter {
@@ -30,7 +31,10 @@ export class GlobalErrorDispatcher implements ExceptionFilter {
         } else {
             console.error(exception.message);
             console.error(exception.stack);
-            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).send();
+            const nowTime = new Date();
+            return res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+                msg: `Error on ${HostId()} in time ${nowTime.toISOString()}`
+            });
         }
 
     }
