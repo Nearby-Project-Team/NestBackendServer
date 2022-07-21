@@ -7,10 +7,10 @@ export class MailerConfigService implements MailerOptionsFactory {
     constructor(private readonly configService: ConfigService) {}
 
     createMailerOptions(): MailerOptions {
-        const mailer_email = this.configService.get('MAILER_ADDRESS');
-        const mailer_password = this.configService.get('MAILER_PASSWORD');
-        const mailer_host = this.configService.get('MAILER_HOST');
-        const mailer_username = this.configService.get('MAILER_USERNAME');
+        const mailer_email = this.configService.get<string>('MAILER_ADDRESS');
+        const mailer_password = this.configService.get<string>('MAILER_PASSWORD');
+        const mailer_host = this.configService.get<string>('MAILER_HOST');
+        const mailer_username = this.configService.get<string>('MAILER_USERNAME');
 
         return {
             transport: `smtps://${mailer_email}:${mailer_password}@${mailer_host}`,
