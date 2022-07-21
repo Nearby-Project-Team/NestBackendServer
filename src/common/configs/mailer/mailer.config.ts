@@ -1,8 +1,8 @@
 import { EjsAdapter } from '@nestjs-modules/mailer/dist/adapters/ejs.adapter';
 import { ConfigService } from '@nestjs/config';
 import { MailerOptions, MailerOptionsFactory } from '@nestjs-modules/mailer';
-import path from 'path';
 import { Injectable } from '@nestjs/common';
+import * as path from 'path';
 
 @Injectable()
 export class MailerConfigService implements MailerOptionsFactory {
