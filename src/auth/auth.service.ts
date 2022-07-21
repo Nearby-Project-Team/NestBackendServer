@@ -82,7 +82,7 @@ export class AuthService {
         await this.mailerService.sendMail({
             to: user.email,
             subject: 'NearBy Service Register Email!',
-            template: './register.ejs',
+            template: 'register.ejs',
             context: {
                 authUrl: `${baseUrlConfig()}/auth/verify/${email_base64}/${token}`
             }
