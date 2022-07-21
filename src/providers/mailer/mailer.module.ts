@@ -13,8 +13,8 @@ import { MailerConfigService } from '../../common/configs/mailer/mailer.config';
         }),
         MailerModule.forRootAsync({
             imports: [ MailerConfigModule ],
-            inject: [ MailerConfigService ],
-            useClass: MailerConfigService
+            useClass: MailerConfigService,
+            inject: [ MailerConfigService ]
         })
     ]
 })
