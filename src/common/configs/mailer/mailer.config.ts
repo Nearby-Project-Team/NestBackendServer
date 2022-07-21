@@ -20,7 +20,7 @@ export class MailerConfigService implements MailerOptionsFactory {
                 from: `"${mailer_username}" <${mailer_email}>`
             },
             template: {
-                dir: path.join(__dirname, '/views/'),
+                dir: path.join(__dirname, '/view/'),
                 adapter: new EjsAdapter(),
                 options: {
                     strict: true
