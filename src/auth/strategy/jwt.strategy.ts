@@ -8,7 +8,11 @@ import { TokenPayloadDto } from '../dtos/token-payload.dto';
 export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor () {
         super({
-            jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+            jwtFromRequest: ExtractJwt.fromExtractors([
+                (request) => {
+                    return request?.cookies?.accessToken;
+                }
+            ]),
             ignoreExpiration: false,
             secretOrKey: jwtConstants.secret,
         });
