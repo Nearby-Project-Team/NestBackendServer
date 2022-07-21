@@ -1,5 +1,6 @@
 import { 
     ArgumentsHost, 
+    BadRequestException, 
     Catch, 
     ExceptionFilter, 
     HttpStatus, 
@@ -26,12 +27,12 @@ export class GlobalErrorDispatcher implements ExceptionFilter {
             console.log(exception.message);
             console.error(exception.stack);
             return res.status(HttpStatus.UNAUTHORIZED).json(exception.message);
-        } else if (exception.status === 403) {
-            return res.status(HttpStatus.FORBIDDEN).json(exception.message);
-        } else if (exception.status === 400) {
+        } else if (exception instanceof BadRequestException) {
             return res.status(HttpStatus.BAD_REQUEST).json({
                 msg: "Bad Request from Client. It's highly recommended to check your parameters one more time."
             });
+        } else if (exception.status === 403) {
+            return res.status(HttpStatus.FORBIDDEN).json(exception.message);
         } else {
             console.error(exception.message);
             console.error(exception.stack);
