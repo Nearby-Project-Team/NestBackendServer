@@ -84,7 +84,7 @@ export class AuthService {
             subject: 'NearBy Service Register Email!',
             template: './dist/view/register.ejs',
             context: {
-                authUrl: `${baseUrlConfig()}/auth/verify/${email_base64}/${token}`
+                "authUrl": `${baseUrlConfig()}/auth/verify/${email_base64}/${token}`
             }
         });
 
