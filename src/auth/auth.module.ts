@@ -8,15 +8,21 @@ import { LocalStrategy } from './strategy/local.strategy';
 import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './constants/jwt.constant';
 import { JwtStrategy } from './strategy/jwt.strategy';
+import { NodeMailerModule } from '../providers/mailer/mailer.module';
+import { VerificationEntity } from '../common/entity/verificationLog.entity';
 
 @Module({
   imports: [
-    TypeOrmModule.forFeature([CaregiverEntity]),
+    TypeOrmModule.forFeature([
+      CaregiverEntity,
+      VerificationEntity
+    ]),
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
       signOptions: { expiresIn: '15m' }
-    })
+    }),
+    NodeMailerModule
   ],
   controllers: [AuthController],
   providers: [

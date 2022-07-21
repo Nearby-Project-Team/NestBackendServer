@@ -12,13 +12,20 @@ import { LoginRequestDto } from '../common/dtos/caregiver/login-request.dto';
 import { LoginResultDto } from './dtos/login-result.dto';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dtos/register.dto';
+import { MailerService } from '@nestjs-modules/mailer';
+import { v4 } from 'uuid';
+import { VerificationEntity } from '../common/entity/verificationLog.entity';
+import { baseUrlConfig } from 'src/common/configs/url/url.config';
 
 @Injectable()
 export class AuthService {
     constructor (
         @InjectRepository(CaregiverEntity) 
         private readonly cgRepository: Repository<CaregiverEntity>,
-        private readonly jwtService: JwtService
+        @InjectRepository(VerificationEntity)
+        private readonly verificationRepository: Repository<VerificationEntity>,
+        private readonly jwtService: JwtService,
+        private readonly mailerService: MailerService
     ) {}
 
     async validateCaregiver(email: string, password: string): Promise<LoginSuccessDto> {
@@ -63,6 +70,23 @@ export class AuthService {
 
         const newUser = this.cgRepository.create({ ...user, status: "N" }); 
         await this.cgRepository.save(newUser);
+        const token = v4();
+        const _v = this.verificationRepository.create({
+            verification_type: "REGISTER_VERIFICATION",
+            verification_token: token,
+            caregiver_id: newUser
+        });
+        await this.verificationRepository.save(_v);
+
+        const email_base64 = Buffer.from(user.email).toString('base64');
+        await this.mailerService.sendMail({
+            to: user.email,
+            subject: 'NearBy Service Register Email!',
+            template: './register.ejs',
+            context: {
+                authUrl: `${baseUrlConfig()}/auth/verify/${email_base64}/${token}`
+            }
+        });
 
         return {
             msg: "Register Success!"
