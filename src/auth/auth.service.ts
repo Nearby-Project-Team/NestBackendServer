@@ -11,6 +11,7 @@ import { AppErrorTypeEnum } from 'src/common/error/ErrorType/AppErrorType.enum';
 import { LoginRequestDto } from '../common/dtos/caregiver/login-request.dto';
 import { LoginResultDto } from './dtos/login-result.dto';
 import { JwtService } from '@nestjs/jwt';
+import { RegisterDto } from './dtos/register.dto';
 
 @Injectable()
 export class AuthService {
@@ -49,6 +50,23 @@ export class AuthService {
             accessToken: this.jwtService.sign(payloadAT),
             refreshToken: this.jwtService.sign(payloadRT)
         }
+    }
+
+    async register(user: RegisterDto) {
+        const _u = await this.cgRepository.findOne({
+            select: [ "uuid" ],
+            where: {
+                email: user.email
+            }
+        });
+        if (_u) throw new AppError(AppErrorTypeEnum.USER_EXISTS);
+
+        const newUser = this.cgRepository.create({ ...user, status: "N" }); 
+        await this.cgRepository.save(newUser);
+
+        return {
+            msg: "Register Success!"
+        };
     }
 
 }

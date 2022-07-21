@@ -4,6 +4,7 @@ import { LocalGuard } from '../common/guard/local-auth/local.guard';
 import { LoginRequestDto } from '../common/dtos/caregiver/login-request.dto';
 import { User } from 'src/common/decorators/login.decorator';
 import { LoginSuccessDto } from './dtos/login-success.dto';
+import { RegisterDto } from './dtos/register.dto';
 
 @Controller('auth')
 export class AuthController {
@@ -20,6 +21,13 @@ export class AuthController {
     res.cookie('accessToken', u.accessToken);
     // Add Refresh Token later
     return result;
+  }
+
+  @Post('register')
+  async register(
+    @Body() register: RegisterDto
+  ) {
+    return await this.authService.register(register);
   }
 
 }

@@ -33,5 +33,4 @@ export class MySQLConfigService implements TypeOrmOptionsFactory {
             synchronize: process.env.NODE_ENV === 'development' ? true : false
         }
     }
-
 }
