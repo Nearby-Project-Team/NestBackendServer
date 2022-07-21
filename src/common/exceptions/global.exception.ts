@@ -28,6 +28,10 @@ export class GlobalErrorDispatcher implements ExceptionFilter {
             return res.status(HttpStatus.UNAUTHORIZED).json(exception.message);
         } else if (exception.status === 403) {
             return res.status(HttpStatus.FORBIDDEN).json(exception.message);
+        } else if (exception.status === 400) {
+            return res.status(HttpStatus.BAD_REQUEST).json({
+                msg: "Bad Request from Client. It's highly recommended to check your parameters one more time."
+            });
         } else {
             console.error(exception.message);
             console.error(exception.stack);
