@@ -6,8 +6,8 @@ import {
 
 export class RegisterDto {
 
-    @IsEmail()
     @IsString()
+    @IsEmail()
     public readonly email: string;
 
     @IsString()
