@@ -6,11 +6,6 @@ import { MySqlConfigModule } from '../../../common/configs/typeorm/typeorm.modul
 
 @Module({
     imports: [
-        ConfigModule.forRoot({
-            isGlobal: true,
-            envFilePath: (process.env.NODE_ENV === 'production') ? './env/.production.env'
-            : (process.env.NODE_ENV === 'stage') ? './env/.stage.env' : './env/.development.env'
-        }),
         TypeOrmModule.forRootAsync({
             imports: [ MySqlConfigModule ],
             useClass: MySQLConfigService,

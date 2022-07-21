@@ -1,4 +1,5 @@
 import { Module, NestModule, Inject, MiddlewareConsumer } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
@@ -12,6 +13,11 @@ import * as passport from 'passport';
 
 @Module({
   imports: [
+    ConfigModule.forRoot({
+        isGlobal: true,
+        envFilePath: (process.env.NODE_ENV === 'production') ? './env/.production.env'
+        : (process.env.NODE_ENV === 'stage') ? './env/.stage.env' : './env/.development.env'
+    }),
     MySQLDBProviderModule,
     AuthModule, 
     ApplicationModule,
