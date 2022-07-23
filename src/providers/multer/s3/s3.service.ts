@@ -5,12 +5,14 @@ import { ConfigService } from '@nestjs/config';
 import * as MulterS3 from 'multer-s3';
 import { S3 } from 'aws-sdk';
 import * as AWS from 'aws-sdk';
+import { InjectAwsService } from 'nest-aws-sdk';
 
 @Injectable()
 export class S3Service implements MulterOptionsFactory {
     private readonly FILE_SIZE_LIMIT = 31457280;
 
     constructor(
+        @InjectAwsService(S3)
         private readonly s3: S3,
         private readonly configService: ConfigService
     ) {
