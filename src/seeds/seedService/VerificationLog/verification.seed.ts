@@ -4,7 +4,7 @@ import { VerificationEntity } from '../../../common/entity/verificationLog.entit
 import { Repository } from 'typeorm';
 import { CaregiverEntity } from '../../../common/entity/caregiver.entity';
 import { VerificationSeedData } from '../../seedingData/verificationLog.seed';
-import { IVerificationLogEntity } from "src/seeds/seedingInterface/IVerificationLogEntity";
+import { IVerificationLogEntity } from "../../seedingInterface/IVerificationLogEntity";
 import { CaregiverSeedData } from '../../seedingData/caregiver.seed';
 
 @Injectable()
