@@ -13,8 +13,7 @@ export class S3Service implements MulterOptionsFactory {
     constructor(
         @InjectAwsService(S3)
         private readonly s3: S3,
-        private readonly configService: ConfigService,
-        private readonly logger: Logger
+        private readonly configService: ConfigService
     ) {}
 
     createMulterOptions(): MulterOptions | Promise<MulterOptions> {
@@ -46,7 +45,7 @@ export class S3Service implements MulterOptionsFactory {
         if (file.mimetype.match(/\/(wav|mp4)$/)) {
             cb(null, true);
         } else {
-            this.logger.debug(`No! ${JSON.stringify(file)}`);
+            Logger.debug(`No! ${JSON.stringify(file)}`);
             cb(new Error('unsupported file'), false);
         }
     }
