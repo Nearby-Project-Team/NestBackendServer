@@ -1,4 +1,4 @@
 export interface IChattingEntity {
     contents: string;
-    sender: string;
+    sender: boolean;
 }

@@ -4,18 +4,18 @@ import { faker } from '@faker-js/faker';
 export const ChattingSeedData: IChattingEntity[] = [
     {
         contents: faker.random.words(5),
-        sender: 'C'
+        sender: true
     },
     {
         contents: faker.random.words(10),
-        sender: 'E'
+        sender: false
     },
     {
         contents: faker.random.words(7),
-        sender: 'C'
+        sender: true
     },
     {
         contents: faker.random.words(8),
-        sender: 'E'
+        sender: false
     }
 ];
