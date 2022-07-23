@@ -35,6 +35,6 @@ export class VerificationEntity extends BaseEntity {
     @JoinColumn({
         name: 'caregiver_id'
     })
-    caregiver_id!: CaregiverEntity
+    caregiver_id: CaregiverEntity
 
 };

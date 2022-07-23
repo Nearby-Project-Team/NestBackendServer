@@ -16,12 +16,6 @@ export class ElderlySeederService {
         private readonly caregiverRepository: Repository<CaregiverEntity>
     ) {}
 
-    // createElderlyEntity(elderly: IElderlyEntity) {
-    //     let _u = new ElderlyEntity();
-    //     _u.name = elderly.name;
-    //     return _u
-    // }
-
     create(): Array<Promise<boolean>> {
         return ElderlySeedData.map(async (elderly: IElderlyEntity, index: number) => {
             try {
@@ -30,8 +24,7 @@ export class ElderlySeederService {
                     console.log('No Such Caregiver!!');
                     return false;
                 }
-                let _e = this.elderlyRepository.create({ ...elderly, caregiver_id: _u });
-                _e.caregiver_id = _u;
+                const _e = this.elderlyRepository.create({ ...elderly, caregiver_id: _u });
                 await this.elderlyRepository.save(_e);
                 return true;
             } catch(err) {
