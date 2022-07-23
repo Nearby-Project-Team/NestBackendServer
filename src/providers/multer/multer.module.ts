@@ -5,9 +5,9 @@ import { S3Service } from './s3/s3.service';
 @Module({
     imports: [
         MulterModule.registerAsync({
-            useClass: S3Service
+            useClass: S3Service,
+            inject: [ Logger ]
         })
-    ],
-    providers: [ Logger ]
+    ]
 })
 export class MulterProviderModule {}
