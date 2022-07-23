@@ -15,7 +15,9 @@ import { S3 } from 'aws-sdk';
                         credentials: {
                             accessKeyId: cs.get<string>('AWS_ACCESS_KEY'),
                             secretAccessKey: cs.get<string>('AWS_SECRET_KEY')
-                        }
+                        },
+                        accessKeyId: cs.get<string>('AWS_ACCESS_KEY'),
+                        secretAccessKey: cs.get<string>('AWS_SECRET_KEY')
                     }
                 },
                 imports: [ConfigModule],
