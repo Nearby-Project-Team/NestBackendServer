@@ -6,9 +6,15 @@ import { ElderlySeederModule } from './seedService/Elderly/elderly.module';
 import { CalandarSeederModule } from './seedService/Calandar/calandar.module';
 import { ChattingSeederModule } from './seedService/Chatting/chatting.module';
 import { VerificationLogSeederModule } from './seedService/VerificationLog/verification.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
     imports: [
+        ConfigModule.forRoot({
+            isGlobal: true,
+            envFilePath: (process.env.NODE_ENV === 'production') ? './env/.production.env'
+            : (process.env.NODE_ENV === 'stage') ? './env/.stage.env' : './env/.development.env'
+        }),
         MySQLDBProviderModule,
         CaregiverSeederModule,
         ElderlySeederModule,
