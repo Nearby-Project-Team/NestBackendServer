@@ -22,8 +22,8 @@ export class S3Service implements MulterOptionsFactory {
 
         const multerS3Storage = MulterS3({
             s3: this.s3,
-            bucket: bucket,
-            acl: acl,
+            bucket,
+            acl,
             key: (req, file, cb) => {
                 const cg_id = Buffer.from(req.body.email, 'utf-8').toString('base64');
                 const vname = req.body.name;
