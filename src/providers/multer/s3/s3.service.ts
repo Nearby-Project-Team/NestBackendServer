@@ -17,7 +17,7 @@ export class S3Service implements MulterOptionsFactory {
     ) {
         this.s3 = new AWS.S3();
         console.log(`Secret Key: ${this.configService.get<string>('AWS_SECRET_KEY')}`);
-        AWS.config.update({
+        this.s3.config.update({
             region: this.configService.get<string>('AWS_REGION'),
             credentials: {
                 accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY'),
