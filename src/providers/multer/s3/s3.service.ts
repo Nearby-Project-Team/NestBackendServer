@@ -3,29 +3,26 @@ import { MulterOptionsFactory } from "@nestjs/platform-express";
 import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
 import { ConfigService } from '@nestjs/config';
 import * as MulterS3 from 'multer-s3';
-import { S3 } from 'aws-sdk';
+import { S3, SharedIniFileCredentials } from 'aws-sdk';
 import * as AWS from 'aws-sdk';
 import { InjectAwsService } from 'nest-aws-sdk';
 
 @Injectable()
 export class S3Service implements MulterOptionsFactory {
+    private readonly s3: S3;
     private readonly FILE_SIZE_LIMIT = 31457280;
 
     constructor(
-        @InjectAwsService(S3)
-        private readonly s3: S3,
         private readonly configService: ConfigService
     ) {
         this.s3 = new AWS.S3();
 
         AWS.config.update({
             region: this.configService.get<string>('AWS_REGION'),
-            // credentials: {
-            //     accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY'),
-            //     secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')
-            // },
-            accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY'),
-            secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')
+            credentials: {
+                accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY'),
+                secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')
+            }
         });
     }
 
