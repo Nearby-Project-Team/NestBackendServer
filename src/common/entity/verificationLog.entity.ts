@@ -8,6 +8,7 @@ import {
     ManyToOne,
     JoinColumn
 } from 'typeorm';
+import { VerificationTypeEnum } from '../dtos/verification/verification.dto';
 
 @Entity({ name: 'UserVerificationLog' })
 export class VerificationEntity extends BaseEntity {
@@ -19,7 +20,7 @@ export class VerificationEntity extends BaseEntity {
         type: 'varchar',
         length: 50
     })
-    verification_type: string
+    verification_type: VerificationTypeEnum
 
     @Column({
         type: 'varchar',

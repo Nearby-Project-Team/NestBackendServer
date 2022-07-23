@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CaregiverEntity } from 'src/common/entity/caregiver.entity';
 import { Repository } from 'typeorm';
 import { LoginSuccessDto } from './dtos/login-success.dto';
 import { RequestError } from '../common/error/ErrorEntity/RequestError';
@@ -16,12 +15,13 @@ import { MailerService } from '@nestjs-modules/mailer';
 import { v4 } from 'uuid';
 import { VerificationEntity } from '../common/entity/verificationLog.entity';
 import { baseUrlConfig } from 'src/common/configs/url/url.config';
+import { CaregiverRepository } from 'src/common/repository/caregiver.repository';
+import { VerificationTypeEnum } from 'src/common/dtos/verification/verification.dto';
 
 @Injectable()
 export class AuthService {
     constructor (
-        @InjectRepository(CaregiverEntity) 
-        private readonly cgRepository: Repository<CaregiverEntity>,
+        private readonly cgRepository: CaregiverRepository,
         @InjectRepository(VerificationEntity)
         private readonly verificationRepository: Repository<VerificationEntity>,
         private readonly jwtService: JwtService,
@@ -29,12 +29,7 @@ export class AuthService {
     ) {}
 
     async validateCaregiver(email: string, password: string): Promise<LoginSuccessDto> {
-        const user = await this.cgRepository.findOne({
-            select: [ 'uuid', 'email', 'password', 'name', 'status', 'phone_number' ],
-            where: {
-                email: email
-            }
-        });
+        const user = await this.cgRepository.findUserByEmail(email);
         if (!user) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
         const authResult = await compare(password, user.password);
         if (authResult && (user.status === 'Y' || user.status === "A")) {
@@ -60,19 +55,14 @@ export class AuthService {
     }
 
     async register(user: RegisterDto) {
-        const _u = await this.cgRepository.findOne({
-            select: [ "uuid" ],
-            where: {
-                email: user.email
-            }
-        });
+        const _u = await this.cgRepository.findUserByEmail(user.email);
         if (_u) throw new AppError(AppErrorTypeEnum.USER_EXISTS);
 
         const newUser = this.cgRepository.create({ ...user, status: "N" }); 
         await this.cgRepository.save(newUser);
         const token = v4();
         const _v = this.verificationRepository.create({
-            verification_type: "REGISTER_VERIFICATION",
+            verification_type: VerificationTypeEnum.register,
             verification_token: token,
             caregiver_id: newUser
         });
@@ -91,6 +81,38 @@ export class AuthService {
         return {
             msg: "Register Success!"
         };
+    }
+
+    async verify(email: string, token: string) {
+        const _u = await this.cgRepository.findUserByEmail(email);
+        if (!_u) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
+
+        const _v = await this.verificationRepository.findOne({
+            select: [ "verification_type" ],
+            where: {
+                verification_token: token
+            },
+            relations: {
+                caregiver_id: {
+                    uuid: true
+                }
+            }
+        });
+        if (_v.caregiver_id !== _u) throw new RequestError(RequestErrorTypeEnum.INVALID_USER);
+
+        switch (_v.verification_type) {
+            case VerificationTypeEnum.register:
+                await this.cgRepository.update({
+                    uuid: _u.uuid
+                }, {
+                    status: "Y"
+                });
+                break;
+            case VerificationTypeEnum.password:
+                break;
+        }
+
+        return "Verification Success!";
     }
 
 }
