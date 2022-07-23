@@ -30,7 +30,7 @@ export class AuthService {
 
     async validateCaregiver(email: string, password: string): Promise<LoginSuccessDto> {
         const user = await this.cgRepository.findUserByEmail(email);
-        if (!user) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
+        if (user === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
         const authResult = await compare(password, user.password);
         if (authResult && (user.status === 'Y' || user.status === "A")) {
             const { email, name, phone_number } = user;
@@ -85,7 +85,7 @@ export class AuthService {
 
     async verify(email: string, token: string) {
         const _u = await this.cgRepository.findUserByEmail(email);
-        if (!_u) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
+        if (_u === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
 
         const _v = await this.verificationRepository.findOne({
             select: [ "verification_type" ],

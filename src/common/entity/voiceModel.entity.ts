@@ -1,5 +1,5 @@
 import { CaregiverEntity } from './caregiver.entity';
-import { ElderlyEntity } from './elderly.entity';
+import { VoiceModelRelationEntity } from './voiceRelation.entity';
 import {
     Column,
     PrimaryGeneratedColumn,
@@ -7,7 +7,8 @@ import {
     CreateDateColumn,
     BaseEntity,
     ManyToOne,
-    JoinColumn
+    JoinColumn,
+    OneToMany
 } from 'typeorm';
 
 @Entity({ name: 'VoiceModel' })
@@ -36,10 +37,7 @@ export class VoiceModelEntity extends BaseEntity {
     })
     caregiver_id: CaregiverEntity
 
-    @ManyToOne(type => ElderlyEntity, (elderly) => elderly.voice_model)
-    @JoinColumn({
-        name: 'elderly_id'
-    })
-    elderly_id: ElderlyEntity
+    @OneToMany(type => VoiceModelRelationEntity, (vRelation) => vRelation.voiceModel_id)
+    voiceRelation: VoiceModelRelationEntity[]
 
 };

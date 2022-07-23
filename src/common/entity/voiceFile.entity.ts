@@ -16,6 +16,11 @@ export class VoiceFileEntity extends BaseEntity {
     uuid: string
 
     @Column({
+        type: 'varchar'
+    })
+    name: string;
+
+    @Column({
         type: 'text'
     })
     path: string
