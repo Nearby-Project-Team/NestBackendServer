@@ -3,8 +3,8 @@ import { InjectRepository } from "@nestjs/typeorm";
 import { ElderlyEntity } from '../../../common/entity/elderly.entity';
 import { Repository } from 'typeorm';
 import { ChattingEntity } from '../../../common/entity/chatting.entity';
-import { ChattingSeedData } from "src/seeds/seedingData/chatting.seed";
-import { IChattingEntity } from "src/seeds/seedingInterface/IChattingEntity";
+import { ChattingSeedData } from "../../seedingData/chatting.seed";
+import { IChattingEntity } from "../../seedingInterface/IChattingEntity";
 import { ElderlySeedData } from '../../seedingData/elderly.seed';
 
 @Injectable()
