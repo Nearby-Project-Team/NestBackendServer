@@ -1,7 +1,7 @@
 import { CaregiverEntity } from './caregiver.entity';
 import { CalandarEntity } from './calandar.entity';
 import { ChattingEntity } from './chatting.entity';
-import { VoiceModelEntity } from './voiceModel.entity';
+import { VoiceModelRelationEntity } from './voiceRelation.entity';
 import {
     Column,
     PrimaryGeneratedColumn,
@@ -47,8 +47,8 @@ export class ElderlyEntity extends BaseEntity{
 
     @OneToMany(type => ChattingEntity, (chatting) => chatting.elderly_id)
     chatting: ChattingEntity[];
-
-    @OneToMany(type => VoiceModelEntity, (voice) => voice.elderly_id)
-    voice_model: VoiceModelEntity[];
     
+    @OneToMany(type => VoiceModelRelationEntity, (vrelation) => vrelation.elderly_id)
+    voiceRelation: VoiceModelRelationEntity[]
+
 };

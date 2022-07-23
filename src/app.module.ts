@@ -10,6 +10,7 @@ import { MySQLDBProviderModule } from 'src/providers/database/mysql/mysql.module
 import * as RedisStore from 'connect-redis';
 import * as session from 'express-session';
 import * as passport from 'passport';
+import { AWSProviderModule } from './providers/aws/aws.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import * as passport from 'passport';
         : (process.env.NODE_ENV === 'stage') ? './env/.stage.env' : './env/.development.env'
     }),
     MySQLDBProviderModule,
+    AWSProviderModule,
     AuthModule, 
     ApplicationModule,
     RedisModule
