@@ -6,8 +6,6 @@ import { ElderlyEntity } from '../../../common/entity/elderly.entity';
 import { CalandarSeedData } from '../../seedingData/calandar.seed';
 import { ICalandarEntity } from '../../../../dist/seeds/seedingInterface/ICalandarEntity';
 import { ElderlySeedData } from '../../seedingData/elderly.seed';
-import { AppError } from '../../../common/error/ErrorEntity/AppError';
-import { AppErrorTypeEnum } from 'src/common/error/ErrorType/AppErrorType.enum';
 
 @Injectable()
 export class CalandarSeederService {
