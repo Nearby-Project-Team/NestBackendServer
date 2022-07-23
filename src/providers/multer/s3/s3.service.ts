@@ -9,7 +9,7 @@ import { InjectAwsService } from 'nest-aws-sdk';
 
 @Injectable()
 export class S3Service implements MulterOptionsFactory {
-    private readonly s3: S3;
+    private s3: S3;
     private readonly FILE_SIZE_LIMIT = 31457280;
 
     constructor(
