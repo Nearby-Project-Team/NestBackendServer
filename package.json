@@ -20,7 +20,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed:config": "typeorm-seeding config -r ./dist -c seeding-source.js",
-    "seed:run": "typeorm-seeding seed -r ./dist -c seeding-source.js"
+    "seed:run": "NODE_ENV=development ts-node src/seed.ts"
   },
   "overrides": {
     "multer": "^1.4.4-lts.1"
