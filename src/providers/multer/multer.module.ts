@@ -7,10 +7,9 @@ import { AWSProviderModule } from '../aws/aws.module';
 
 @Module({
     imports: [
-        AWSProviderModule,
         MulterModule.registerAsync({
             useClass: S3Service,
-            imports: [ AwsSdkModule.forFeatures([S3]) ],
+            imports: [ AWSProviderModule ],
         })
     ]
 })
