@@ -1,6 +1,7 @@
 import { CaregiverEntity } from './caregiver.entity';
 import { CalandarEntity } from './calandar.entity';
 import { ChattingEntity } from './chatting.entity';
+import { VoiceModelEntity } from './voiceModel.entity';
 import {
     Column,
     PrimaryGeneratedColumn,
@@ -18,33 +19,36 @@ import {
 export class ElderlyEntity extends BaseEntity{
 
     @PrimaryGeneratedColumn("uuid")
-    uuid: string
+    uuid: string;
 
     @Column({
         type: 'varchar',
         length: 100
     })
-    name: string
+    name: string;
 
     @CreateDateColumn()
-    createdAt: Date
+    createdAt: Date;
 
     @UpdateDateColumn()
-    updatedAt: Date
+    updatedAt: Date;
 
     @DeleteDateColumn()
-    deletedAt: Date
+    deletedAt: Date;
 
     @ManyToOne(type => CaregiverEntity, (cargiver) => cargiver.elderly)
     @JoinColumn({
         name: 'caregiver_id'
     })
-    caregiver_id: CaregiverEntity
+    caregiver_id: CaregiverEntity;
 
     @OneToMany(type => CalandarEntity, (calandar) => calandar.elderly_id)
-    calandar: CalandarEntity[]
+    calandar: CalandarEntity[];
 
     @OneToMany(type => ChattingEntity, (chatting) => chatting.elderly_id)
-    chatting: ChattingEntity[]
+    chatting: ChattingEntity[];
 
+    @OneToMany(type => VoiceModelEntity, (voice) => voice.elderly_id)
+    voice_model: VoiceModelEntity[];
+    
 };

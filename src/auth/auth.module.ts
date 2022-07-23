@@ -10,12 +10,16 @@ import { jwtConstants } from './constants/jwt.constant';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { NodeMailerModule } from '../providers/mailer/mailer.module';
 import { VerificationEntity } from '../common/entity/verificationLog.entity';
+import { TypeORMRepositoryModule } from '../common/repository/typeorm.repository';
+import { CaregiverRepository } from '../common/repository/caregiver.repository';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([
-      CaregiverEntity,
       VerificationEntity
+    ]),
+    TypeORMRepositoryModule.forCustomRepository([
+      CaregiverRepository
     ]),
     PassportModule,
     JwtModule.register({

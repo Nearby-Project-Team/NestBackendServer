@@ -39,6 +39,14 @@ export class RequestError extends Error {
                     userMessage: 'Provided User Passowrd is not match with Original Password!'
                 };
                 break;
+            case RequestErrorTypeEnum.INVALID_USER:
+                res = {
+                    type: RequestErrorTypeEnum.INVALID_USER,
+                    httpStatus: HttpStatus.BAD_REQUEST,
+                    errorMessage: 'Invalid User!',
+                    userMessage: 'Invalid User for this Request'
+                };
+                break;
         }
         return res;
     }
