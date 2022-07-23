@@ -30,7 +30,7 @@ export class MySQLConfigService implements TypeOrmOptionsFactory {
                 VoiceFileEntity,
                 VoiceModelEntity
             ],
-            synchronize: process.env.NODE_ENV === 'development' ? true : false
+            synchronize: process.env.NODE_ENV === 'development'
         }
     }
 }
