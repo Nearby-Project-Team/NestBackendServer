@@ -14,15 +14,12 @@ export class S3Service implements MulterOptionsFactory {
     constructor(
         private readonly configService: ConfigService
     ) {
-        this.s3 = new AWS.S3();
-        
-        AWS.config.update({
+        this.s3 = new AWS.S3({
             region: this.configService.get<string>('AWS_REGION'),
             credentials: {
                 accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY'),
                 secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')
             },
-            secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')
         });
     }
 
