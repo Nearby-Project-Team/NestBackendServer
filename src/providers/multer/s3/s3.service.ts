@@ -14,6 +14,12 @@ export class S3Service implements MulterOptionsFactory {
     constructor(
         private readonly configService: ConfigService
     ) {
+    }
+
+    createMulterOptions(): MulterOptions | Promise<MulterOptions> {
+        const bucket = this.configService.get<string>('AWS_S3_BUCKET_NAME');
+        const acl = 'public-read';
+
         this.s3 = new AWS.S3({
             region: this.configService.get<string>('AWS_REGION'),
             credentials: {
@@ -21,11 +27,6 @@ export class S3Service implements MulterOptionsFactory {
                 secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')
             },
         });
-    }
-
-    createMulterOptions(): MulterOptions | Promise<MulterOptions> {
-        const bucket = this.configService.get<string>('AWS_S3_BUCKET_NAME');
-        const acl = 'public-read';
 
         const multerS3Storage = MulterS3({
             s3: this.s3,
