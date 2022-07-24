@@ -14,6 +14,10 @@ export class S3Service implements MulterOptionsFactory {
     constructor(
         private readonly configService: ConfigService
     ) {
+        const credentials = new SharedIniFileCredentials({ 
+            profile: 'default'
+        });
+        console.log(`Credentials ${credentials.accessKeyId} ${credentials.secretAccessKey}`)
         this.s3 = new AWS.S3({
             region: this.configService.get<string>('AWS_REGION'),
             credentials: new SharedIniFileCredentials({ 
