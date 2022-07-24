@@ -14,14 +14,14 @@ export class S3Service implements MulterOptionsFactory {
     constructor(
         private readonly configService: ConfigService
     ) {
-        console.log(`Credentials: ${this.configService.get<string>('AWS_ACCESS_KEY')} ${this.configService.get<string>('AWS_SECRET_KEY')}`)
-        this.s3 = new AWS.S3({
-            region: this.configService.get<string>('AWS_REGION'),
-            credentials: new Credentials({
-                accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY'),
-                secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')
-            })
-        });
+        // console.log(`Credentials: ${this.configService.get<string>('AWS_ACCESS_KEY')} ${this.configService.get<string>('AWS_SECRET_KEY')}`)
+        // this.s3 = new AWS.S3({
+        //     region: this.configService.get<string>('AWS_REGION'),
+        //     credentials: new Credentials({
+        //         accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY'),
+        //         secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')
+        //     })
+        // });
     }
 
     createMulterOptions(): MulterOptions | Promise<MulterOptions> {
@@ -29,7 +29,13 @@ export class S3Service implements MulterOptionsFactory {
         const acl = 'public-read';
 
         const multerS3Storage = MulterS3({
-            s3: this.s3,
+            s3: new AWS.S3({
+                region: this.configService.get<string>('AWS_REGION'),
+                credentials: new Credentials({
+                    accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY'),
+                    secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')
+                })
+            }),
             bucket,
             acl,
             key: (req, file, cb) => {
