@@ -3,8 +3,8 @@ import { MulterOptionsFactory } from "@nestjs/platform-express";
 import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
 import { ConfigService } from '@nestjs/config';
 import * as MulterS3 from 'multer-s3';
-import { S3 } from 'aws-sdk';
 import * as AWS from 'aws-sdk';
+import { S3 } from 'aws-sdk';
 
 @Injectable()
 export class S3Service implements MulterOptionsFactory {
@@ -14,19 +14,20 @@ export class S3Service implements MulterOptionsFactory {
     constructor(
         private readonly configService: ConfigService
     ) {
-    }
-
-    createMulterOptions(): MulterOptions | Promise<MulterOptions> {
-        const bucket = this.configService.get<string>('AWS_S3_BUCKET_NAME');
-        const acl = 'public-read';
-
         this.s3 = new AWS.S3({
             region: this.configService.get<string>('AWS_REGION'),
             credentials: {
                 accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY'),
                 secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')
             },
+            accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY'),
+            secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')
         });
+    }
+
+    createMulterOptions(): MulterOptions | Promise<MulterOptions> {
+        const bucket = this.configService.get<string>('AWS_S3_BUCKET_NAME');
+        const acl = 'public-read';
 
         const multerS3Storage = MulterS3({
             s3: this.s3,
