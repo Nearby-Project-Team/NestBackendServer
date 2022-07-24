@@ -27,12 +27,12 @@ export class VoiceModelRelationEntity extends BaseEntity {
     @JoinColumn({
         name: 'voiceModel_id'
     })
-    voiceModel_id: VoiceModelEntity
+    voiceModel_id: VoiceModelEntity;
 
     @ManyToOne(type => ElderlyEntity, (elderly) => elderly.voiceRelation)
     @JoinColumn({
         name: 'elderly_id'
     })
-    elderly_id: ElderlyEntity
+    elderly_id: ElderlyEntity;
 
 }

@@ -8,6 +8,7 @@ import { CalandarEntity } from '../../entity/calandar.entity';
 import { VerificationEntity } from '../../entity/verificationLog.entity';
 import { VoiceFileEntity } from '../../entity/voiceFile.entity';
 import { VoiceModelEntity } from '../../entity/voiceModel.entity';
+import { VoiceModelRelationEntity } from '../../entity/voiceRelation.entity';
 
 @Injectable()
 export class MySQLConfigService implements TypeOrmOptionsFactory {
@@ -28,7 +29,8 @@ export class MySQLConfigService implements TypeOrmOptionsFactory {
                 CalandarEntity,
                 VerificationEntity,
                 VoiceFileEntity,
-                VoiceModelEntity
+                VoiceModelEntity,
+                VoiceModelRelationEntity
             ],
             synchronize: process.env.NODE_ENV === 'development'
         }
