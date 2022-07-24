@@ -4,7 +4,7 @@ import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer
 import { ConfigService } from '@nestjs/config';
 import * as MulterS3 from 'multer-s3';
 import * as AWS from 'aws-sdk';
-import { S3, SharedIniFileCredentials } from 'aws-sdk';
+import { Credentials, S3, SharedIniFileCredentials } from 'aws-sdk';
 
 @Injectable()
 export class S3Service implements MulterOptionsFactory {
@@ -14,18 +14,13 @@ export class S3Service implements MulterOptionsFactory {
     constructor(
         private readonly configService: ConfigService
     ) {
-        const credentials = new SharedIniFileCredentials({ 
-            profile: 'default'
-        });
-        console.log(`Credentials: ${credentials.accessKeyId} ${credentials.secretAccessKey}`)
         console.log(`Credentials: ${this.configService.get<string>('AWS_ACCESS_KEY')} ${this.configService.get<string>('AWS_SECRET_KEY')}`)
         this.s3 = new AWS.S3({
             region: this.configService.get<string>('AWS_REGION'),
-            credentials: new SharedIniFileCredentials({ 
-                profile: 'default'
-            }),
-            accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY'),
-            secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY'),
+            credentials: new Credentials({
+                accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY'),
+                secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')
+            })
         });
     }
 
