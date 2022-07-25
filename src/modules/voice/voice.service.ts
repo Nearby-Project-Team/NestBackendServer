@@ -28,7 +28,7 @@ export class VoiceService {
         const _v = await this.vfRepository.create({
             caregiver_id: _u,
             name: metaData.name,
-            path: `${cg_email}/${metaData.name}/${metaData.unique_id}.${mimeType}`
+            path: `${cg_email}/${metaData.name}/${metaData.unique_id}${mimeType}`
         });
         await this.vfRepository.save(_v);
         return "Success!";
