@@ -45,7 +45,7 @@ export class S3Service implements MulterOptionsFactory {
     public fileFilter(req: Express.Request, file: Express.Multer.File, cb: (err: Error | null, acceptFile: boolean) => void) {
         console.log(extname(file.originalname));
         const fileEx = extname(file.originalname).split('.');
-        if (fileEx[fileEx.length - 1].match(/\/(wav|mp4)$/)) {
+        if (fileEx[fileEx.length - 1] === 'wav' || fileEx[fileEx.length - 1] === 'mp4') {
             cb(null, true);
         } else {
             Logger.debug(`No! ${file.originalname}`);
