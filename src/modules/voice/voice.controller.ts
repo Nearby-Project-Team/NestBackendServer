@@ -5,7 +5,9 @@ import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('voice')
 export class VoiceController {
-  constructor(private readonly voiceService: VoiceService) {}
+  constructor(
+    private readonly voiceService: VoiceService,
+  ) {}
 
   // 보호자가 음성을 등록함 => 등록 완료되면 O.K 때림.
   @Post('register')
