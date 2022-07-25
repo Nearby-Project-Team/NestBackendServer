@@ -25,13 +25,11 @@ export class S3Service implements MulterOptionsFactory {
             s3: this.s3,
             bucket,
             acl,
-            key: (req: Request, file: Express.Multer.File, cb) => {
-                req.json().then((result) => {
-                    const cg_id = Buffer.from(result.email, 'utf-8').toString('base64');
-                    const vname = result.name;
-                    const uuid = result.unique_id;
-                    cb(null, `${cg_id}/${vname}/${uuid}${extname(file.originalname)}`);
-                });
+            key: (req, file: Express.Multer.File, cb) => {
+                const cg_id = Buffer.from(req.body.email, 'utf-8').toString('base64');
+                const vname = req.body.name;
+                const uuid = req.body.unique_id;
+                cb(null, `${cg_id}/${vname}/${uuid}${extname(file.originalname)}`);
             }
         });
 
