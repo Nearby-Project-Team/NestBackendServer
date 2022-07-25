@@ -12,7 +12,7 @@ export class VoiceController {
 
   // 보호자가 음성을 등록함 => 등록 완료되면 O.K 때림.
   @Post('register')
-  @UseInterceptors(FileInterceptor('audio'))
+  @UseInterceptors(FileInterceptor('audio', {}))
   async registerVoice(
     @Body() body: VoiceMetadataDto,
     @UploadedFile() file: Express.Multer.File
