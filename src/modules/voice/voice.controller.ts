@@ -2,6 +2,7 @@ import { Body, Controller, HttpStatus, Post, UploadedFile, UseInterceptors } fro
 import { VoiceService } from './voice.service';
 import { VoiceMetadataDto } from './dtos/vmetadata.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { extname } from 'path';
 
 @Controller('voice')
 export class VoiceController {
@@ -17,7 +18,7 @@ export class VoiceController {
     @UploadedFile() file: Express.Multer.File
   ) {
     // Save file in 'bucket: nearby-<env>-bucket/caregiver_id/voice_name/voice_file_uuid.wav'
-    return this.voiceService.registerVoice(body, file.mimetype);
+    return this.voiceService.registerVoice(body, extname(file.originalname));
   }
 
 }

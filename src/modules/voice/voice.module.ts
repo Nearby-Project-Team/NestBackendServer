@@ -8,6 +8,9 @@ import { VoiceFileEntity } from '../../common/entity/voiceFile.entity';
 import { VoiceModelRelationEntity } from '../../common/entity/voiceRelation.entity';
 import { VoiceModelEntity } from '../../common/entity/voiceModel.entity';
 import { MulterProviderModule } from '../../providers/multer/multer.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { S3Service } from '../../providers/multer/s3/s3.service';
+import { AWSProviderModule } from '../../providers/aws/aws.module';
 
 @Module({
   imports: [
@@ -19,7 +22,10 @@ import { MulterProviderModule } from '../../providers/multer/multer.module';
     TypeORMRepositoryModule.forCustomRepository([
       CaregiverRepository
     ]),
-    MulterProviderModule
+    AWSProviderModule,
+    MulterModule.registerAsync({
+      useClass: S3Service
+    })
   ],
   controllers: [VoiceController],
   providers: [VoiceService]
