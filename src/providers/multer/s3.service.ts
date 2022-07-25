@@ -26,7 +26,7 @@ export class S3Service implements MulterOptionsFactory {
             bucket,
             acl,
             key: (req, file, cb) => {
-                console.log(req.body);
+                console.log(req);
                 const cg_id = Buffer.from(req.body.email, 'utf-8').toString('base64');
                 const vname = req.body.name;
                 const uuid = req.body.unique_id;
