@@ -8,7 +8,7 @@ import { VoiceFileEntity } from '../../common/entity/voiceFile.entity';
 import { VoiceModelRelationEntity } from '../../common/entity/voiceRelation.entity';
 import { VoiceModelEntity } from '../../common/entity/voiceModel.entity';
 import { MulterModule } from '@nestjs/platform-express';
-import { S3Service } from '../../providers/multer/s3/s3.service';
+import { S3Service } from '../../providers/multer/s3.service';
 import { AWSProviderModule } from '../../providers/aws/aws.module';
 
 @Module({
