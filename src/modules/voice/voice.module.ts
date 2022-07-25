@@ -7,7 +7,6 @@ import { CaregiverRepository } from '../../common/repository/caregiver.repositor
 import { VoiceFileEntity } from '../../common/entity/voiceFile.entity';
 import { VoiceModelRelationEntity } from '../../common/entity/voiceRelation.entity';
 import { VoiceModelEntity } from '../../common/entity/voiceModel.entity';
-import { MulterProviderModule } from '../../providers/multer/multer.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { S3Service } from '../../providers/multer/s3/s3.service';
 import { AWSProviderModule } from '../../providers/aws/aws.module';

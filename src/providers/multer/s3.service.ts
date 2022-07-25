@@ -1,11 +1,11 @@
-import { Injectable, Logger, Param } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { MulterOptionsFactory } from "@nestjs/platform-express";
 import { MulterOptions } from "@nestjs/platform-express/multer/interfaces/multer-options.interface";
 import { ConfigService } from '@nestjs/config';
 import * as MulterS3 from 'multer-s3';
-import * as AWS from 'aws-sdk';
-import { Credentials, S3, SharedIniFileCredentials } from 'aws-sdk';
+import { S3 } from 'aws-sdk';
 import { InjectAwsService } from 'nest-aws-sdk';
+import { extname } from 'path';
 
 @Injectable()
 export class S3Service implements MulterOptionsFactory {
@@ -43,10 +43,10 @@ export class S3Service implements MulterOptionsFactory {
     }
 
     public fileFilter(req: Express.Request, file: Express.Multer.File, cb: (err: Error | null, acceptFile: boolean) => void) {
-        if (file.mimetype.match(/\/(wav|mp4)$/)) {
+        if (extname(file.originalname).match(/\/(wav|mp4)$/)) {
             cb(null, true);
         } else {
-            Logger.debug(`No! ${JSON.stringify(file)}`);
+            Logger.debug(`No! ${file.originalname}`);
             cb(new Error('unsupported file'), false);
         }
     }
