@@ -28,7 +28,7 @@ export class S3Service implements MulterOptionsFactory {
             acl,
             key: (req, file: Express.Multer.File, cb) => {
                 const url: string = req._parsedUrl.path;
-                const cg_id = Buffer.from(url.split('/')[3], 'utf-8').toString('base64');
+                const cg_id = url.split('/')[3];
                 const vname = url.split('/')[4];
                 const uuid = v4();
                 cb(null, `${cg_id}/${vname}/${uuid}${extname(file.originalname)}`);
