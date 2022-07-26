@@ -6,6 +6,7 @@ import * as MulterS3 from 'multer-s3';
 import { S3 } from 'aws-sdk';
 import { InjectAwsService } from 'nest-aws-sdk';
 import { extname } from 'path';
+import { v4 } from 'uuid';
 
 @Injectable()
 export class S3Service implements MulterOptionsFactory {
@@ -26,9 +27,10 @@ export class S3Service implements MulterOptionsFactory {
             bucket,
             acl,
             key: (req, file: Express.Multer.File, cb) => {
-                const cg_id = Buffer.from(req.body.email, 'utf-8').toString('base64');
-                const vname = req.body.name;
-                const uuid = req.body.unique_id;
+                const url: string = req._parsedUrl.path;
+                const cg_id = Buffer.from(url.split('/')[3], 'utf-8').toString('base64');
+                const vname = url.split('/')[4];
+                const uuid = v4();
                 cb(null, `${cg_id}/${vname}/${uuid}${extname(file.originalname)}`);
             }
         });

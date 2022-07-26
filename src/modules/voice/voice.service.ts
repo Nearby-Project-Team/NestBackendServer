@@ -21,14 +21,13 @@ export class VoiceService {
         private readonly cgRepository: CaregiverRepository
     ) {}
 
-    async registerVoice(metaData: VoiceMetadataDto, mimeType: string) {
+    async registerVoice(metaData: VoiceMetadataDto, filePath: string) {
         const _u = await this.cgRepository.findUserByEmail(metaData.email);
         if (_u === null) throw new AppError(AppErrorTypeEnum.NO_USERS_IN_DB);
-        const cg_email = Buffer.from(metaData.email, 'utf-8').toString('base64');
         const _v = await this.vfRepository.create({
             caregiver_id: _u,
             name: metaData.name,
-            path: `${cg_email}/${metaData.name}/${metaData.unique_id}${mimeType}`
+            path: filePath
         });
         await this.vfRepository.save(_v);
         return "Success!";
