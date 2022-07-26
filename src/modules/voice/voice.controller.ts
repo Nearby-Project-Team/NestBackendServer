@@ -1,8 +1,8 @@
-import { Body, Controller, HttpStatus, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { VoiceService } from './voice.service';
 import { VoiceMetadataDto } from './dtos/vmetadata.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { extname } from 'path';
+import { S3FilePath } from 'src/common/decorators/s3-file.decorator';
 
 @Controller('voice')
 export class VoiceController {
@@ -15,10 +15,11 @@ export class VoiceController {
   @UseInterceptors(FileInterceptor('audio', {}))
   async registerVoice(
     @Body() body: VoiceMetadataDto,
-    @UploadedFile() file: Express.Multer.File
+    @UploadedFile() file: Express.Multer.File,
+    @S3FilePath() path: string
   ) {
     // Save file in 'bucket: nearby-<env>-bucket/caregiver_id/voice_name/voice_file_uuid.wav'
-    return this.voiceService.registerVoice(body, extname(file.originalname));
+    return this.voiceService.registerVoice(body, path);
   }
 
 }
