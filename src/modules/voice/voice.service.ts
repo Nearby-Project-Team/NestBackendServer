@@ -5,7 +5,6 @@ import { Repository } from 'typeorm';
 import { VoiceModelEntity } from '../../common/entity/voiceModel.entity';
 import { VoiceModelRelationEntity } from '../../common/entity/voiceRelation.entity';
 import { CaregiverRepository } from '../../common/repository/caregiver.repository';
-import { VoiceMetadataDto } from './dtos/vmetadata.dto';
 import { AppError } from '../../common/error/ErrorEntity/AppError';
 import { AppErrorTypeEnum } from 'src/common/error/ErrorType/AppErrorType.enum';
 

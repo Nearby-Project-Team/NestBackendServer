@@ -25,6 +25,11 @@ export class VoiceFileEntity extends BaseEntity {
     })
     path: string
 
+    @Column({
+        type: 'datetime'
+    })
+    trainDate: Date
+
     @CreateDateColumn()
     createdAt: Date
 
