@@ -45,6 +45,12 @@ export class CaregiverEntity extends BaseEntity {
     })
     status: string
 
+    @Column({ 
+        type: 'varchar',
+        length: 5 
+    })
+    agreement: string;
+
     @Column({
         type: 'varchar',
         unique: true,

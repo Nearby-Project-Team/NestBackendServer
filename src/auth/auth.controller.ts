@@ -35,7 +35,13 @@ export class AuthController {
     @Param('email') email: string,
     @Param('token') token: string
   ) {
-    return this.verify(email, token);
+    return await this.authService.verify(email, token);
   }
 
+  @Post('/agreement')
+  async agreement(
+    @Body('email') email: string  
+  ) {
+    return await this.authService.agreement(email);
+  }
 }

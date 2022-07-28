@@ -1,15 +1,17 @@
 import { Module } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { ChatController } from './chat.controller';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { ElderlyEntity } from '../../common/entity/elderly.entity';
-import { CaregiverEntity } from '../../common/entity/caregiver.entity';
+import { TypeORMRepositoryModule } from 'src/common/repository/typeorm.repository';
+import { CaregiverRepository } from 'src/common/repository/caregiver.repository';
+import { ElderlyRepository } from 'src/common/repository/elderly.repository';
+import { ChattingRepository } from 'src/common/repository/chatting.repository';
 
 @Module({
   imports: [ 
-    TypeOrmModule.forFeature([ 
-      ElderlyEntity,
-      CaregiverEntity 
+    TypeORMRepositoryModule.forCustomRepository([
+      CaregiverRepository,
+      ElderlyRepository,
+      ChattingRepository
     ])
   ],
   controllers: [ChatController],

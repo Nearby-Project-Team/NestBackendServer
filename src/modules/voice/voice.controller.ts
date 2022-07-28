@@ -26,7 +26,7 @@ export class VoiceController {
   async trainUserVoice(
     
   ) {
-
+      
   }
 
 }

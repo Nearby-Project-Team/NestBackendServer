@@ -58,7 +58,11 @@ export class AuthService {
         const _u = await this.cgRepository.findUserByEmail(user.email);
         if (_u) throw new AppError(AppErrorTypeEnum.USER_EXISTS);
 
-        const newUser = this.cgRepository.create({ ...user, status: "N" }); 
+        const newUser = this.cgRepository.create({ 
+            ...user, 
+            status: "N", 
+            agreement: "N" 
+        }); 
         await this.cgRepository.save(newUser);
         const token = v4();
         const _v = this.verificationRepository.create({
@@ -114,5 +118,20 @@ export class AuthService {
 
         return "Verification Success!";
     }
+
+    async agreement(email: string) {
+        const _u = await this.cgRepository.findUserByEmail(email);
+        if (_u === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
+
+        await this.cgRepository.update({
+            uuid: _u.uuid
+        }, {
+            agreement: "Y"
+        });
+
+        return "Successfully get agreement!";
+    }
+
+    
 
 }
