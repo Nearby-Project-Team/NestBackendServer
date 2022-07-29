@@ -45,6 +45,12 @@ export class ElderlyEntity extends BaseEntity{
     })
     agreement: AgreementEnum
 
+    @Column({
+        type: 'varchar',
+        length: 255
+    })
+    token: string;
+
     @CreateDateColumn()
     createdAt: Date;
 

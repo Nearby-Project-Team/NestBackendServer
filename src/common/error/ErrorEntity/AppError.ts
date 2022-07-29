@@ -64,6 +64,14 @@ export class AppError extends Error {
                     userMessage: 'User not verified yet'
                 };
                 break;
+            case AppErrorTypeEnum.INVALID_VERIFICATION:
+                res = {
+                    type: AppErrorTypeEnum.INVALID_VERIFICATION,
+                    httpStatus: HttpStatus.FORBIDDEN,
+                    errorMessage: 'Invalid verification token!',
+                    userMessage: 'Cannot verify the user! check the verification info!'
+                };
+                break;
         }
         return res;
     }

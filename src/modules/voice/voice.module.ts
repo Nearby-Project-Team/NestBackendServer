@@ -10,6 +10,8 @@ import { VoiceModelEntity } from '../../common/entity/voiceModel.entity';
 import { MulterModule } from '@nestjs/platform-express';
 import { S3Service } from '../../providers/multer/s3.service';
 import { AWSProviderModule } from '../../providers/aws/aws.module';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
 
 @Module({
   imports: [
@@ -24,9 +26,13 @@ import { AWSProviderModule } from '../../providers/aws/aws.module';
     AWSProviderModule,
     MulterModule.registerAsync({
       useClass: S3Service
-    })
+    }),
+    PassportModule
   ],
   controllers: [VoiceController],
-  providers: [VoiceService]
+  providers: [
+    VoiceService,
+    JwtStrategy
+  ]
 })
 export class VoiceModule {}

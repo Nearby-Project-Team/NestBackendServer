@@ -1,7 +1,8 @@
-import { Controller, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { VoiceService } from './voice.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { S3FilePath } from 'src/common/decorators/s3-file.decorator';
+import { JwtGuard } from 'src/common/guard/jwt-auth/jwt.guard';
 
 @Controller('voice')
 export class VoiceController {
@@ -10,6 +11,7 @@ export class VoiceController {
   ) {}
 
   // 보호자가 음성을 등록함 => 등록 완료되면 O.K 때림.
+  @UseGuards(JwtGuard)
   @Post('/register/:email/:vname')
   @UseInterceptors(FileInterceptor('audio', {}))
   async registerVoice(

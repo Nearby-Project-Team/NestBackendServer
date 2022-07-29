@@ -5,6 +5,10 @@ import { TypeORMRepositoryModule } from 'src/common/repository/typeorm.repositor
 import { CaregiverRepository } from 'src/common/repository/caregiver.repository';
 import { ElderlyRepository } from 'src/common/repository/elderly.repository';
 import { ChattingRepository } from 'src/common/repository/chatting.repository';
+import { PassportModule } from '@nestjs/passport';
+import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
+import { ChatGateway } from './chat.gateway';
+import { ChatRoomService } from './chatRoom.service';
 
 @Module({
   imports: [ 
@@ -12,9 +16,15 @@ import { ChattingRepository } from 'src/common/repository/chatting.repository';
       CaregiverRepository,
       ElderlyRepository,
       ChattingRepository
-    ])
+    ]),
+    PassportModule
   ],
   controllers: [ChatController],
-  providers: [ChatService]
+  providers: [
+    ChatService,
+    JwtStrategy,
+    ChatGateway,
+    ChatRoomService
+  ]
 })
 export class ChatModule {}
