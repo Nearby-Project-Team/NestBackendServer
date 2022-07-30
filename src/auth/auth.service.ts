@@ -18,11 +18,14 @@ import { CaregiverRepository } from 'src/common/repository/caregiver.repository'
 import { VerificationTypeEnum } from 'src/common/dtos/verification/verification.dto';
 import { CaregiverTokenPayloadDto } from '../common/dtos/caregiver/token-payload.dto';
 import { UserTypeEnum } from 'src/common/types/user.type';
+import { ElderlyTokenPayloadDto } from '../common/dtos/elderly/token-payload.dto';
+import { ElderlyRepository } from '../common/repository/elderly.repository';
 
 @Injectable()
 export class AuthService {
     constructor (
         private readonly cgRepository: CaregiverRepository,
+        private readonly elderlyRepository: ElderlyRepository,
         @InjectRepository(VerificationEntity)
         private readonly verificationRepository: Repository<VerificationEntity>,
         private readonly jwtService: JwtService,
@@ -46,9 +49,18 @@ export class AuthService {
         else throw new  AppError(AppErrorTypeEnum.USER_NOT_VERIFIED);
     }
 
+    // Validate JWT token without Guard
     async validateJwtToken(token: string) {
-        const payload: CaregiverTokenPayloadDto = this.jwtService.verify(token);
-        
+        const payload: CaregiverTokenPayloadDto 
+                     | ElderlyTokenPayloadDto 
+                    = this.jwtService.verify(token); 
+        if (payload instanceof CaregiverTokenPayloadDto) {
+            const _u = await this.cgRepository.findUserByEmail(payload.email);
+            return _u;
+        } else {
+            const _e = await this.elderlyRepository.findElderlyById(payload.elderly_id);
+            return _e;
+        }
     }
 
     async login(user: LoginRequestDto): Promise<LoginResultDto> {

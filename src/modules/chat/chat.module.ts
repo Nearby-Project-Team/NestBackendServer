@@ -9,6 +9,7 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
 import { ChatRoomService } from './chatRoom.service';
 import { ChatGateway } from './chat.gateway';
+import { AuthModule } from '../../auth/auth.module';
 
 @Module({
   imports: [ 
@@ -17,7 +18,8 @@ import { ChatGateway } from './chat.gateway';
       ElderlyRepository,
       ChattingRepository
     ]),
-    PassportModule
+    PassportModule,
+    AuthModule
   ],
   controllers: [ChatController],
   providers: [

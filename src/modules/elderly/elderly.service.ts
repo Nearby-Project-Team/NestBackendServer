@@ -37,7 +37,7 @@ export class ElderlyService {
 
         const token = randomBytes(20).toString('hex'); // work as refresh token
         const salt = await genSalt();
-        const tokenHash = await hash(_e.uuid, salt);
+        const tokenHash = await hash(token, salt);
         _e.token = tokenHash;
         await this.elderlyRepository.save(_e); // save refresh token in DB
 
@@ -70,20 +70,20 @@ export class ElderlyService {
             else return false;
         });
         
-        let verifyResult = false, elderly_name = null;
+        let verifyResult = false, elderly_id = null;
         _e.forEach((elderly) => {
             if (elderly instanceof ElderlyEntity) {
                 const res = compareSync(token, elderly.token);
                 if (res) { 
                     verifyResult = true;
-                    elderly_name = elderly.name;
+                    elderly_id = elderly.uuid;
                 }
             }
         });
 
         if (verifyResult) {
             const payload: ElderlyTokenPayloadDto = {
-                name: elderly_name,
+                elderly_id: elderly_id,
                 status: UserTypeEnum.ELDERLY
             };
             const accessToken = this.jwtService.sign(payload);

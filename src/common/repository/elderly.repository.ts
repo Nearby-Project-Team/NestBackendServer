@@ -29,4 +29,19 @@ export class ElderlyRepository extends Repository<ElderlyEntity> {
         });
         return _e;
     }
+
+    async findAllElderlyCaregiver(email: string) {
+        const elderlyList = await this.findAndCount({
+            where: { 
+                caregiver_id: {
+                    email: email
+                }
+            },
+            relations: {
+                caregiver_id: true
+            }
+        });
+        return elderlyList;
+    }
+
 }

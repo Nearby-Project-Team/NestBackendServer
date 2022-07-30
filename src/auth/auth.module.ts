@@ -12,6 +12,7 @@ import { NodeMailerModule } from '../providers/mailer/mailer.module';
 import { VerificationEntity } from '../common/entity/verificationLog.entity';
 import { TypeORMRepositoryModule } from '../common/repository/typeorm.repository';
 import { CaregiverRepository } from '../common/repository/caregiver.repository';
+import { ElderlyRepository } from '../common/repository/elderly.repository';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { CaregiverRepository } from '../common/repository/caregiver.repository';
       VerificationEntity
     ]),
     TypeORMRepositoryModule.forCustomRepository([
-      CaregiverRepository
+      CaregiverRepository,
+      ElderlyRepository
     ]),
     PassportModule,
     JwtModule.register({

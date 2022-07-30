@@ -13,7 +13,7 @@ export class ElderlyInfoDto {
     birthdate: Date;
 
     @IsString()
-    phone_number: string;
+    phone_number?: string;
 
     @IsString()
     agreement: AgreementEnum;
