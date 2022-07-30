@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, Logger } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { ChatController } from './chat.controller';
 import { TypeORMRepositoryModule } from 'src/common/repository/typeorm.repository';
@@ -7,8 +7,8 @@ import { ElderlyRepository } from 'src/common/repository/elderly.repository';
 import { ChattingRepository } from 'src/common/repository/chatting.repository';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
-import { ChatGateway } from './chat.gateway';
 import { ChatRoomService } from './chatRoom.service';
+import { ChatGateway } from './chat.gateway';
 
 @Module({
   imports: [ 
@@ -24,7 +24,8 @@ import { ChatRoomService } from './chatRoom.service';
     ChatService,
     JwtStrategy,
     ChatGateway,
-    ChatRoomService
+    ChatRoomService,
+    Logger
   ]
 })
 export class ChatModule {}

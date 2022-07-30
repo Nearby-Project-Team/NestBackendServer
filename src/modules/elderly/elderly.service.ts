@@ -14,6 +14,8 @@ import { ElderlyEntity } from 'src/common/entity/elderly.entity';
 import { AppError } from 'src/common/error/ErrorEntity/AppError';
 import { AppErrorTypeEnum } from 'src/common/error/ErrorType/AppErrorType.enum';
 import { JwtService } from '@nestjs/jwt';
+import { ElderlyTokenPayloadDto } from '../../common/dtos/elderly/token-payload.dto';
+import { UserTypeEnum } from 'src/common/types/user.type';
 
 @Injectable()
 export class ElderlyService {
@@ -80,10 +82,11 @@ export class ElderlyService {
         });
 
         if (verifyResult) {
-            const accessToken = this.jwtService.sign({
-                elderly_name: elderly_name,
-                status: "Elderly"
-            });
+            const payload: ElderlyTokenPayloadDto = {
+                name: elderly_name,
+                status: UserTypeEnum.ELDERLY
+            };
+            const accessToken = this.jwtService.sign(payload);
             return {
                 access: accessToken
             };

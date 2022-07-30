@@ -21,4 +21,13 @@ export class ChattingRepository extends Repository<ChattingEntity> {
         });
         return _c;
     }
+
+    async saveChatting(
+        elderly_id: string, 
+        content: string, 
+        date: Date
+    ) {
+        
+    }
+
 }

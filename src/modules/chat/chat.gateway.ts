@@ -1,36 +1,40 @@
-import { Logger } from '@nestjs/common';
-import {
-  OnGatewayConnection,
-  OnGatewayDisconnect,
-  OnGatewayInit,
-  SubscribeMessage,
-  WebSocketGateway,
-  WebSocketServer,
+import { 
+  OnGatewayConnection, 
+  OnGatewayDisconnect, 
+  OnGatewayInit, 
+  SubscribeMessage, 
+  WebSocketGateway, 
+  WebSocketServer 
 } from '@nestjs/websockets';
+import { baseUrlConfig } from '../../common/configs/url/url.config';
 import { Server, Socket } from 'socket.io';
-import { baseUrlConfig } from 'src/common/configs/url/url.config';
+import { Logger } from '@nestjs/common';
+import { ChattingRepository } from '../../common/repository/chatting.repository';
 
-@WebSocketGateway(3030, { 
-  namespace: 'nearby',
+@WebSocketGateway(3030, {
+  namespace: 'chat',
   cors: baseUrlConfig()
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
-  private static readonly logger = new Logger(ChatGateway.name);
+
+  constructor (
+    private readonly logger: Logger
+  ) {}
 
   @WebSocketServer()
   server: Server;
 
-  public handleConnection(client: any, ...args: any[]) {
-      
+  public handleConnection(client: Socket, ...args: any[]) {
+    
   }
 
-  public handleDisconnect(client: any) {
-      
+  public handleDisconnect(client: Socket) {
+
   }
 
-  public afterInit(server: any) {
-    ChatGateway.logger.debug(`Socket Server Init Complete`);
-  }
+  public afterInit() {
+    this.logger.debug(`Socket Server Init Complete`);
+  } 
 
 
 

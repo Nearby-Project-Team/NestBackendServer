@@ -25,7 +25,9 @@ export class ChattingEntity extends BaseEntity {
     })
     sender: boolean
 
-    @CreateDateColumn()
+    @Column({
+        type: 'datetime'
+    })
     createdAt: Date
 
     @ManyToOne(type => ElderlyEntity, (elderly) => elderly.chatting)

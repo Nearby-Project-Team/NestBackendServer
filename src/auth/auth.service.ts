@@ -16,6 +16,8 @@ import { randomBytes } from 'crypto';
 import { VerificationEntity } from '../common/entity/verificationLog.entity';
 import { CaregiverRepository } from 'src/common/repository/caregiver.repository';
 import { VerificationTypeEnum } from 'src/common/dtos/verification/verification.dto';
+import { CaregiverTokenPayloadDto } from './dtos/token-payload.dto';
+import { UserTypeEnum } from 'src/common/types/user.type';
 
 @Injectable()
 export class AuthService {
@@ -44,10 +46,15 @@ export class AuthService {
         else throw new  AppError(AppErrorTypeEnum.USER_NOT_VERIFIED);
     }
 
+    async validateJwtToken(token: string) {
+        const payload: CaregiverTokenPayloadDto = this.jwtService.verify(token);
+        
+    }
+
     async login(user: LoginRequestDto): Promise<LoginResultDto> {
-        const payloadAT = { 
+        const payloadAT: CaregiverTokenPayloadDto = { 
             email: user.email,
-            status: "Caregiver"
+            status: UserTypeEnum.CAREGIVER
         };
         return {
             accessToken: this.jwtService.sign(payloadAT)
@@ -155,7 +162,11 @@ export class AuthService {
 
         const result = compare(token, _u.token);
         if (result) {
-            const accessToken = this.jwtService.sign({ email: cg_emial });
+            const payload: CaregiverTokenPayloadDto = {
+                email: cg_emial,
+                status: UserTypeEnum.CAREGIVER
+            };
+            const accessToken = this.jwtService.sign(payload);
             return {
                 accessToken: accessToken
             };
