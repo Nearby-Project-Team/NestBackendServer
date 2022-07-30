@@ -18,6 +18,7 @@ import { ElderlyEntity } from '../../common/entity/elderly.entity';
 import { WsException } from '@nestjs/websockets';
 import { ElderlyRepository } from '../../common/repository/elderly.repository';
 
+
 @WebSocketGateway(3030, {
   namespace: 'chat',
   cors: baseUrlConfig()
@@ -101,9 +102,17 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
       false
     );
     // 1. Chatbot Response를 받음
+    const chatbotRes = await this.chatService.getChatbotResponse(data);
     // 2. Chatbot Response를 저장
+    await this.chatService.saveChatting(
+      chatbotRes.data.response,
+      _u.uuid,
+      true
+    );
     // 3. TTS를 통한 음성 합성
+
     // 4. Client를 향해 Emit
+    client.to(`room:${_u.uuid}`).emit('receive_message');
   }
 
   @SubscribeMessage('send_message_caregiver')
@@ -115,7 +124,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     const _u = await this.chatService.getUserFromSocket(client); // 사용자 인증을 거침
     if (_u instanceof CaregiverEntity) throw new WsException('Invalid Access! This API is not for Elderly!!');
     // 1. TTS를 통한 음성 합성
+    
     // 2. Client를 향해 Emit
+    client.to(`room:${_u.uuid}`).emit('receive_message');
   }
 
   @SubscribeMessage('get_chat_list') // Caregievr 전용

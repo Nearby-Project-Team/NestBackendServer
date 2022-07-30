@@ -8,6 +8,8 @@ import { ChattingRepository } from 'src/common/repository/chatting.repository';
 import { ChatRoomService } from './chatRoom.service';
 import { ChatGateway } from './chat.gateway';
 import { AuthModule } from '../../auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import { ChatbotMoudle } from '../../providers/chatbot/chatbot.module';
 
 @Module({
   imports: [ 
@@ -16,6 +18,8 @@ import { AuthModule } from '../../auth/auth.module';
       ElderlyRepository,
       ChattingRepository
     ]),
+    ConfigModule,
+    ChatbotMoudle,
     AuthModule
   ],
   controllers: [ChatController],

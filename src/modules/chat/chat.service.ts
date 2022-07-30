@@ -6,6 +6,9 @@ import { parse } from 'cookie';
 import { Socket } from 'socket.io';
 import { AuthService } from '../../auth/auth.service';
 import { WsException } from '@nestjs/websockets';
+import { HttpService } from '@nestjs/axios';
+import { AxiosResponse } from 'axios';
+import { ChatbotResponseDto } from './dtos/chatbotRes.dto';
 
 @Injectable()
 export class ChatService {
@@ -13,7 +16,8 @@ export class ChatService {
         private readonly cgRepository: CaregiverRepository,
         private readonly elderlyRepository: ElderlyRepository,
         private readonly chatRepository: ChattingRepository,
-        private readonly authService: AuthService
+        private readonly authService: AuthService,
+        private readonly httpService: HttpService
     ) {}
 
     async getUserFromSocket(client: Socket) {
@@ -45,6 +49,12 @@ export class ChatService {
             page
         );
         return chatList;
+    }
+
+    async getChatbotResponse(contents: string): Promise<AxiosResponse<ChatbotResponseDto>> {
+        return this.httpService.axiosRef.post('/chat', {
+            msg: contents
+        });
     }
 
 }
