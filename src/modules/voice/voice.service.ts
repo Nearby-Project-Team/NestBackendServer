@@ -29,7 +29,9 @@ export class VoiceService {
             path: filePath
         });
         await this.vfRepository.save(_v);
-        return "Success!";
+        return {
+            msg: "Successfully registered Voice!"
+        };
     }
 
 }
