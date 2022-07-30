@@ -16,7 +16,7 @@ import { randomBytes } from 'crypto';
 import { VerificationEntity } from '../common/entity/verificationLog.entity';
 import { CaregiverRepository } from 'src/common/repository/caregiver.repository';
 import { VerificationTypeEnum } from 'src/common/dtos/verification/verification.dto';
-import { CaregiverTokenPayloadDto } from './dtos/token-payload.dto';
+import { CaregiverTokenPayloadDto } from '../common/dtos/caregiver/token-payload.dto';
 import { UserTypeEnum } from 'src/common/types/user.type';
 
 @Injectable()
