@@ -5,7 +5,7 @@ import { ChattingEntity } from "../entity/chatting.entity";
 @CustomRepository(ChattingEntity)
 export class ChattingRepository extends Repository<ChattingEntity> {
     
-    private readonly PAGE_NUM = 20;
+    private readonly PAGE_NUM = 30;
 
     async getChattingHistory(elderly_id: string, page: number) {
         let offset = (page - 1) * this.PAGE_NUM;
@@ -25,9 +25,18 @@ export class ChattingRepository extends Repository<ChattingEntity> {
     async saveChatting(
         elderly_id: string, 
         content: string, 
-        date: Date
+        date: Date,
+        isChatbot: boolean
     ) {
-        
+        const _c = this.create({
+            contents: content,
+            createdAt: date,
+            sender: isChatbot,
+            elderly_id: {
+                uuid: elderly_id
+            }
+        });
+        await this.save(_c);
     }
 
 }

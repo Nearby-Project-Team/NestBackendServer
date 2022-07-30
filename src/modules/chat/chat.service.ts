@@ -26,4 +26,25 @@ export class ChatService {
         return _u;
     }
 
+    async saveChatting(
+        content: string, 
+        elderly_id: string,
+        isChatbot: boolean
+    ) {
+        await this.chatRepository.saveChatting(
+            elderly_id,
+            content,
+            new Date(),
+            isChatbot
+        );
+    }
+
+    async getChatting(elderly_id: string, page: number) {
+        const chatList = await this.chatRepository.getChattingHistory(
+            elderly_id,
+            page
+        );
+        return chatList;
+    }
+
 }

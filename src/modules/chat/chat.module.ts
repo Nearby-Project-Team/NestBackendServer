@@ -5,8 +5,6 @@ import { TypeORMRepositoryModule } from 'src/common/repository/typeorm.repositor
 import { CaregiverRepository } from 'src/common/repository/caregiver.repository';
 import { ElderlyRepository } from 'src/common/repository/elderly.repository';
 import { ChattingRepository } from 'src/common/repository/chatting.repository';
-import { PassportModule } from '@nestjs/passport';
-import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
 import { ChatRoomService } from './chatRoom.service';
 import { ChatGateway } from './chat.gateway';
 import { AuthModule } from '../../auth/auth.module';
@@ -18,13 +16,11 @@ import { AuthModule } from '../../auth/auth.module';
       ElderlyRepository,
       ChattingRepository
     ]),
-    PassportModule,
     AuthModule
   ],
   controllers: [ChatController],
   providers: [
     ChatService,
-    JwtStrategy,
     ChatGateway,
     ChatRoomService,
     Logger
