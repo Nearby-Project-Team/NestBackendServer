@@ -81,7 +81,7 @@ export class AuthService {
         const newUser = this.cgRepository.create({ 
             ...user, 
             token: refreshToken,
-            status: "N", 
+            status: "Y", 
             agreement: "N" 
         }); 
         await this.cgRepository.save(newUser);
@@ -164,7 +164,9 @@ export class AuthService {
             agreement: "Y"
         });
 
-        return "Successfully get agreement!";
+        return {
+            msg: "Successfully get agreement!"
+        };
     }
 
     async reAssignToken(token: string, email: string) {

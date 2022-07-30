@@ -11,7 +11,6 @@ export class VoiceController {
   ) {}
 
   // 보호자가 음성을 등록함 => 등록 완료되면 O.K 때림.
-  @UseGuards(JwtGuard)
   @Post('/register/:email/:vname')
   @UseInterceptors(FileInterceptor('audio', {}))
   async registerVoice(

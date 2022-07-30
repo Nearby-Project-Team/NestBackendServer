@@ -57,7 +57,9 @@ export class ElderlyService {
             caregiver_id: _u
         });                
 
-        return "Successfully link Elderly with Caregiver!";
+        return {
+            msg: "Successfully link Elderly with Caregiver!" 
+        };
     }
 
     async verifyElderly(token: string, email: string, info: ElderlySearchDto) {

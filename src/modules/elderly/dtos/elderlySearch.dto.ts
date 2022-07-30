@@ -8,5 +8,5 @@ export class ElderlySearchDto {
     birthdate: Date;
 
     @IsString()
-    phone_number: string;
+    phone_number?: string;
 }

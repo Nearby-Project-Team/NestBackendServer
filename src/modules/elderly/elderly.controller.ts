@@ -9,7 +9,7 @@ import { ElderlyService } from './elderly.service';
 export class ElderlyController {
   constructor(private readonly elderlyService: ElderlyService) {}
 
-  @UseGuards(JwtGuard) // Caregiver가 요청
+  // @UseGuards(JwtGuard) // Caregiver가 요청
   @Post('/register')
   async elderlyRegister(
     @Body() body: ElderlyInfoDto
@@ -17,7 +17,7 @@ export class ElderlyController {
     return this.elderlyService.registerElderly(body);
   }
 
-  @UseGuards(JwtGuard)
+  // @UseGuards(JwtGuard)
   @Post('/link')
   async linkWithCaregiver(
     @Body() info: LinkCaregiverDto
