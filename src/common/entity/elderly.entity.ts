@@ -35,7 +35,8 @@ export class ElderlyEntity extends BaseEntity{
     phone_number: string;
 
     @Column({
-        type: 'datetime'
+        type: 'datetime',
+        default: null
     })
     birthday: Date;
 
