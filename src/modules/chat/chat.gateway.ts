@@ -19,7 +19,7 @@ import { WsException } from '@nestjs/websockets';
 import { ElderlyRepository } from '../../common/repository/elderly.repository';
 
 
-@WebSocketGateway(3030, {
+@WebSocketGateway({
   namespace: 'chat',
   cors: baseUrlConfig()
 })
