@@ -12,4 +12,4 @@ import { ChatbotConfigService } from '../../common/configs/chatbot/chatbot.confi
         })
     ]
 })
-export class ChatbotMoudle {}
+export class ChatbotModule {}
