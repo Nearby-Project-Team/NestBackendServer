@@ -112,7 +112,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     // 3. TTS를 통한 음성 합성
 
     // 4. Client를 향해 Emit
-    client.to(`room:${_u.uuid}`).emit('receive_message');
+    client.to(`room:${_u.uuid}`).emit('receive_message', chatbotRes.data.response);
   }
 
   @SubscribeMessage('send_message_caregiver')
@@ -129,7 +129,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     client.to(`room:${_u.uuid}`).emit('receive_message');
   }
 
-  @SubscribeMessage('get_chat_list') // Caregievr 전용
+  @SubscribeMessage('get_chat_room_list') // Caregievr 전용
   async getAllChatRoomList(
     @ConnectedSocket() client: Socket, 
     @MessageBody() email: string
@@ -140,7 +140,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     client.emit('getChatRoomList', roomList);
   }
 
-  @SubscribeMessage('ente_chat_room')
+  @SubscribeMessage('enter_chat_room')
   async enterChatRoom(
     @ConnectedSocket() client: Socket, 
     elderly_id: string
