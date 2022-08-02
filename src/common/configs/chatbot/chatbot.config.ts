@@ -1,6 +1,8 @@
 import { HttpModuleOptions, HttpModuleOptionsFactory } from '@nestjs/axios';
 import { ConfigService } from '@nestjs/config';
+import { Injectable } from '@nestjs/common';
 
+@Injectable()
 export class ChatbotConfigService implements HttpModuleOptionsFactory {
     
     constructor (
