@@ -9,7 +9,10 @@ import { ChatRoomService } from './chatRoom.service';
 import { ChatGateway } from './chat.gateway';
 import { AuthModule } from '../../auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { ChatbotMoudle } from '../../providers/chatbot/chatbot.module';
+import { ChatbotModule } from '../../providers/chatbot/chatbot.module';
+import { HttpModule } from '@nestjs/axios';
+import { ChatbotConfigModule } from '../../common/configs/chatbot/chatbot.module';
+import { ChatbotConfigService } from '../../common/configs/chatbot/chatbot.config';
 
 @Module({
   imports: [ 
@@ -19,7 +22,11 @@ import { ChatbotMoudle } from '../../providers/chatbot/chatbot.module';
       ChattingRepository
     ]),
     ConfigModule,
-    ChatbotMoudle,
+    HttpModule.registerAsync({
+      imports: [ ChatbotConfigModule ],
+      useClass: ChatbotConfigService,
+      inject: [ ChatbotConfigService ]
+    }),
     AuthModule
   ],
   controllers: [ChatController],
