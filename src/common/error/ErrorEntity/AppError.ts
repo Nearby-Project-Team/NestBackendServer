@@ -28,7 +28,7 @@ export class AppError extends Error {
                 res = {
                     type: AppErrorTypeEnum.USER_EXISTS,
                     httpStatus: HttpStatus.UNPROCESSABLE_ENTITY,
-                    errorMessage: 'User exisists',
+                    errorMessage: 'User exists',
                     userMessage: 'Username exists'
                 };
                 break;
@@ -62,6 +62,14 @@ export class AppError extends Error {
                     httpStatus: HttpStatus.BAD_REQUEST,
                     errorMessage: 'User not verified yet',
                     userMessage: 'User not verified yet'
+                };
+                break;
+            case AppErrorTypeEnum.INVALID_VERIFICATION:
+                res = {
+                    type: AppErrorTypeEnum.INVALID_VERIFICATION,
+                    httpStatus: HttpStatus.FORBIDDEN,
+                    errorMessage: 'Invalid verification token!',
+                    userMessage: 'Cannot verify the user! check the verification info!'
                 };
                 break;
         }

@@ -1,13 +1,17 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
+import { NestExpressApplication } from '@nestjs/platform-express';
 import { AppModule } from './app.module';
 import { GlobalErrorDispatcher } from './common/exceptions/global.exception';
 import * as cookieParser from 'cookie-parser';
-import * as bodyParser from 'body-parser';
+import { RedisIoAdapter } from './common/adapter/redis.adapter';
 
 async function bootstrap() {
   console.log(`Backend ${process.env.NODE_ENV} mode starting...`);
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create<NestExpressApplication>(AppModule);
+  const redisIoAdapter = new RedisIoAdapter(app);
+  await redisIoAdapter.connectToRedis();
+  app.useWebSocketAdapter(redisIoAdapter);
   app.useGlobalPipes(new ValidationPipe({ 
     transform: true,
     whitelist: true,
@@ -15,7 +19,6 @@ async function bootstrap() {
   }));
   app.useGlobalFilters(new GlobalErrorDispatcher());
   app.use(cookieParser());
-  app.use(bodyParser.raw());
   await app.listen(3000);
 }
 bootstrap();

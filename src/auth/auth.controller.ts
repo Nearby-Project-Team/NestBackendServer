@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Res, UseGuards } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { LocalGuard } from '../common/guard/local-auth/local.guard';
 import { LoginRequestDto } from '../common/dtos/caregiver/login-request.dto';
@@ -19,7 +19,6 @@ export class AuthController {
   ) {
     const u = await this.authService.login(body);
     res.cookie('accessToken', u.accessToken);
-    // Add Refresh Token later
     return result;
   }
 
@@ -35,7 +34,27 @@ export class AuthController {
     @Param('email') email: string,
     @Param('token') token: string
   ) {
-    return this.verify(email, token);
+    return await this.authService.verify(email, token);
+  }
+
+  @Post('/agreement')
+  async agreement(
+    @Body('email') email: string  
+  ) {
+    return await this.authService.agreement(email);
+  }
+
+  @Get('/token')
+  async reAssignToken(
+    @Query('email') email: string,
+    @Query('token') token: string,
+    @Res({ passthrough: true }) res
+  ) {
+    const u = await this.authService.reAssignToken(token, email);
+    res.cookie('accessToken', u.accessToken);
+    return {
+      msg: "Token Issue Success!"
+    };
   }
 
 }

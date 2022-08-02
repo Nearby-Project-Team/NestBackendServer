@@ -2,7 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { jwtConstants } from '../constants/jwt.constant';
-import { TokenPayloadDto } from '../dtos/token-payload.dto';
+import { CaregiverTokenPayloadDto } from '../../common/dtos/caregiver/token-payload.dto';
+import { ElderlyTokenPayloadDto } from '../../common/dtos/elderly/token-payload.dto';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -18,7 +19,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         });
     }
 
-    async validate(payload: TokenPayloadDto) {
-        return { email: payload.email };
+    async validate(payload: CaregiverTokenPayloadDto | ElderlyTokenPayloadDto) {
+        return payload;
     }
 }

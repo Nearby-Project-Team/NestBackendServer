@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { LoginSuccessDto } from './dtos/login-success.dto';
 import { RequestError } from '../common/error/ErrorEntity/RequestError';
 import { RequestErrorTypeEnum } from 'src/common/error/ErrorType/RequestErrorType.enum';
-import { compare } from 'bcrypt';
+import { compare, genSalt, hash } from 'bcrypt';
 import { AppError } from '../common/error/ErrorEntity/AppError';
 import { AppErrorTypeEnum } from 'src/common/error/ErrorType/AppErrorType.enum';
 import { LoginRequestDto } from '../common/dtos/caregiver/login-request.dto';
@@ -12,16 +12,20 @@ import { LoginResultDto } from './dtos/login-result.dto';
 import { JwtService } from '@nestjs/jwt';
 import { RegisterDto } from './dtos/register.dto';
 import { MailerService } from '@nestjs-modules/mailer';
-import { v4 } from 'uuid';
+import { randomBytes } from 'crypto';
 import { VerificationEntity } from '../common/entity/verificationLog.entity';
-import { baseUrlConfig } from 'src/common/configs/url/url.config';
 import { CaregiverRepository } from 'src/common/repository/caregiver.repository';
 import { VerificationTypeEnum } from 'src/common/dtos/verification/verification.dto';
+import { CaregiverTokenPayloadDto } from '../common/dtos/caregiver/token-payload.dto';
+import { UserTypeEnum } from 'src/common/types/user.type';
+import { ElderlyTokenPayloadDto } from '../common/dtos/elderly/token-payload.dto';
+import { ElderlyRepository } from '../common/repository/elderly.repository';
 
 @Injectable()
 export class AuthService {
     constructor (
         private readonly cgRepository: CaregiverRepository,
+        private readonly elderlyRepository: ElderlyRepository,
         @InjectRepository(VerificationEntity)
         private readonly verificationRepository: Repository<VerificationEntity>,
         private readonly jwtService: JwtService,
@@ -45,12 +49,27 @@ export class AuthService {
         else throw new  AppError(AppErrorTypeEnum.USER_NOT_VERIFIED);
     }
 
+    // Validate JWT token without Guard
+    async validateJwtToken(token: string) {
+        const payload: CaregiverTokenPayloadDto 
+                     | ElderlyTokenPayloadDto 
+                    = this.jwtService.verify(token); 
+        if (payload instanceof CaregiverTokenPayloadDto) {
+            const _u = await this.cgRepository.findUserByEmail(payload.email);
+            return _u;
+        } else {
+            const _e = await this.elderlyRepository.findElderlyById(payload.elderly_id);
+            return _e;
+        }
+    }
+
     async login(user: LoginRequestDto): Promise<LoginResultDto> {
-        const payloadAT = { email: user.email };
-        const payloadRT = { };
+        const payloadAT: CaregiverTokenPayloadDto = { 
+            email: user.email,
+            status: UserTypeEnum.CAREGIVER
+        };
         return {
-            accessToken: this.jwtService.sign(payloadAT),
-            refreshToken: this.jwtService.sign(payloadRT)
+            accessToken: this.jwtService.sign(payloadAT)
         }
     }
 
@@ -58,23 +77,27 @@ export class AuthService {
         const _u = await this.cgRepository.findUserByEmail(user.email);
         if (_u) throw new AppError(AppErrorTypeEnum.USER_EXISTS);
 
-        const newUser = this.cgRepository.create({ ...user, status: "N" }); 
+        const refreshToken = randomBytes(20).toString('hex');
+        const newUser = this.cgRepository.create({ 
+            ...user, 
+            token: refreshToken,
+            status: "Y", 
+            agreement: "N" 
+        }); 
         await this.cgRepository.save(newUser);
-        const token = v4();
+        const token = randomBytes(20).toString('hex');
         const _v = this.verificationRepository.create({
             verification_type: VerificationTypeEnum.register,
             verification_token: token,
             caregiver_id: newUser
         });
         await this.verificationRepository.save(_v);
-
-        const email_base64 = Buffer.from(user.email).toString('base64');
         await this.mailerService.sendMail({
             to: user.email,
-            subject: 'NearBy Service Register Email!',
+            subject: 'NearBy Service Register Email',
             template: './dist/view/register.ejs',
             context: {
-                "authUrl": `${baseUrlConfig()}/auth/verify/${email_base64}/${token}`
+                "authToken": `${token}`
             }
         });
 
@@ -90,7 +113,10 @@ export class AuthService {
         const _v = await this.verificationRepository.findOne({
             select: [ "verification_type" ],
             where: {
-                verification_token: token
+                verification_token: token,
+                caregiver_id: {
+                    uuid: _u.uuid
+                }
             },
             relations: {
                 caregiver_id: {
@@ -98,8 +124,9 @@ export class AuthService {
                 }
             }
         });
-        if (_v.caregiver_id !== _u) throw new RequestError(RequestErrorTypeEnum.INVALID_USER);
+        if (_v === null) throw new RequestError(RequestErrorTypeEnum.INVALID_USER);
 
+        let refreshToken = null;
         switch (_v.verification_type) {
             case VerificationTypeEnum.register:
                 await this.cgRepository.update({
@@ -107,12 +134,58 @@ export class AuthService {
                 }, {
                     status: "Y"
                 });
+
+                refreshToken = _u.token;
+                const salt = await genSalt();
+                const newToken = await hash(refreshToken, salt);
+                await this.cgRepository.update({
+                    uuid: _u.uuid
+                }, {
+                    token: newToken
+                });
                 break;
             case VerificationTypeEnum.password:
                 break;
         }
 
-        return "Verification Success!";
+        return { 
+            msg: "Verification Success!",
+            token: refreshToken
+        };
+    }
+
+    async agreement(email: string) {
+        const _u = await this.cgRepository.findUserByEmail(email);
+        if (_u === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
+
+        await this.cgRepository.update({
+            uuid: _u.uuid
+        }, {
+            agreement: "Y"
+        });
+
+        return {
+            msg: "Successfully get agreement!"
+        };
+    }
+
+    async reAssignToken(token: string, email: string) {
+        const cg_emial = Buffer.from(email, 'base64').toString('utf-8');
+        const _u = await this.cgRepository.findUserByEmail(cg_emial);
+        if (_u === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
+
+        const result = compare(token, _u.token);
+        if (result) {
+            const payload: CaregiverTokenPayloadDto = {
+                email: cg_emial,
+                status: UserTypeEnum.CAREGIVER
+            };
+            const accessToken = this.jwtService.sign(payload);
+            return {
+                accessToken: accessToken
+            };
+        }
+        else throw new AppError(AppErrorTypeEnum.INVALID_VERIFICATION);
     }
 
 }

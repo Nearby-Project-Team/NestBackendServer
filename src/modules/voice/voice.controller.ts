@@ -1,8 +1,8 @@
-import { Body, Controller, HttpStatus, Param, Post, Req, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { VoiceService } from './voice.service';
-import { VoiceMetadataDto } from './dtos/vmetadata.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { S3FilePath } from 'src/common/decorators/s3-file.decorator';
+import { JwtGuard } from 'src/common/guard/jwt-auth/jwt.guard';
 
 @Controller('voice')
 export class VoiceController {
@@ -21,6 +21,13 @@ export class VoiceController {
   ) {
     // Save file in 'bucket: nearby-<env>-bucket/caregiver_id/voice_name/voice_file_uuid.wav'
     return this.voiceService.registerVoice(email, vname, path);
+  }
+
+  @Patch('/train-voice')
+  async trainUserVoice(
+    
+  ) {
+      
   }
 
 }

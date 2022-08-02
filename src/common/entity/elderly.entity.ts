@@ -14,6 +14,7 @@ import {
     JoinColumn,
     OneToMany
 } from 'typeorm';
+import { AgreementEnum } from '../types/agreement.type';
 
 @Entity({ name: 'Elderly' })
 export class ElderlyEntity extends BaseEntity{
@@ -26,6 +27,29 @@ export class ElderlyEntity extends BaseEntity{
         length: 100
     })
     name: string;
+
+    @Column({
+        type: 'varchar',
+        length: 100
+    })
+    phone_number: string;
+
+    @Column({
+        type: 'datetime'
+    })
+    birthday: Date;
+
+    @Column({ 
+        type: 'varchar',
+        length: 5 
+    })
+    agreement: AgreementEnum
+
+    @Column({
+        type: 'varchar',
+        length: 255
+    })
+    token: string;
 
     @CreateDateColumn()
     createdAt: Date;

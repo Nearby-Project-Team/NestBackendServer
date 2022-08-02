@@ -16,8 +16,7 @@ export class VoiceFileEntity extends BaseEntity {
     uuid: string
 
     @Column({
-        type: 'varchar',
-        unique: true
+        type: 'varchar'
     })
     name: string;
 
@@ -25,6 +24,11 @@ export class VoiceFileEntity extends BaseEntity {
         type: 'text'
     })
     path: string
+
+    @Column({
+        type: 'datetime'
+    })
+    trainDate: Date
 
     @CreateDateColumn()
     createdAt: Date

@@ -45,12 +45,24 @@ export class CaregiverEntity extends BaseEntity {
     })
     status: string
 
+    @Column({ 
+        type: 'varchar',
+        length: 5 
+    })
+    agreement: string;
+
     @Column({
         type: 'varchar',
         unique: true,
         length: 30
     })
-    phone_number: string
+    phone_number: string;
+
+    @Column({
+        type: 'varchar',
+        length: 255
+    })
+    token: string;
 
     @CreateDateColumn()
     createdAt: Date

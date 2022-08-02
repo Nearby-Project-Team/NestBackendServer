@@ -35,8 +35,8 @@ export class RequestError extends Error {
                 res = {
                     type: RequestErrorTypeEnum.USER_NOT_FOUND,
                     httpStatus: HttpStatus.BAD_REQUEST,
-                    errorMessage: 'Invalid User Password',
-                    userMessage: 'Provided User Passowrd is not match with Original Password!'
+                    errorMessage: 'User not Found',
+                    userMessage: 'User Email Not found!'
                 };
                 break;
             case RequestErrorTypeEnum.INVALID_USER:
