@@ -17,11 +17,13 @@ import { ChatRoomService } from './chatRoom.service';
 import { ElderlyEntity } from '../../common/entity/elderly.entity';
 import { WsException } from '@nestjs/websockets';
 import { ElderlyRepository } from '../../common/repository/elderly.repository';
+import { WebSocketError } from '../../common/error/ErrorEntity/WebSocketError';
+import { WebSocketErrorTypeEnum } from 'src/common/error/ErrorType/WebSocketErrorType.enum';
 
 
-@WebSocketGateway({
+@WebSocketGateway(9090, {
   namespace: 'chat',
-  cors: baseUrlConfig()
+  transports: ['websocket']
 })
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
 
@@ -41,9 +43,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   ) {
     if (user instanceof CaregiverEntity) {
       const _e = await this.elderlyRepository.findElderlyById(elderly_id);
-      if (user !== _e.caregiver_id) throw new WsException('Invalid Access! Please Check the Caregiver and Elderly Relation!');
+      if (user !== _e.caregiver_id) throw new WebSocketError(WebSocketErrorTypeEnum.INVALID_USER);
     } else {
-      if (user.uuid !== elderly_id) throw new WsException('Invalid Access! Please Check the Caregiver and Elderly Relation!');
+      if (user.uuid !== elderly_id) throw new WebSocketError(WebSocketErrorTypeEnum.INVALID_USER);
     }
   }
 
