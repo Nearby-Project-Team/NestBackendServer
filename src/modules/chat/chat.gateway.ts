@@ -44,8 +44,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   ) {
     if (user instanceof CaregiverEntity) {
       const _e = await this.elderlyRepository.findElderlyById(elderly_id);
-      this.logger.debug(`${_e.uuid}`);
-      if (user.uuid !== _e.caregiver_id.uuid) throw new WsException(WebSocketErrorTypeEnum.INVALID_USER);
+      if (_e === null || user.uuid !== _e.caregiver_id.uuid) throw new WsException(WebSocketErrorTypeEnum.INVALID_USER);
     } else if (user instanceof ElderlyEntity){
       if (user.uuid !== elderly_id) throw new WsException(WebSocketErrorTypeEnum.INVALID_USER);
     } else {
