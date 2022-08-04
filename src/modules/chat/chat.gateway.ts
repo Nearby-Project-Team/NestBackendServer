@@ -49,22 +49,26 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     }
   }
 
-  async handleConnection(client: Socket) {
-    const _u = await this.chatService.getUserFromSocket(client); // 사용자 인증을 거침
-    this.logger.debug(`Client ID ${client.id} has connected to server!`);
-    client.leave(client.id);
-    if (_u instanceof CaregiverEntity) {
-      client.data.email = _u.email;
-      client.data.user_type = "caregiver";
-    } else {
-      client.data.user_type = "elderly";
-    }
-    client.data.name = _u.name;
-    client.data.roomId = `room:lobby`;
-    client.join('room:lobby');
+  public handleConnection(client: Socket) {
+    this.chatService.getUserFromSocket(client)
+      .then((_u) => {
+        this.logger.debug(`Client ID ${client.id} has connected to server!`);
+        client.leave(client.id);
+        if (_u instanceof CaregiverEntity) {
+          client.data.email = _u.email;
+          client.data.user_type = "caregiver";
+        } else {
+          client.data.user_type = "elderly";
+        }
+        client.data.name = _u.name;
+        client.data.roomId = `room:lobby`;
+        client.join('room:lobby');
+      }).catch((err) => {
+        this.logger.debug("Error In Connecting To Client!");
+      }); // 사용자 인증을 거침
   }
 
-  async handleDisconnect(client: Socket) {
+  public handleDisconnect(client: Socket) {
     const { roomId, user_type } = client.data;
     if (
         roomId != 'room:lobby' &&
@@ -72,12 +76,12 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     ) {
       if (user_type === "caregiver") {
         this.server.emit(
-          'disconnectHandler',
+          'disconnect_handler',
           this.chatRoomService.getAllChatRoom(client.data.email),
         );
       } else {
         this.server.emit(
-          'disconnectHandler', {
+          'disconnect_handler', {
             msg: "Successfully Exited ChatRoom"
           }
         );
