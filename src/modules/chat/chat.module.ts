@@ -9,7 +9,6 @@ import { ChatRoomService } from './chatRoom.service';
 import { ChatGateway } from './chat.gateway';
 import { AuthModule } from '../../auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
-import { ChatbotModule } from '../../providers/chatbot/chatbot.module';
 import { HttpModule } from '@nestjs/axios';
 import { ChatbotConfigModule } from '../../common/configs/chatbot/chatbot.module';
 import { ChatbotConfigService } from '../../common/configs/chatbot/chatbot.config';
