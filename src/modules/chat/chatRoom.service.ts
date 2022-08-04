@@ -2,6 +2,8 @@ import { Injectable } from "@nestjs/common";
 import { ElderlyRepository } from '../../common/repository/elderly.repository';
 import { Socket } from 'socket.io';
 import { ChatRoomDto } from './dtos/chatRoom.dto';
+import { WsException } from "@nestjs/websockets";
+import { WebSocketErrorTypeEnum } from "src/common/error/ErrorType/WebSocketErrorType.enum";
 
 @Injectable()
 export class ChatRoomService {
@@ -32,6 +34,7 @@ export class ChatRoomService {
 
     async getChatRoom(elderly_id: string): Promise<ChatRoomDto> {
         const _e = await this.elderlyRepository.findElderlyById(elderly_id);
+        if (_e === null) throw new WsException(WebSocketErrorTypeEnum.NO_VALID_USER);
         return {
             chatRoomId: `room:${_e.uuid}`,
             chatRoomName: `${_e.name}'s Room`

@@ -20,7 +20,7 @@ export class ChatService {
         private readonly cgRepository: CaregiverRepository,
         private readonly elderlyRepository: ElderlyRepository,
         private readonly chatRepository: ChattingRepository,
-        private readonly authService: AuthService,
+        // private readonly authService: AuthService,
         private readonly httpService: HttpService,
         private readonly logger: Logger
     ) {}
