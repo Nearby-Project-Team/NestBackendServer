@@ -49,26 +49,22 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     }
   }
 
-  public handleConnection(client: Socket) {
-    this.chatService.getUserFromSocket(client)
-      .then((_u) => {
-        this.logger.debug(`Client ID ${client.id} has connected to server!`);
-        client.leave(client.id);
-        if (_u instanceof CaregiverEntity) {
-          client.data.email = _u.email;
-          client.data.user_type = "caregiver";
-        } else {
-          client.data.user_type = "elderly";
-        }
-        client.data.name = _u.name;
-        client.data.roomId = `room:lobby`;
-        client.join('room:lobby');
-      }).catch((err) => {
-        this.logger.debug("Error In Connecting To Client!");
-      }); // 사용자 인증을 거침
+  async handleConnection(client: Socket) {
+    const _u = await this.chatService.getUserFromSocket(client); // 사용자 인증을 거침
+    this.logger.debug(`Client ID ${client.id} has connected to server!`);
+    client.leave(client.id);
+    if (_u instanceof CaregiverEntity) {
+      client.data.email = _u.email;
+      client.data.user_type = "caregiver";
+    } else {
+      client.data.user_type = "elderly";
+    }
+    client.data.name = _u.name;
+    client.data.roomId = `room:lobby`;
+    client.join('room:lobby');
   }
 
-  public handleDisconnect(client: Socket) {
+  async handleDisconnect(client: Socket) {
     const { roomId, user_type } = client.data;
     if (
         roomId != 'room:lobby' &&
@@ -119,7 +115,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     // 3. TTS를 통한 음성 합성
 
     // 4. Client를 향해 Emit
-    client.to(`room:${_u.uuid}`).emit('receive_message', chatbotRes.data.response);
+    this.server.to(`room:${_u.uuid}`).emit('receive_message', chatbotRes.data.response);
   }
 
   @SubscribeMessage('send_message_caregiver')
@@ -133,7 +129,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     // 1. TTS를 통한 음성 합성
     
     // 2. Client를 향해 Emit
-    client.to(`room:${_u.uuid}`).emit('receive_message');
+    this.server.to(`room:${_u.uuid}`).emit('receive_message');
   }
 
   @SubscribeMessage('get_chat_room_list') // Caregievr 전용
