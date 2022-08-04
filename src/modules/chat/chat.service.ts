@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { CaregiverRepository } from 'src/common/repository/caregiver.repository';
 import { ElderlyRepository } from 'src/common/repository/elderly.repository';
 import { ChattingRepository } from '../../common/repository/chatting.repository';
@@ -22,7 +22,8 @@ export class ChatService {
         private readonly elderlyRepository: ElderlyRepository,
         private readonly chatRepository: ChattingRepository,
         private readonly authService: AuthService,
-        private readonly httpService: HttpService
+        private readonly httpService: HttpService,
+        private readonly logger: Logger
     ) {}
 
     async getUserFromSocket(client: Socket): Promise<ElderlyEntity | CaregiverEntity> {
@@ -32,6 +33,7 @@ export class ChatService {
             user_info
         } = parse(cookie);
         let _u;
+        this.logger.log(`${user_type} ${user_info} has entered to the server!`);
         if (user_type === UserTypeEnum.CAREGIVER) {
             _u = this.cgRepository.findUserByEmail(user_info);
         } else if (user_type === UserTypeEnum.ELDERLY) {
