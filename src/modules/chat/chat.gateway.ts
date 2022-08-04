@@ -171,6 +171,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     @MessageBody('elderly_id') elderly_id: string,
     @MessageBody('page') page: number
   ) {
+    this.logger.debug(`${elderly_id} ${page}`)
     const _u = await this.chatService.getUserFromSocket(client);
     await this.checkValidUser(_u, elderly_id);
 
