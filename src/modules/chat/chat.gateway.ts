@@ -67,10 +67,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
 
   async handleDisconnect(client: Socket) {
     const { roomId, user_type } = client.data;
-    if (
-        roomId != 'room:lobby' &&
-        !this.server.sockets.adapter.rooms.get(roomId)
-    ) {
+    if (roomId != 'room:lobby') {
+      this.chatRoomService.exitChatRoom(client, roomId);
       if (user_type === "caregiver") {
         this.server.emit(
           'disconnect_handler',
