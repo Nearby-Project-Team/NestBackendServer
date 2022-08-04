@@ -43,8 +43,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     if (user instanceof CaregiverEntity) {
       const _e = await this.elderlyRepository.findElderlyById(elderly_id);
       if (user !== _e.caregiver_id) throw new WsException(WebSocketErrorTypeEnum.INVALID_USER);
-    } else {
+    } else if (user instanceof ElderlyEntity){
       if (user.uuid !== elderly_id) throw new WsException(WebSocketErrorTypeEnum.INVALID_USER);
+    } else {
+      throw new WsException(WebSocketErrorTypeEnum.INVALID_USER);
     }
   }
 
@@ -152,6 +154,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     await this.checkValidUser(_u, elderly_id);
 
     if (client.rooms.has(roomId)) {
+      this.logger.error('Client Already In the Room!');
       return;
     }
     this.chatRoomService.enterChatRoom(client, roomId);

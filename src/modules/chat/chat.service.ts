@@ -32,7 +32,7 @@ export class ChatService {
             user_info
         } = parse(cookie);
         let _u;
-        this.logger.debug(`${user_type} ${user_info} has entered to the server!`);
+        this.logger.debug(`${user_type} ${user_info}`);
         if (user_type === UserTypeEnum.CAREGIVER) {
             _u = this.cgRepository.findUserByEmail(user_info);
         } else if (user_type === UserTypeEnum.ELDERLY) {
