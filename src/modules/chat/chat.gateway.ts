@@ -21,7 +21,7 @@ import { WebSocketError } from '../../common/error/ErrorEntity/WebSocketError';
 import { WebSocketErrorTypeEnum } from 'src/common/error/ErrorType/WebSocketErrorType.enum';
 
 
-@WebSocketGateway(9090, {
+@WebSocketGateway(9091, {
   namespace: 'chat',
   transports: ['websocket']
 })

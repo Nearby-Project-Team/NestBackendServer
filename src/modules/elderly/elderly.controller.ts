@@ -25,6 +25,13 @@ export class ElderlyController {
     return this.elderlyService.linkWithCaregiver(info);
   }
 
+  @Post('/login')
+  async elderlyLogin(
+    
+  ) {
+
+  }
+
   @Post('/verify/:email/:token')
   async verifyElderly(
     @Param('token') token: string,
