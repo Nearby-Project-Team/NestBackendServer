@@ -10,7 +10,7 @@ import {
 } from '@nestjs/websockets';
 import { baseUrlConfig } from '../../common/configs/url/url.config';
 import { Server, Socket } from 'socket.io';
-import { Logger } from '@nestjs/common';
+import { Logger, UseFilters } from '@nestjs/common';
 import { ChatService } from './chat.service';
 import { CaregiverEntity } from '../../common/entity/caregiver.entity';
 import { ChatRoomService } from './chatRoom.service';
@@ -18,12 +18,14 @@ import { ElderlyEntity } from '../../common/entity/elderly.entity';
 import { WsException } from '@nestjs/websockets';
 import { ElderlyRepository } from '../../common/repository/elderly.repository';
 import { WebSocketErrorTypeEnum } from 'src/common/error/ErrorType/WebSocketErrorType.enum';
+import { WebSocketExceptionDispatcher } from 'src/common/exceptions/websocket.exception';
 
 
 @WebSocketGateway(9091, {
   namespace: 'chat',
   transports: ['websocket']
 })
+@UseFilters(WebSocketExceptionDispatcher)
 export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
 
   constructor (
