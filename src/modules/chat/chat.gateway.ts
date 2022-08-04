@@ -77,7 +77,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
           this.chatRoomService.getAllChatRoom(client.data.email),
         );
       } else {
-        this.server.emit(
+        this.server.to(roomId).emit(
           'disconnect_handler', {
             msg: "Successfully Exited ChatRoom"
           }
