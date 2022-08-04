@@ -168,8 +168,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   @SubscribeMessage('get_chat_log')
   async getChattingLog(
     @ConnectedSocket() client: Socket, 
-    elderly_id: string,
-    page: number
+    @MessageBody('elderly_id') elderly_id: string,
+    @MessageBody('page') page: number
   ) {
     const _u = await this.chatService.getUserFromSocket(client);
     await this.checkValidUser(_u, elderly_id);
