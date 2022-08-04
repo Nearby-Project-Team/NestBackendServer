@@ -8,7 +8,6 @@ import {
   WebSocketGateway, 
   WebSocketServer 
 } from '@nestjs/websockets';
-import { baseUrlConfig } from '../../common/configs/url/url.config';
 import { Server, Socket } from 'socket.io';
 import { Logger, UseFilters } from '@nestjs/common';
 import { ChatService } from './chat.service';
