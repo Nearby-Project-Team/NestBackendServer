@@ -51,7 +51,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
 
   async handleConnection(client: Socket) {
     const _u = await this.chatService.getUserFromSocket(client); // 사용자 인증을 거침
-    this.logger.log(`Client ID ${client.id} has connected to server!`);
+    this.logger.debug(`Client ID ${client.id} has connected to server!`);
     client.leave(client.id);
     if (_u instanceof CaregiverEntity) {
       client.data.email = _u.email;
@@ -96,6 +96,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     @MessageBody() data: string
   ) {
     // MicroService의 Chatbot을 연동하여 TTS로 합성된 음성을 내보냄
+    this.logger.debug(data);
     const _u = await this.chatService.getUserFromSocket(client); // 사용자 인증을 거침
     if (_u instanceof CaregiverEntity) throw new WsException('Invalid Access! This API is not for Caregiver!');
     await this.chatService.saveChatting(
