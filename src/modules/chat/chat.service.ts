@@ -9,6 +9,11 @@ import { WsException } from '@nestjs/websockets';
 import { HttpService } from '@nestjs/axios';
 import { AxiosResponse } from 'axios';
 import { ChatbotResponseDto } from './dtos/chatbotRes.dto';
+import { UserTypeEnum } from 'src/common/types/user.type';
+import { WebSocketError } from '../../common/error/ErrorEntity/WebSocketError';
+import { WebSocketErrorTypeEnum } from 'src/common/error/ErrorType/WebSocketErrorType.enum';
+import { ElderlyEntity } from '../../common/entity/elderly.entity';
+import { CaregiverEntity } from '../../common/entity/caregiver.entity';
 
 @Injectable()
 export class ChatService {
@@ -20,12 +25,26 @@ export class ChatService {
         private readonly httpService: HttpService
     ) {}
 
-    async getUserFromSocket(client: Socket) {
+    async getUserFromSocket(client: Socket): Promise<ElderlyEntity | CaregiverEntity> {
         const cookie = client.handshake.headers.cookie;
-        const { accessToken: accessToken } = parse(cookie);
-        const _u = this.authService.validateJwtToken(accessToken);
+        const {  
+            user_type,
+            user_info
+        } = parse(cookie);
+        let _u;
+        if (user_type === UserTypeEnum.CAREGIVER) {
+            _u = this.cgRepository.findUserByEmail(user_info);
+        } else if (user_type === UserTypeEnum.ELDERLY) {
+            _u = this.elderlyRepository.findElderlyById(user_info);
+        } else {
+            throw new WebSocketError(WebSocketErrorTypeEnum.INVALID_USER);
+        }
+        // Access Token Authentication
+        // const { accessToken: accessToken } = parse(cookie);
+        // const _u = this.authService.validateJwtToken(accessToken);
+        // End.
         if (_u === null) {
-            throw new WsException('Invalid credentials.');
+            throw new WebSocketError(WebSocketErrorTypeEnum.INVALID_CREDENTIALS);
         }
         return _u;
     }
