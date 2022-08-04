@@ -10,7 +10,6 @@ import { HttpService } from '@nestjs/axios';
 import { AxiosResponse } from 'axios';
 import { ChatbotResponseDto } from './dtos/chatbotRes.dto';
 import { UserTypeEnum } from 'src/common/types/user.type';
-import { WebSocketError } from '../../common/error/ErrorEntity/WebSocketError';
 import { WebSocketErrorTypeEnum } from 'src/common/error/ErrorType/WebSocketErrorType.enum';
 import { ElderlyEntity } from '../../common/entity/elderly.entity';
 import { CaregiverEntity } from '../../common/entity/caregiver.entity';
@@ -39,14 +38,14 @@ export class ChatService {
         } else if (user_type === UserTypeEnum.ELDERLY) {
             _u = this.elderlyRepository.findElderlyById(user_info);
         } else {
-            throw new WebSocketError(WebSocketErrorTypeEnum.INVALID_USER);
+            throw new WsException(WebSocketErrorTypeEnum.INVALID_USER);
         }
         // Access Token Authentication
         // const { accessToken: accessToken } = parse(cookie);
         // const _u = this.authService.validateJwtToken(accessToken);
         // End.
         if (_u === null) {
-            throw new WebSocketError(WebSocketErrorTypeEnum.INVALID_CREDENTIALS);
+            throw new WsException(WebSocketErrorTypeEnum.INVALID_CREDENTIALS);
         }
         return _u;
     }

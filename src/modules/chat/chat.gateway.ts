@@ -17,7 +17,6 @@ import { ChatRoomService } from './chatRoom.service';
 import { ElderlyEntity } from '../../common/entity/elderly.entity';
 import { WsException } from '@nestjs/websockets';
 import { ElderlyRepository } from '../../common/repository/elderly.repository';
-import { WebSocketError } from '../../common/error/ErrorEntity/WebSocketError';
 import { WebSocketErrorTypeEnum } from 'src/common/error/ErrorType/WebSocketErrorType.enum';
 
 
@@ -43,9 +42,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   ) {
     if (user instanceof CaregiverEntity) {
       const _e = await this.elderlyRepository.findElderlyById(elderly_id);
-      if (user !== _e.caregiver_id) throw new WebSocketError(WebSocketErrorTypeEnum.INVALID_USER);
+      if (user !== _e.caregiver_id) throw new WsException(WebSocketErrorTypeEnum.INVALID_USER);
     } else {
-      if (user.uuid !== elderly_id) throw new WebSocketError(WebSocketErrorTypeEnum.INVALID_USER);
+      if (user.uuid !== elderly_id) throw new WsException(WebSocketErrorTypeEnum.INVALID_USER);
     }
   }
 
