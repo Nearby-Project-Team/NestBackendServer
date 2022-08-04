@@ -48,6 +48,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     } else {
       throw new WsException(WebSocketErrorTypeEnum.INVALID_USER);
     }
+    this.logger.debug('Validation Success!');
   }
 
   async handleConnection(client: Socket) {
@@ -155,7 +156,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     }
     this.chatRoomService.enterChatRoom(client, roomId);
     const roomName = await this.chatRoomService.getChatRoom(elderly_id);
-    this.logger.debug(roomName)
+    this.logger.debug(roomName);
     client.emit('enter_chat_room', {
         roomId: roomId,
         roomName: roomName
