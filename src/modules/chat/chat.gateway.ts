@@ -43,8 +43,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     elderly_id: string
   ) {
     if (user instanceof CaregiverEntity) {
-      const _e = await this.elderlyRepository.findElderlyById(elderly_id);
-      if (_e === null || user.uuid !== _e.caregiver_id.uuid) throw new WsException(WebSocketErrorTypeEnum.INVALID_USER);
+      const _e = await this.elderlyRepository.checkElderlyLinkedCargiver(elderly_id, user.email);
+      if (!_e) throw new WsException(WebSocketErrorTypeEnum.INVALID_USER);
     } else if (user instanceof ElderlyEntity){
       if (user.uuid !== elderly_id) throw new WsException(WebSocketErrorTypeEnum.INVALID_USER);
     } else {
@@ -150,7 +150,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   ) {
     const _u = await this.chatService.getUserFromSocket(client);
     const roomId = `room:${elderly_id}`;
-    await this.checkValidUser(_u, elderly_id);
+    const _e = await this.elderlyRepository.findElderlyById(elderly_id);
+    this.logger.debug(`${_u.uuid} ${_e.uuid}`);
+    await this.checkValidUser(_u, _e.uuid);
 
     if (client.rooms.has(roomId)) {
       this.logger.error('Client Already In the Room!');
@@ -158,7 +160,6 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     }
     this.chatRoomService.enterChatRoom(client, roomId);
     const roomName = await this.chatRoomService.getChatRoom(elderly_id);
-    this.logger.debug(roomName);
     client.emit('enter_chat_room', {
         roomId: roomId,
         roomName: roomName
