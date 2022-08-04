@@ -64,8 +64,13 @@ export class ChatService {
     }
 
     async getChatting(elderly_id: string, page: number) {
-        const chatList = await this.chatRepository.getChattingHistory(elderly_id, page);
-        return chatList;
+        try {
+            const chatList = await this.chatRepository.getChattingHistory(elderly_id, page);
+            return chatList;
+        } catch(err) {
+            this.logger.error(err);
+            return null;
+        }   
     }
 
     async getChatbotResponse(contents: string, elderly_id: string): Promise<AxiosResponse<ChatbotResponseDto>> {
