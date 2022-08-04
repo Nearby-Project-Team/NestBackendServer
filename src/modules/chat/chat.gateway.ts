@@ -141,7 +141,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     const _u = await this.chatService.getUserFromSocket(client);
     if (_u instanceof ElderlyEntity || _u.email !== email) throw new WsException('Invalid Access!');
     const roomList = await this.chatRoomService.getAllChatRoom(email);
-    client.emit('getChatRoomList', roomList);
+    client.emit('get_chat_room_list', roomList);
   }
 
   @SubscribeMessage('enter_chat_room')
