@@ -158,7 +158,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
       return;
     }
     this.chatRoomService.enterChatRoom(client, roomId);
-    const roomName = await this.chatRoomService.getChatRoom(roomId);
+    const roomName = await this.chatRoomService.getChatRoom(elderly_id);
     return {
         roomId: roomId,
         roomName: roomName
