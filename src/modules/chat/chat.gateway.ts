@@ -106,7 +106,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
       false
     );
     // 1. Chatbot Response를 받음
-    const chatbotRes = await this.chatService.getChatbotResponse(data);
+    const chatbotRes = await this.chatService.getChatbotResponse(data, _u.uuid);
     // 2. Chatbot Response를 저장
     await this.chatService.saveChatting(
       chatbotRes.data.response,

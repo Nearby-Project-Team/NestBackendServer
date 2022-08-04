@@ -71,9 +71,10 @@ export class ChatService {
         return chatList;
     }
 
-    async getChatbotResponse(contents: string): Promise<AxiosResponse<ChatbotResponseDto>> {
+    async getChatbotResponse(contents: string, elderly_id: string): Promise<AxiosResponse<ChatbotResponseDto>> {
         return this.httpService.axiosRef.post('/chat', {
-            msg: contents
+            msg: contents,
+            elderly_id: elderly_id
         });
     }
 
