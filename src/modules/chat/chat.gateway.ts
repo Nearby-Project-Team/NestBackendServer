@@ -159,10 +159,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     }
     this.chatRoomService.enterChatRoom(client, roomId);
     const roomName = await this.chatRoomService.getChatRoom(elderly_id);
-    return {
+    client.emit('enter_chat_room', {
         roomId: roomId,
         roomName: roomName
-    };
+    });
   }
 
   @SubscribeMessage('get_chat_log')
@@ -176,7 +176,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     await this.checkValidUser(_u, elderly_id);
 
     const chatList = await this.chatService.getChatting(elderly_id, page);
-    return chatList;
+    client.emit('get_chat_log', chatList);
   }
 
 }
