@@ -146,7 +146,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   @SubscribeMessage('enter_chat_room')
   async enterChatRoom(
     @ConnectedSocket() client: Socket, 
-    elderly_id: string
+    @MessageBody() elderly_id: string
   ) {
     const _u = await this.chatService.getUserFromSocket(client);
     const roomId = `room:${elderly_id}`;
