@@ -31,11 +31,7 @@ export class ChatRoomService {
     }
 
     async getChatRoom(elderly_id: string): Promise<ChatRoomDto> {
-        const _e = await this.elderlyRepository.findOne({
-            where: {
-                uuid: elderly_id
-            }
-        });
+        const _e = await this.elderlyRepository.findElderlyById(elderly_id);
         return {
             chatRoomId: `room:${_e.uuid}`,
             chatRoomName: `${_e.name}'s Room`
