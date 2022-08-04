@@ -64,10 +64,7 @@ export class ChatService {
     }
 
     async getChatting(elderly_id: string, page: number) {
-        const chatList = await this.chatRepository.getChattingHistory(
-            elderly_id,
-            page
-        );
+        const chatList = await this.chatRepository.getChattingHistory(elderly_id, page);
         return chatList;
     }
 

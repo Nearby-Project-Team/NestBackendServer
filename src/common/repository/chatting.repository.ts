@@ -10,8 +10,13 @@ export class ChattingRepository extends Repository<ChattingEntity> {
     async getChattingHistory(elderly_id: string, page: number) {
         let offset = (page - 1) * this.PAGE_NUM;
         const _c = await this.findAndCount({
+            relations: {
+                elderly_id: true
+            },
             where: {
-                uuid: elderly_id
+                elderly_id: {
+                    uuid: elderly_id
+                }
             },
             order: {
                 createdAt: 'DESC',
