@@ -176,6 +176,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     await this.checkValidUser(_u, elderly_id);
 
     const chatList = await this.chatService.getChatting(elderly_id, page);
+    console.log(chatList);
     client.emit('get_chat_log', chatList);
   }
 
