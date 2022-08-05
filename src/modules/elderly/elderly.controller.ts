@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Res, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/common/guard/jwt-auth/jwt.guard';
 import { ElderlyInfoDto } from './dtos/elderlyInfo.dto';
 import { ElderlySearchDto } from './dtos/elderlySearch.dto';
@@ -40,6 +40,27 @@ export class ElderlyController {
     @Body() info: ElderlySearchDto
   ) {
     return await this.elderlyService.verifyElderly(token, email, info);
+  }
+
+  @Get('/list')
+  async getElderlyList(
+
+  ) {
+
+  }
+
+  @Get('/calendar/:cg_email')
+  async getElderlyCalendar(
+
+  ) {
+
+  }
+
+  @Get('/chat/:cg_email')
+  async getElderlyChatting(
+
+  ) {
+
   }
 
 }
