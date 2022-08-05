@@ -1,4 +1,5 @@
 import { ElderlyEntity } from './elderly.entity';
+import { ScheduleTypeEnum } from 'src/common/types/schedule.type';
 import {
     Column,
     PrimaryGeneratedColumn,
@@ -30,7 +31,7 @@ export class CalandarEntity extends BaseEntity {
         type: 'varchar',
         length: 50
     })
-    notificationType: string
+    notificationType: ScheduleTypeEnum;
 
     @CreateDateColumn()
     createdAt: Date
