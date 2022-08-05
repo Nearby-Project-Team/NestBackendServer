@@ -36,7 +36,7 @@ export class RequestError extends Error {
                     type: RequestErrorTypeEnum.USER_NOT_FOUND,
                     httpStatus: HttpStatus.BAD_REQUEST,
                     errorMessage: 'User not Found',
-                    userMessage: 'User Email Not found!'
+                    userMessage: 'User Email/UUID Not found!'
                 };
                 break;
             case RequestErrorTypeEnum.INVALID_USER:
