@@ -104,4 +104,31 @@ export class ElderlyService {
         }
         else throw new AppError(AppErrorTypeEnum.INVALID_VERIFICATION);
     }
+
+    async getElderlyList(cg_email: string) {
+        const [_l, num] = await this.elderlyRepository.findAllElderlyCaregiver(cg_email);
+        const result = _l.map((elderly): ElderlyInfoDto => {
+            return {
+                cg_email: cg_email,
+                name: elderly.name,
+                birthdate: elderly.birthday,
+                phone_number: elderly.phone_number,
+                agreement: elderly.agreement
+            };
+        });
+
+        return {
+            count: num,
+            data: result
+        };
+    }
+
+    async getElderlyCalendar(cg_email: string, elderly_id: string) {
+        
+    }
+
+    async getElderlyChatting(cg_email: string, elderly_id: string) {
+
+    }
+
 }
