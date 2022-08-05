@@ -42,7 +42,16 @@ export class ElderlyService {
         await this.elderlyRepository.save(_e); // save refresh token in DB
 
         return { 
-            url: `${baseUrlConfig()}/elderly/verify/${Buffer.from(cg_email, 'utf-8').toString('base64')}/${token}` // 링크를 QR 코드로 전달
+            // url: `${baseUrlConfig()}/elderly/verify/${Buffer.from(cg_email, 'utf-8').toString('base64')}/${token}` // 링크를 QR 코드로 전달
+            uuid: _e.uuid
+        };
+    }
+
+    async loginElderly(elderly_id: string, name: string) {
+        const _e = await this.elderlyRepository.findElderlyById(elderly_id);
+        if (_e === null || _e.name !== name) throw new RequestError(RequestErrorTypeEnum.INVALID_PASSWORD);
+        return {
+            msg: "Login Success!"
         };
     }
 
