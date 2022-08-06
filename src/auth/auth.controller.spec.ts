@@ -17,4 +17,8 @@ describe('AuthController', () => {
   it('should be defined', () => {
     expect(controller).toBeDefined();
   });
+
+  it('should be return {msg:\'Token Issue Success!\'', () => {
+    expect(controller.reAssignToken("abc@gmail.com","how?","what?")).toBe({msg:"Token Issue Success!"});
+  });
 });
