@@ -96,7 +96,7 @@ export class AuthService {
         await this.mailerService.sendMail({
             to: user.email,
             subject: 'NearBy Service Register Email',
-            template: join(__dirname, './view/register.ejs'),
+            template: join(__dirname, '../view/register.ejs'),
             context: {
                 "authToken": `${token}`
             }
