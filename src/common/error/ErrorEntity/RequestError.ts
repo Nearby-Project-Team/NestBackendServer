@@ -27,8 +27,8 @@ export class RequestError extends Error {
                 res = {
                     type: RequestErrorTypeEnum.INVALID_PASSWORD,
                     httpStatus: HttpStatus.FORBIDDEN,
-                    errorMessage: 'Invalid User Password',
-                    userMessage: 'Provided User Passowrd is not match with Original Password!'
+                    errorMessage: 'Invalid User Credentials',
+                    userMessage: 'Provided User Credentials Wrong'
                 };
                 break;
             case RequestErrorTypeEnum.USER_NOT_FOUND:

@@ -54,7 +54,8 @@ export class ElderlyService {
 
     async loginElderly(elderly_id: string, name: string) {
         const _e = await this.elderlyRepository.findElderlyById(elderly_id);
-        if (_e === null || _e.name !== name) throw new RequestError(RequestErrorTypeEnum.INVALID_PASSWORD);
+        if (_e === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
+        if (_e.name !== name) throw new RequestError(RequestErrorTypeEnum.INVALID_PASSWORD);
         return {
             msg: "Login Success!"
         };
