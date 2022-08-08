@@ -112,10 +112,11 @@ export class ElderlyService {
     }
 
     async getElderlyList(cg_email: string) {
-        const [_l, num] = await this.elderlyRepository.findAllElderlyCaregiver(cg_email);
+        const email = Buffer.from(cg_email, 'base64').toString('utf-8');
+        const [_l, num] = await this.elderlyRepository.findAllElderlyCaregiver(email);
         const result = _l.map((elderly): ElderlyInfoDto => {
             return {
-                cg_email: cg_email,
+                cg_email: email,
                 name: elderly.name,
                 birthdate: elderly.birthday,
                 phone_number: elderly.phone_number,
