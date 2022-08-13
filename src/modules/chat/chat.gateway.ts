@@ -112,7 +112,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
       true
     );
     // 3. TTS를 통한 음성 합성
-
+    
     // 4. Client를 향해 Emit
     this.server.to(`room:${_u.uuid}`).emit('receive_message', chatbotRes.data.response);
   }

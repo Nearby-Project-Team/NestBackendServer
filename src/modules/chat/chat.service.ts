@@ -74,4 +74,8 @@ export class ChatService {
         });
     }
 
+    async getTTSInferenceResult() {
+        
+    }
+
 }
