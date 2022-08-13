@@ -13,6 +13,9 @@ import { AWSProviderModule } from '../../providers/aws/aws.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
 import { ElderlyRepository } from '../../common/repository/elderly.repository';
+import { HttpModule } from '@nestjs/axios';
+import { ChatbotConfigModule } from '../../common/configs/chatbot/chatbot.module';
+import { ChatbotConfigService } from '../../common/configs/chatbot/chatbot.config';
 
 @Module({
   imports: [
@@ -29,7 +32,12 @@ import { ElderlyRepository } from '../../common/repository/elderly.repository';
     MulterModule.registerAsync({
       useClass: S3Service
     }),
-    PassportModule
+    PassportModule,
+    HttpModule.registerAsync({
+      imports: [ ChatbotConfigModule ],
+      useClass: ChatbotConfigService,
+      inject: [ ChatbotConfigService ]
+    }),
   ],
   controllers: [VoiceController],
   providers: [

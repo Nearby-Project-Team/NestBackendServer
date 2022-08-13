@@ -4,7 +4,6 @@ import { ElderlyRepository } from 'src/common/repository/elderly.repository';
 import { ChattingRepository } from '../../common/repository/chatting.repository';
 import { parse } from 'cookie';
 import { Socket } from 'socket.io';
-import { AuthService } from '../../auth/auth.service';
 import { WsException } from '@nestjs/websockets';
 import { HttpService } from '@nestjs/axios';
 import { AxiosResponse } from 'axios';

@@ -1,8 +1,9 @@
-import { Controller, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { VoiceService } from './voice.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { S3FilePath } from 'src/common/decorators/s3-file.decorator';
 import { JwtGuard } from 'src/common/guard/jwt-auth/jwt.guard';
+import { TrainVoiceDto } from './dtos/train-voice.dto';
 
 @Controller('voice')
 export class VoiceController {
@@ -25,9 +26,9 @@ export class VoiceController {
 
   @Patch('/train-voice')
   async trainUserVoice(
-    
+    @Body() body: TrainVoiceDto
   ) {
-      
+      return await this.voiceService.trainUserVoice(body);
   }
 
 }

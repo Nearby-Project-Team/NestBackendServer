@@ -8,6 +8,8 @@ import { CaregiverRepository } from '../../common/repository/caregiver.repositor
 import { AppError } from '../../common/error/ErrorEntity/AppError';
 import { AppErrorTypeEnum } from 'src/common/error/ErrorType/AppErrorType.enum';
 import { ElderlyRepository } from '../../common/repository/elderly.repository';
+import { HttpService } from '@nestjs/axios';
+import { TrainVoiceDto } from './dtos/train-voice.dto';
 
 @Injectable()
 export class VoiceService {
@@ -19,7 +21,8 @@ export class VoiceService {
         @InjectRepository(VoiceModelRelationEntity)
         private readonly vrRepository: Repository<VoiceModelRelationEntity>,
         private readonly cgRepository: CaregiverRepository,
-        private readonly elderlyRepository: ElderlyRepository
+        private readonly elderlyRepository: ElderlyRepository,
+        private readonly httpService: HttpService,
     ) {}
 
     async registerVoice(email: string, vname: string, filePath: string) {
@@ -49,6 +52,10 @@ export class VoiceService {
         return {
             msg: "Successfully registered Voice!"
         };
+    }
+
+    async trainUserVoice(item: TrainVoiceDto) {
+        // TTS의 API를 부름
     }
 
 }
