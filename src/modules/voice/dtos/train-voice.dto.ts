@@ -1,4 +1,4 @@
-import { IsEmail, IsString } from "class-validator";
+import { IsEmail, IsString, IsUUID } from "class-validator";
 
 export class TrainVoiceDto {
 
@@ -7,5 +7,15 @@ export class TrainVoiceDto {
 
     @IsString()
     vname: string;
+
+}
+
+export class TrainCompleteDto {
+
+    @IsUUID()
+    caregiver_id: string;
+
+    @IsString()
+    voice_path: string;
 
 }

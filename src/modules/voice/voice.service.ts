@@ -9,7 +9,8 @@ import { AppError } from '../../common/error/ErrorEntity/AppError';
 import { AppErrorTypeEnum } from 'src/common/error/ErrorType/AppErrorType.enum';
 import { ElderlyRepository } from '../../common/repository/elderly.repository';
 import { HttpService } from '@nestjs/axios';
-import { TrainVoiceDto } from './dtos/train-voice.dto';
+import { TrainVoiceDto, TrainCompleteDto } from './dtos/train-voice.dto';
+import { VoiceTypeEnum } from 'src/common/types/voice.type';
 
 @Injectable()
 export class VoiceService {
@@ -27,8 +28,8 @@ export class VoiceService {
 
     async registerVoice(email: string, vname: string, filePath: string) {
         const _u = await this.cgRepository.findUserByEmail(Buffer.from(email, 'base64').toString('utf-8'));
-        const [_e, _] = await this.elderlyRepository.findAllElderlyCaregiver(email);
         if (_u === null) throw new AppError(AppErrorTypeEnum.NO_USERS_IN_DB);
+        const [_e, _] = await this.elderlyRepository.findAllElderlyCaregiver(email);
         const _v = this.vfRepository.create({
             caregiver_id: _u,
             name: vname,
@@ -56,6 +57,33 @@ export class VoiceService {
 
     async trainUserVoice(item: TrainVoiceDto) {
         // TTS의 API를 부름
+        const _u = await this.cgRepository.findUserByEmail(Buffer.from(item.email, 'base64').toString('utf-8'));
+        if (_u === null) throw new AppError(AppErrorTypeEnum.NO_USERS_IN_DB);
+        const _vm = this.vmRepository.create({
+            status: VoiceTypeEnum.NOT_TRAINED,
+            path: `${_u.uuid}/${item.vname}/model/${item.vname}.pth`,
+            caregiver_id: _u
+        });
+        await this.vmRepository.save(_vm);
+
+        return {
+            msg: "Success!"
+        };
+    }
+
+    async trainVoiceComplete(item: TrainCompleteDto) {
+        await this.vmRepository.update({
+            caregiver_id: {
+                uuid: item.caregiver_id
+            },
+            path: item.voice_path
+        }, {
+            status: VoiceTypeEnum.TRAINED
+        });
+
+        return {
+            msg: "Success!"
+        };
     }
 
 }

@@ -10,6 +10,7 @@ import {
     JoinColumn,
     OneToMany
 } from 'typeorm';
+import { VoiceTypeEnum } from '../types/voice.type';
 
 @Entity({ name: 'VoiceModel' })
 export class VoiceModelEntity extends BaseEntity {
@@ -26,7 +27,7 @@ export class VoiceModelEntity extends BaseEntity {
         type: 'varchar',
         length: '10'
     })
-    status: string
+    status: VoiceTypeEnum
 
     @CreateDateColumn()
     createdAt: Date
