@@ -72,6 +72,14 @@ export class AppError extends Error {
                     userMessage: 'Cannot verify the user! check the verification info!'
                 };
                 break;
+            case AppErrorTypeEnum.DB_SAVE_FAILED:
+                res = {
+                    type: AppErrorTypeEnum.DB_SAVE_FAILED,
+                    httpStatus: HttpStatus.NOT_ACCEPTABLE,
+                    errorMessage: 'DB Row Creation Failed',
+                    userMessage: 'DB Row Creation Failed'
+                };
+                break;
         }
         return res;
     }

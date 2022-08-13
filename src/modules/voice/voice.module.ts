@@ -12,6 +12,7 @@ import { S3Service } from '../../providers/multer/s3.service';
 import { AWSProviderModule } from '../../providers/aws/aws.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
+import { ElderlyRepository } from '../../common/repository/elderly.repository';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
       VoiceModelRelationEntity
     ]),
     TypeORMRepositoryModule.forCustomRepository([
-      CaregiverRepository
+      CaregiverRepository,
+      ElderlyRepository
     ]),
     AWSProviderModule,
     MulterModule.registerAsync({
