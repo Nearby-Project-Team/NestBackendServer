@@ -29,27 +29,12 @@ export class VoiceService {
     async registerVoice(email: string, vname: string, fileName: string) {
         const _u = await this.cgRepository.findUserByEmail(Buffer.from(email, 'base64').toString('utf-8'));
         if (_u === null) throw new AppError(AppErrorTypeEnum.NO_USERS_IN_DB);
-        const [_e, _] = await this.elderlyRepository.findAllElderlyCaregiver(email);
         const _v = this.vfRepository.create({
             caregiver_id: _u,
             name: vname,
             path: `${email}/${vname}/audio/${fileName}`
         });
         await this.vfRepository.save(_v);
-        const result = await Promise.all(_e.map(async (elderly) => {
-            try {
-                const _r = this.vrRepository.create({
-                    elderly_id: elderly,
-                    voiceModel_id: _v,
-                });
-                await this.vrRepository.save(_r);
-                return true;
-            } catch(err) {
-                console.log(err);
-                return false;
-            }
-        }));
-        if (result.includes(false)) throw new AppError(AppErrorTypeEnum.DB_SAVE_FAILED);
         return {
             msg: "Successfully registered Voice!"
         };
@@ -65,6 +50,22 @@ export class VoiceService {
             caregiver_id: _u
         });
         await this.vmRepository.save(_vm);
+
+        const [_e, _] = await this.elderlyRepository.findAllElderlyCaregiver(item.email);
+        const result = await Promise.all(_e.map(async (elderly) => {
+            try {
+                const _r = this.vrRepository.create({
+                    elderly_id: elderly,
+                    voiceModel_id: _vm,
+                });
+                await this.vrRepository.save(_r);
+                return true;
+            } catch(err) {
+                console.log(err);
+                return false;
+            }
+        }));
+        if (result.includes(false)) throw new AppError(AppErrorTypeEnum.DB_SAVE_FAILED);
 
         return {
             msg: "Success!"
