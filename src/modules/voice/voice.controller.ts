@@ -15,10 +15,9 @@ export class VoiceController {
   async registerVoice(
     @Param('email') email: string,
     @Param('vname') vname: string,
-    @UploadedFile() file: Express.Multer.File
+    @UploadedFile('audio') file: Express.Multer.File
   ) {
     // Save file in 'nearby-<env>-bucket/caregiver_email/voice_name/voice_file_name.wav'
-    console.log(file);
     return this.voiceService.registerVoice(email, vname, file.originalname);
   }
 
