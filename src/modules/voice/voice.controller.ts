@@ -1,8 +1,6 @@
 import { Body, Controller, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { VoiceService } from './voice.service';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { S3FilePath } from 'src/common/decorators/s3-file.decorator';
-import { JwtGuard } from 'src/common/guard/jwt-auth/jwt.guard';
 import { TrainVoiceDto, TrainCompleteDto } from './dtos/train-voice.dto';
 
 @Controller('voice')
@@ -17,11 +15,10 @@ export class VoiceController {
   async registerVoice(
     @Param('email') email: string,
     @Param('vname') vname: string,
-    @UploadedFile() file: Express.Multer.File,
-    @S3FilePath() path: string
+    @UploadedFile() file: Express.Multer.File
   ) {
     // Save file in 'bucket: nearby-<env>-bucket/caregiver_id/voice_name/voice_file_uuid.wav'
-    return this.voiceService.registerVoice(email, vname, path);
+    return this.voiceService.registerVoice(email, vname, file.originalname);
   }
 
   @Patch('/train-voice')

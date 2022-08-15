@@ -26,14 +26,14 @@ export class VoiceService {
         private readonly httpService: HttpService,
     ) {}
 
-    async registerVoice(email: string, vname: string, filePath: string) {
+    async registerVoice(email: string, vname: string, fileName: string) {
         const _u = await this.cgRepository.findUserByEmail(Buffer.from(email, 'base64').toString('utf-8'));
         if (_u === null) throw new AppError(AppErrorTypeEnum.NO_USERS_IN_DB);
         const [_e, _] = await this.elderlyRepository.findAllElderlyCaregiver(email);
         const _v = this.vfRepository.create({
             caregiver_id: _u,
             name: vname,
-            path: filePath
+            path: `${email}/${vname}/audio/${fileName}`
         });
         await this.vfRepository.save(_v);
         const result = await Promise.all(_e.map(async (elderly) => {
