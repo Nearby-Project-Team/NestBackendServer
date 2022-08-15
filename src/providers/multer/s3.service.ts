@@ -20,7 +20,7 @@ export class S3Service implements MulterOptionsFactory {
 
     createMulterOptions(): MulterOptions | Promise<MulterOptions> {
         const bucket = this.configService.get<string>('AWS_S3_BUCKET_NAME');
-        const acl = 'private';
+        const acl = 'public-read';
 
         const multerS3Storage = MulterS3({
             s3: this.s3,
@@ -31,7 +31,6 @@ export class S3Service implements MulterOptionsFactory {
                 const cg_id = url.split('/')[3];
                 const vname = url.split('/')[4]; // 추후에 수정이 필요함. => 어쨌든 화자 정보
                 cb(null, `${cg_id}/${vname}/audio/${file.originalname}`);
-                                        // /model/ABC.pth
             }
         });
 
