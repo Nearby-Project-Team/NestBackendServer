@@ -14,6 +14,7 @@ import { ElderlyEntity } from './elderly.entity';
 import { VoiceFileEntity } from './voiceFile.entity';
 import { VoiceModelEntity } from './voiceModel.entity';
 import { VerificationEntity } from './verificationLog.entity';
+import { AlertVoiceFileEntity } from './alertVoiceFile.entity';
 
 @Entity({ name: 'Caregiver' })
 export class CaregiverEntity extends BaseEntity {
@@ -90,5 +91,8 @@ export class CaregiverEntity extends BaseEntity {
 
     @OneToMany(type => VerificationEntity, (verification) => verification.caregiver_id)
     verification_id!: VerificationEntity[]
+
+    @OneToMany(type => AlertVoiceFileEntity, (alert_voice) => alert_voice.caregiver_id)
+    alert_id: AlertVoiceFileEntity[];
 
 }
