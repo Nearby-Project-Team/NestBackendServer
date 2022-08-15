@@ -81,6 +81,8 @@ export class VoiceService {
         }, {
             status: VoiceTypeEnum.TRAINED
         });
+        
+        // TTS API를 부르고 해당 결과 Voice를 AWS에 저장함. 
 
         return {
             msg: "Success!"
