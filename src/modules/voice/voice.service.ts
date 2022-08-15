@@ -42,7 +42,7 @@ export class VoiceService {
 
     async trainUserVoice(item: TrainVoiceDto) {
         // TTS의 API를 부름
-        const _u = await this.cgRepository.findUserByEmail(Buffer.from(item.email, 'base64').toString('utf-8'));
+        const _u = await this.cgRepository.findUserByEmail(item.email);
         if (_u === null) throw new AppError(AppErrorTypeEnum.NO_USERS_IN_DB);
         const _vm = this.vmRepository.create({
             status: VoiceTypeEnum.NOT_TRAINED,
