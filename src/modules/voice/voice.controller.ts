@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Patch, Post, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { VoiceService } from './voice.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { TrainVoiceDto, TrainCompleteDto } from './dtos/train-voice.dto';
@@ -17,7 +17,8 @@ export class VoiceController {
     @Param('vname') vname: string,
     @UploadedFile() file: Express.Multer.File
   ) {
-    // Save file in 'bucket: nearby-<env>-bucket/caregiver_email/voice_name/voice_file_name.wav'
+    // Save file in 'nearby-<env>-bucket/caregiver_email/voice_name/voice_file_name.wav'
+    console.log(file);
     return this.voiceService.registerVoice(email, vname, file.originalname);
   }
 
