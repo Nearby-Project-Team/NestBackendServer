@@ -16,6 +16,7 @@ import { ElderlyRepository } from '../../common/repository/elderly.repository';
 import { HttpModule } from '@nestjs/axios';
 import { ChatbotConfigModule } from '../../common/configs/chatbot/chatbot.module';
 import { ChatbotConfigService } from '../../common/configs/chatbot/chatbot.config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -30,7 +31,9 @@ import { ChatbotConfigService } from '../../common/configs/chatbot/chatbot.confi
     ]),
     AWSProviderModule,
     MulterModule.registerAsync({
-      useClass: S3Service
+      imports: [ ConfigModule ],
+      useClass: S3Service,
+      inject: [ ConfigService ]
     }),
     PassportModule,
     HttpModule.registerAsync({

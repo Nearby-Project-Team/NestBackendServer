@@ -20,7 +20,7 @@ export class S3Service implements MulterOptionsFactory {
 
     createMulterOptions(): MulterOptions | Promise<MulterOptions> {
         const bucket = this.configService.get<string>('AWS_S3_BUCKET_NAME');
-        const acl = 'private';
+        const acl = 'public-read';
 
         const multerS3Storage = MulterS3({
             s3: this.s3,
