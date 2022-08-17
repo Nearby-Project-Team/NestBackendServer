@@ -9,6 +9,7 @@ import {
     CreateDateColumn,
     DeleteDateColumn
 } from 'typeorm';
+import { AlertDataEntity } from './alertData.entity';
 
 
 @Entity({
@@ -40,5 +41,11 @@ export class AlertVoiceFileEntity extends BaseEntity {
         name: 'caregiver_id'
     })
     caregiver_id: CaregiverEntity
+
+    @ManyToOne(type => AlertDataEntity, (dalert) => dalert.alert_voice)
+    @JoinColumn({
+        name: 'alert_type_id'
+    })
+    alert_data: AlertDataEntity;
 
 }
