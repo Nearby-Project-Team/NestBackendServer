@@ -10,8 +10,6 @@ import { ChatGateway } from './chat.gateway';
 import { AuthModule } from '../../auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
-import { TypeOrmModule } from '@nestjs/typeorm';
-import { VoiceModelEntity } from '../../common/entity/voiceModel.entity';
 import { VoiceModelRepository } from '../../common/repository/voiceModel.repository';
 
 @Module({
