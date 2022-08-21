@@ -20,6 +20,12 @@ export class VoiceModelEntity extends BaseEntity {
     uuid: string
 
     @Column({
+        type: 'varchar',
+        length: 255
+    })
+    name: string;
+
+    @Column({
         type: 'text'
     })
     path: string

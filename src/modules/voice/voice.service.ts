@@ -48,7 +48,8 @@ export class VoiceService {
         const _vm = this.vmRepository.create({
             status: VoiceTypeEnum.NOT_TRAINED,
             path: `${email_base64}/${item.vname}/model/${item.vname}.pth`,
-            caregiver_id: _u
+            caregiver_id: _u,
+            name: item.vname
         });
         await this.vmRepository.save(_vm);
 
@@ -75,19 +76,21 @@ export class VoiceService {
 
     async trainVoiceComplete(item: TrainCompleteDto) {
         const email_base64 = Buffer.from(item.email, 'utf-8').toString('base64');
-        await this.vmRepository.update({
-            caregiver_id: {
-                email: item.email
-            },
-            path: `${email_base64}/${item.voice_name}/model/${item.voice_name}.pth`
-        }, {
-            status: VoiceTypeEnum.TRAINED
-        });
         // TTS API를 부르고 해당 결과 Voice를 AWS에 저장함. 
         const _res = await this.httpService.axiosRef.post('/tts/train');
         if (_res.status >= 400) return {
             msg: "Failed!"
         };
+
+        await this.vmRepository.update({
+            caregiver_id: {
+                email: item.email
+            },
+            name: item.voice_name
+        }, {
+            status: VoiceTypeEnum.TRAINED
+        });
+
         return {
             msg: "Success!"
         };

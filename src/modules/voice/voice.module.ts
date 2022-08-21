@@ -14,9 +14,9 @@ import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
 import { ElderlyRepository } from '../../common/repository/elderly.repository';
 import { HttpModule } from '@nestjs/axios';
-import { ChatbotConfigModule } from '../../common/configs/chatbot/chatbot.module';
-import { ChatbotConfigService } from '../../common/configs/chatbot/chatbot.config';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TTSConfigModule } from '../../common/configs/TTS/tts.module';
+import { TTSConfigService } from '../../common/configs/TTS/tts.config';
 
 @Module({
   imports: [
@@ -37,13 +37,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     PassportModule,
     HttpModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
-        timeout: configService.get<number>('HTTP_TIMEOUT'),
-        maxRedirects: configService.get<number>('HTTP_MAX_REDIRECTS'),
-        baseURL: configService.get<string>('TTS_URL')
-      }),
-      inject: [ConfigService]
+      imports: [ TTSConfigModule ],
+      useClass: TTSConfigService,
+      inject: [ TTSConfigService ]
     }),
   ],
   controllers: [VoiceController],

@@ -3,7 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class ChatbotConfigService implements HttpModuleOptionsFactory {
+export class TTSConfigService implements HttpModuleOptionsFactory {
     
     constructor (
         private readonly configService: ConfigService
@@ -13,7 +13,7 @@ export class ChatbotConfigService implements HttpModuleOptionsFactory {
         return {
             timeout: this.configService.get<number>('HTTP_TIMEOUT'),
             maxRedirects: this.configService.get<number>('HTTP_MAX_REDIRECTION'),
-            baseURL: this.configService.get<string>('CHATBOT_URL'),
+            baseURL: this.configService.get<string>('TTS_URL'),
             headers: {
                 'Content-Type': 'application/json'
             }

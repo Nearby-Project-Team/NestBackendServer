@@ -10,22 +10,20 @@ import { ChatGateway } from './chat.gateway';
 import { AuthModule } from '../../auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 import { HttpModule } from '@nestjs/axios';
-import { ChatbotConfigModule } from '../../common/configs/chatbot/chatbot.module';
-import { ChatbotConfigService } from '../../common/configs/chatbot/chatbot.config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { VoiceModelEntity } from '../../common/entity/voiceModel.entity';
+import { VoiceModelRepository } from '../../common/repository/voiceModel.repository';
 
 @Module({
   imports: [ 
     TypeORMRepositoryModule.forCustomRepository([
       CaregiverRepository,
       ElderlyRepository,
-      ChattingRepository
+      ChattingRepository,
+      VoiceModelRepository
     ]),
     ConfigModule,
-    HttpModule.registerAsync({
-      imports: [ ChatbotConfigModule ],
-      useClass: ChatbotConfigService,
-      inject: [ ChatbotConfigService ]
-    }),
+    HttpModule,
     AuthModule
   ],
   controllers: [ChatController],

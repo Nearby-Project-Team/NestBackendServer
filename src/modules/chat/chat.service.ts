@@ -12,6 +12,7 @@ import { UserTypeEnum } from 'src/common/types/user.type';
 import { WebSocketErrorTypeEnum } from 'src/common/error/ErrorType/WebSocketErrorType.enum';
 import { ElderlyEntity } from '../../common/entity/elderly.entity';
 import { CaregiverEntity } from '../../common/entity/caregiver.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ChatService {
@@ -21,6 +22,7 @@ export class ChatService {
         private readonly chatRepository: ChattingRepository,
         // private readonly authService: AuthService,
         private readonly httpService: HttpService,
+        private readonly configService: ConfigService,
         private readonly logger: Logger
     ) {}
 
@@ -68,7 +70,8 @@ export class ChatService {
     }
 
     async getChatbotResponse(contents: string, elderly_id: string): Promise<AxiosResponse<ChatbotResponseDto>> {
-        return this.httpService.axiosRef.post('/chat', {
+        const _url = this.configService.get<string>('CHATBOT_URL');
+        return this.httpService.axiosRef.post(`${_url}/chatbot`, {
             msg: contents,
             elderly_id: elderly_id
         });
