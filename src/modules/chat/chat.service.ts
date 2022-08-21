@@ -13,6 +13,9 @@ import { WebSocketErrorTypeEnum } from 'src/common/error/ErrorType/WebSocketErro
 import { ElderlyEntity } from '../../common/entity/elderly.entity';
 import { CaregiverEntity } from '../../common/entity/caregiver.entity';
 import { ConfigService } from '@nestjs/config';
+import { InferenceVoiceDto } from './dtos/inference.dto';
+import { VoiceModelRepository } from '../../common/repository/voiceModel.repository';
+import { VoiceTypeEnum } from 'src/common/types/voice.type';
 
 @Injectable()
 export class ChatService {
@@ -20,6 +23,7 @@ export class ChatService {
         private readonly cgRepository: CaregiverRepository,
         private readonly elderlyRepository: ElderlyRepository,
         private readonly chatRepository: ChattingRepository,
+        private readonly vmRepository: VoiceModelRepository,
         // private readonly authService: AuthService,
         private readonly httpService: HttpService,
         private readonly configService: ConfigService,
@@ -77,8 +81,20 @@ export class ChatService {
         });
     }
 
-    async getTTSInferenceResult() {
-        
+    async getTTSInferenceResult(caregiver_id: string, msg: string) {
+        const _url = this.configService.get<string>('TTS_URL');
+        const _u = await this.cgRepository.findUserByEmail(caregiver_id);
+        const _vm = await this.vmRepository.findVoiceModelByCaregiverId(_u.uuid);
+        if (_vm.status !== VoiceTypeEnum.NOT_TRAINED) return false;
+        const _data: InferenceVoiceDto = {
+            caregiver_id: caregiver_id,
+            voice_target: _vm.name,
+            msg: msg
+        };
+        const _res = await this.httpService.axiosRef.post(`${_url}/tts/inference`, _data, {
+            responseType: 'stream'
+        });
+        return _res;
     }
 
 }

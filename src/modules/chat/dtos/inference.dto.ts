@@ -1,7 +1,9 @@
 export class InferenceVoiceDto {
 
-    email: string;
+    caregiver_id: string;
 
-    voice_name: string;
+    voice_target: string;
+
+    msg: string;
 
 }

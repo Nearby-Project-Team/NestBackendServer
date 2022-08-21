@@ -21,9 +21,6 @@ import { WebSocketExceptionDispatcher } from 'src/common/exceptions/websocket.ex
 import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
 import { InferenceVoiceDto } from './dtos/inference.dto';
-import { InjectRepository } from '@nestjs/typeorm';
-import { VoiceModelEntity } from '../../common/entity/voiceModel.entity';
-import { Repository } from 'typeorm';
 import { VoiceModelRepository } from '../../common/repository/voiceModel.repository';
 
 @WebSocketGateway(9091, {
@@ -38,9 +35,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     private readonly chatService: ChatService,
     private readonly chatRoomService: ChatRoomService,
     private readonly elderlyRepository: ElderlyRepository,
-    private readonly configService: ConfigService,
     private readonly httpService: HttpService,
-    private readonly vmRepository: VoiceModelRepository
   ) {}
 
   @WebSocketServer()
@@ -121,17 +116,9 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
       true
     );
     // 3. TTS를 통한 음성 합성
-    const _url = this.configService.get<string>('TTS_URL');
-    const _vm = await this.vmRepository.findVoiceModelByCaregiverId(_u.caregiver_id.uuid);
-    const _data: InferenceVoiceDto = {
-      email: _u.caregiver_id.email,
-      voice_name: _vm.name
-    };
-    const _res = await this.httpService.axiosRef.post(`${_url}/tts/inference`, _data, {
-      responseType: 'stream'
-    });
-    if (_res.status >= 400) this.server.to(`room:${_u.uuid}`).emit('receive_message', "Failed to Synthesize voice");
-    else this.server.to(`room:${_u.uuid}`).emit('receive_message', _res.data);
+    const _res = await this.chatService.getTTSInferenceResult(_u.caregiver_id.email, chatbotRes.data.response);
+    if (!_res || _res.status >= 400) this.server.to(`room:${_u.uuid}`).emit('receive_message', "Failed to Synthesize voice");
+    else this.server.to(`room:${_u.uuid}`).emit('receive_message', _res.data); // 음성 파일 생성됨 (메모리) => FS 저장(이름 상관 없음) => 메모리에 올려서 HTTP로 Nest 보내야함
   }
 
   @SubscribeMessage('send_message_caregiver')
@@ -143,16 +130,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     const _u = await this.chatService.getUserFromSocket(client); // 사용자 인증을 거침
     if (_u instanceof ElderlyEntity) throw new WsException('Invalid Access! This API is not for Elderly!!');
     // 1. TTS를 통한 음성 합성
-    const _url = this.configService.get<string>('TTS_URL');
-    const _vm = await this.vmRepository.findVoiceModelByCaregiverId(_u.uuid);
-    const _data: InferenceVoiceDto = {
-      email: _u.email,
-      voice_name: _vm.name
-    };
-    const _res = await this.httpService.axiosRef.post(`${_url}/tts/inference`, _data, {
-      responseType: 'stream'
-    });
-    if (_res.status >= 400) this.server.to(`room:${_u.uuid}`).emit('receive_message', "Failed to Synthesize voice");
+    const _res = await this.chatService.getTTSInferenceResult(_u.email, data);
+    if (!_res || _res.status >= 400) this.server.to(`room:${_u.uuid}`).emit('receive_message', "Failed to Synthesize voice");
     else this.server.to(`room:${_u.uuid}`).emit('receive_message', _res.data);
   }
 

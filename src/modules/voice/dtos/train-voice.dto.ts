@@ -16,6 +16,6 @@ export class TrainCompleteDto {
     email: string;
 
     @IsString()
-    voice_name: string;
+    voice_target: string;
 
 }
