@@ -11,6 +11,7 @@ import {
     OneToMany
 } from 'typeorm';
 import { VoiceTypeEnum } from '../types/voice.type';
+import { AlertVoiceFileEntity } from './alertVoiceFile.entity';
 
 @Entity({ name: 'VoiceModel' })
 export class VoiceModelEntity extends BaseEntity {
@@ -40,5 +41,8 @@ export class VoiceModelEntity extends BaseEntity {
 
     @OneToMany(type => VoiceModelRelationEntity, (vRelation) => vRelation.voiceModel_id)
     voiceRelation: VoiceModelRelationEntity[]
+
+    @OneToMany(type => AlertVoiceFileEntity, (alert_voice) => alert_voice.voice_id)
+    alert_id: AlertVoiceFileEntity[];
 
 };

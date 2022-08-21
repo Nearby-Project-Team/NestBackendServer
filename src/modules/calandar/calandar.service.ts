@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { SchedulerRegistry } from '@nestjs/schedule';
 import { RequestError } from 'src/common/error/ErrorEntity/RequestError';
 import { RequestErrorTypeEnum } from 'src/common/error/ErrorType/RequestErrorType.enum';
 import { CalandarRepository } from 'src/common/repository/calandar.repository';
@@ -12,7 +13,8 @@ export class CalandarService {
 
     constructor(
         private readonly calendarRepository: CalandarRepository,
-        private readonly elderlyRepository: ElderlyRepository
+        private readonly elderlyRepository: ElderlyRepository,
+        private readonly schedulerRegistry: SchedulerRegistry
     ) {}
 
     async setOneOffScheduleElderly(schedule_info: OneOFFScheduleDto) {

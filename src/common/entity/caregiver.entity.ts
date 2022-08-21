@@ -92,7 +92,4 @@ export class CaregiverEntity extends BaseEntity {
     @OneToMany(type => VerificationEntity, (verification) => verification.caregiver_id)
     verification_id!: VerificationEntity[]
 
-    @OneToMany(type => AlertVoiceFileEntity, (alert_voice) => alert_voice.caregiver_id)
-    alert_id: AlertVoiceFileEntity[];
-
 }

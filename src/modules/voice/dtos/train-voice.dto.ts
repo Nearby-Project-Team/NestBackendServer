@@ -13,9 +13,9 @@ export class TrainVoiceDto {
 export class TrainCompleteDto {
 
     @IsUUID()
-    caregiver_id: string;
+    email: string;
 
     @IsString()
-    voice_path: string;
+    voice_name: string;
 
 }

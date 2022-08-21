@@ -11,8 +11,8 @@ export class ChatbotConfigService implements HttpModuleOptionsFactory {
 
     createHttpOptions(): HttpModuleOptions {
         return {
-            timeout: this.configService.get<number>('CHATBOT_TIMEOUT'),
-            maxRedirects: this.configService.get<number>('CHATBOT_MAX_REDIRECTION'),
+            timeout: this.configService.get<number>('HTTP_TIMEOUT'),
+            maxRedirects: this.configService.get<number>('HTTP_MAX_REDIRECTION'),
             baseURL: this.configService.get<string>('CHATBOT_URL'),
             headers: {
                 'Content-Type': 'application/json'

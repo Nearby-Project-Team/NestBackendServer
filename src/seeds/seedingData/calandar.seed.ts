@@ -3,12 +3,12 @@ import { faker } from '@faker-js/faker';
 
 export const CalandarSeedData: ICalandarEntity[] = [
     {
-        contents: faker.random.words(5),
+        contents: 'Medicine',
         ScheduleDate: "* * * */7 * *",
         notificationType: "Repeatation"
     },
     {
-        contents: faker.random.words(7),
+        contents: 'Go to walk',
         ScheduleDate: "2022-07-30 21:00",
         notificationType: "one-time"
     }

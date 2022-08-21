@@ -10,6 +10,7 @@ import {
     DeleteDateColumn
 } from 'typeorm';
 import { AlertDataEntity } from './alertData.entity';
+import { VoiceModelEntity } from './voiceModel.entity';
 
 
 @Entity({
@@ -36,11 +37,11 @@ export class AlertVoiceFileEntity extends BaseEntity {
     @DeleteDateColumn()
     deletedAt: Date;
 
-    @ManyToOne(type => CaregiverEntity, (caregiver) => caregiver.alert_id)
+    @ManyToOne(type => VoiceModelEntity, (voice) => voice.alert_id)
     @JoinColumn({
-        name: 'caregiver_id'
+        name: 'voice_id'
     })
-    caregiver_id: CaregiverEntity
+    voice_id: VoiceModelEntity
 
     @ManyToOne(type => AlertDataEntity, (dalert) => dalert.alert_voice)
     @JoinColumn({

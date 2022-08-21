@@ -37,9 +37,13 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
     }),
     PassportModule,
     HttpModule.registerAsync({
-      imports: [ ChatbotConfigModule ],
-      useClass: ChatbotConfigService,
-      inject: [ ChatbotConfigService ]
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        timeout: configService.get<number>('HTTP_TIMEOUT'),
+        maxRedirects: configService.get<number>('HTTP_MAX_REDIRECTS'),
+        baseURL: configService.get<string>('TTS_URL')
+      }),
+      inject: [ConfigService]
     }),
   ],
   controllers: [VoiceController],
