@@ -2,13 +2,13 @@ import { Module } from '@nestjs/common';
 import { CalandarService } from './calandar.service';
 import { CalandarController } from './calandar.controller';
 import { TypeORMRepositoryModule } from 'src/common/repository/typeorm.repository';
-import { CalandarRepository } from 'src/common/repository/calandar.repository';
+import { CalendarRepository } from 'src/common/repository/calendar.repository';
 import { ElderlyRepository } from 'src/common/repository/elderly.repository';
 
 @Module({
   imports: [
     TypeORMRepositoryModule.forCustomRepository([
-      CalandarRepository,
+      CalendarRepository,
       ElderlyRepository
     ]),
   ],

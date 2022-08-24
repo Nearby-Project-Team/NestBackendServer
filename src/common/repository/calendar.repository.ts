@@ -1,9 +1,9 @@
 import { Repository } from "typeorm";
 import { CustomRepository } from "../decorators/typeorm.decorator";
-import { CalandarEntity } from "../entity/calandar.entity";
+import { CalendarEntity } from "../entity/calendar.entity";
 
-@CustomRepository(CalandarEntity)
-export class CalandarRepository extends Repository<CalandarEntity> {
+@CustomRepository(CalendarEntity)
+export class CalendarRepository extends Repository<CalendarEntity> {
 
     private readonly PAGE_NUM = 30;
 

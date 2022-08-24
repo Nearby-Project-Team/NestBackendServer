@@ -15,7 +15,7 @@ import { AppErrorTypeEnum } from 'src/common/error/ErrorType/AppErrorType.enum';
 import { JwtService } from '@nestjs/jwt';
 import { ElderlyTokenPayloadDto } from '../../common/dtos/elderly/token-payload.dto';
 import { UserTypeEnum } from 'src/common/types/user.type';
-import { CalandarRepository } from '../../common/repository/calandar.repository';
+import { CalendarRepository } from '../../common/repository/calendar.repository';
 import { CalendarInfoDto } from './dtos/calendar-info.dto';
 import { ChattingRepository } from '../../common/repository/chatting.repository';
 import { ChattingInfoDto } from './dtos/chat-info.dto';
@@ -25,7 +25,7 @@ export class ElderlyService {
     constructor(
         private readonly elderlyRepository: ElderlyRepository,
         private readonly cgRepository: CaregiverRepository,
-        private readonly calendatRepository: CalandarRepository,
+        private readonly calendatRepository: CalendarRepository,
         private readonly chattingRepository: ChattingRepository,
         private readonly jwtService: JwtService
     ) {}

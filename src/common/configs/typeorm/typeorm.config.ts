@@ -4,7 +4,7 @@ import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
 import { CaregiverEntity } from '../../entity/caregiver.entity';
 import { ElderlyEntity } from '../../entity/elderly.entity';
 import { ChattingEntity } from '../../entity/chatting.entity';
-import { CalandarEntity } from '../../entity/calandar.entity';
+import { CalendarEntity } from '../../entity/calendar.entity';
 import { VerificationEntity } from '../../entity/verificationLog.entity';
 import { VoiceFileEntity } from '../../entity/voiceFile.entity';
 import { VoiceModelEntity } from '../../entity/voiceModel.entity';
@@ -26,7 +26,7 @@ export class MySQLConfigService implements TypeOrmOptionsFactory {
                 CaregiverEntity,
                 ElderlyEntity,
                 ChattingEntity,
-                CalandarEntity,
+                CalendarEntity,
                 VerificationEntity,
                 VoiceFileEntity,
                 VoiceModelEntity,

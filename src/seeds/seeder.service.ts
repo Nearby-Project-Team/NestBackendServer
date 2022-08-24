@@ -2,7 +2,7 @@ import { Injectable, Logger } from '@nestjs/common';
 import { CaregiverSeederService } from './seedService/Caregiver/caregiver.seed';
 import { ElderlySeederService } from './seedService/Elderly/elderly.seed';
 import { VerificationLogSeederService } from './seedService/VerificationLog/verification.seed';
-import { CalandarSeederService } from './seedService/Calandar/calandar.seed';
+import { CalendarSeederService } from './seedService/Calendar/calendar.seed';
 import { ChattingSeederService } from './seedService/Chatting/chatting.seed';
 
 @Injectable()
@@ -12,7 +12,7 @@ export class Seeder {
         private readonly caregiverSeederService: CaregiverSeederService,
         private readonly elderlySeederService: ElderlySeederService,
         private readonly verificationSeederService: VerificationLogSeederService,
-        private readonly calandarSeederService: CalandarSeederService,
+        private readonly calandarSeederService: CalendarSeederService,
         private readonly chattingSeederService: ChattingSeederService
     ) {}
 

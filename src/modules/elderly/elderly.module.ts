@@ -8,7 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from 'src/auth/constants/jwt.constant';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
-import { CalandarRepository } from '../../common/repository/calandar.repository';
+import { CalendarRepository } from '../../common/repository/calendar.repository';
 import { ChattingRepository } from '../../common/repository/chatting.repository';
 
 @Module({
@@ -16,7 +16,7 @@ import { ChattingRepository } from '../../common/repository/chatting.repository'
     TypeORMRepositoryModule.forCustomRepository([
       ElderlyRepository,
       CaregiverRepository,
-      CalandarRepository,
+      CalendarRepository,
       ChattingRepository
     ]),
     JwtModule.register({

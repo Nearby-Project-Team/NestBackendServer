@@ -10,8 +10,8 @@ import {
     JoinColumn
 } from 'typeorm';
 
-@Entity({ name: 'Calandar' })
-export class CalandarEntity extends BaseEntity {
+@Entity({ name: 'Calendar' })
+export class CalendarEntity extends BaseEntity {
 
     @PrimaryGeneratedColumn('uuid')
     uuid: string
