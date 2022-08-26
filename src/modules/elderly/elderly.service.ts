@@ -25,7 +25,7 @@ export class ElderlyService {
     constructor(
         private readonly elderlyRepository: ElderlyRepository,
         private readonly cgRepository: CaregiverRepository,
-        private readonly calendatRepository: CalendarRepository,
+        private readonly calendarRepository: CalendarRepository,
         private readonly chattingRepository: ChattingRepository,
         private readonly jwtService: JwtService
     ) {}
@@ -131,7 +131,7 @@ export class ElderlyService {
     }
 
     async getElderlyCalendar(elderly_id: string, page: number) {
-        const [_c, num] = await this.calendatRepository.findAllCalendarByElderlyId(elderly_id, page);
+        const [_c, num] = await this.calendarRepository.findAllCalendarByElderlyId(elderly_id, page);
         const result = _c.map((calendar): CalendarInfoDto => {
             return {
                 content: calendar.contents,
@@ -141,6 +141,22 @@ export class ElderlyService {
             };
         });
 
+        return {
+            count: num,
+            data: result
+        };
+    }
+
+    async getElderlyCalendarAll(elderly_id: string) {
+        const [_c, num] = await this.calendarRepository.findAllCalendar(elderly_id);
+        const result = _c.map((calendar): CalendarInfoDto => {
+            return {
+                content: calendar.contents,
+                scheduleDate: calendar.ScheduleDate,
+                notificationType: calendar.notificationType,
+                createdAt: calendar.createdAt
+            };
+        });
         return {
             count: num,
             data: result

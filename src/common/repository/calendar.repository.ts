@@ -27,4 +27,21 @@ export class CalendarRepository extends Repository<CalendarEntity> {
         return _c;
     }
 
+    async findAllCalendar(elderly_id: string) {
+        const _c = await this.findAndCount({
+            relations: {
+                elderly_id: true
+            },
+            where: {
+                elderly_id: {
+                    uuid: elderly_id
+                }
+            },
+            order: {
+                createdAt: 'DESC'
+            }
+        });
+        return _c;
+    }
+
 }

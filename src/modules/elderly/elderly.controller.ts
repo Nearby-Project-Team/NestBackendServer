@@ -57,6 +57,13 @@ export class ElderlyController {
     return await this.elderlyService.getElderlyCalendar(elderly_id, page);
   }
 
+  @Get('/calender/all')
+  async getElderlyCalendarAll(
+    @Query('elderly_id') elderly_id: string
+  ) {
+    return await this.elderlyService.getElderlyCalendarAll(elderly_id);
+  }
+
   @Get('/chat')
   async getElderlyChatting(
     @Query('elderly_id') elderly_id: string,
