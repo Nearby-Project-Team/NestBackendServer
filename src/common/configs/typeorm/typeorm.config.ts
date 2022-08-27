@@ -9,6 +9,8 @@ import { VerificationEntity } from '../../entity/verificationLog.entity';
 import { VoiceFileEntity } from '../../entity/voiceFile.entity';
 import { VoiceModelEntity } from '../../entity/voiceModel.entity';
 import { VoiceModelRelationEntity } from '../../entity/voiceRelation.entity';
+import { AlertVoiceFileEntity } from '../../entity/alertVoiceFile.entity';
+import { AlertDataEntity } from '../../entity/alertData.entity';
 
 @Injectable()
 export class MySQLConfigService implements TypeOrmOptionsFactory {
@@ -30,7 +32,9 @@ export class MySQLConfigService implements TypeOrmOptionsFactory {
                 VerificationEntity,
                 VoiceFileEntity,
                 VoiceModelEntity,
-                VoiceModelRelationEntity
+                VoiceModelRelationEntity,
+                AlertVoiceFileEntity,
+                AlertDataEntity
             ],
             synchronize: process.env.NODE_ENV === 'development'
         }
