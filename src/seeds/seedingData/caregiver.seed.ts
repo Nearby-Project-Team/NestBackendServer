@@ -7,7 +7,8 @@ export const CaregiverSeedData: ICaregiverEntity[] = [
         password: "1212",
         status: "Y",
         phone_number: "01040620460",
-        agreement: "Y"
+        agreement: "Y",
+        token: "123456789"
         
     }, 
     {
@@ -16,6 +17,7 @@ export const CaregiverSeedData: ICaregiverEntity[] = [
         password: '1212',
         status: 'Y',
         phone_number: '01053934775',
-        agreement: "Y"
+        agreement: "Y",
+        token: "123456789"
     }
 ];

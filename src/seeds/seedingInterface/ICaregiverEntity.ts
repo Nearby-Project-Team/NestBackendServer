@@ -5,4 +5,5 @@ export interface ICaregiverEntity {
     status: string;
     phone_number: string;
     agreement: string;
+    token: string;
 }
