@@ -91,6 +91,7 @@ export class ChatService {
             voice_target: _vm.name,
             msg: msg
         };
+        console.log(_url);
         const _res = await this.httpService.axiosRef.post(`${_url}/tts/inference`, _data, {
             responseType: 'stream'
         });
