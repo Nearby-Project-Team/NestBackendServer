@@ -4,5 +4,5 @@ export interface ICaregiverEntity {
     password: string;
     status: string;
     phone_number: string;
-    agreement: boolean;
+    agreement: string;
 }
