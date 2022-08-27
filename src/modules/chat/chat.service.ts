@@ -75,7 +75,7 @@ export class ChatService {
 
     async getChatbotResponse(contents: string, elderly_id: string): Promise<AxiosResponse<ChatbotResponseDto>> {
         const _url = this.configService.get<string>('CHATBOT_URL');
-        return this.httpService.axiosRef.post(`${_url}/chatbot`, {
+        return this.httpService.axiosRef.post(`${_url}/chat`, {
             msg: contents,
             elderly_id: elderly_id
         });
