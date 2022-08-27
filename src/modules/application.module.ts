@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CalandarModule } from './calendar/calandar.module';
+import { CalendarModule } from './calendar/calendar.module';
 import { ChatModule } from './chat/chat.module';
 import { VoiceModule } from './voice/voice.module';
 import { ElderlyModule } from './elderly/elderly.module';
@@ -7,7 +7,7 @@ import { ElderlyModule } from './elderly/elderly.module';
 @Module({
   imports: [
       ChatModule,
-      CalandarModule,
+      CalendarModule,
       VoiceModule,
       ElderlyModule
   ]

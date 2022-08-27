@@ -8,7 +8,7 @@ import { OneOFFScheduleDto } from './dto/ooschedule.dto';
 import { RepeatScheduleDto } from './dto/reschedule.dto';
 
 @Injectable()
-export class CalandarService {
+export class CalendarService {
 
     constructor(
         private readonly calendarRepository: CalendarRepository,

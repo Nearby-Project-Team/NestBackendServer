@@ -43,7 +43,7 @@ export class AppError extends Error {
             case AppErrorTypeEnum.NO_USERS_IN_DB:
                 res = {
                     type: AppErrorTypeEnum.NO_USERS_IN_DB,
-                    httpStatus: HttpStatus.NOT_FOUND,
+                    httpStatus: HttpStatus.BAD_REQUEST,
                     errorMessage: 'No Users exits in the database',
                     userMessage: 'No Users. Create some.'
                 };

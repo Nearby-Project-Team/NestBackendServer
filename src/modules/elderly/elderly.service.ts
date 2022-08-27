@@ -132,6 +132,7 @@ export class ElderlyService {
 
     async getElderlyCalendar(elderly_id: string, page: number) {
         const [_c, num] = await this.calendarRepository.findAllCalendarByElderlyId(elderly_id, page);
+        if (num === 0) throw new AppError(AppErrorTypeEnum.NO_USERS_IN_DB);
         const result = _c.map((calendar): CalendarInfoDto => {
             return {
                 content: calendar.contents,
@@ -149,6 +150,7 @@ export class ElderlyService {
 
     async getElderlyCalendarAll(elderly_id: string) {
         const [_c, num] = await this.calendarRepository.findAllCalendar(elderly_id);
+        if (num === 0) throw new AppError(AppErrorTypeEnum.NO_USERS_IN_DB);
         const result = _c.map((calendar): CalendarInfoDto => {
             return {
                 content: calendar.contents,

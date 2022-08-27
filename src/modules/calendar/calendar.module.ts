@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { CalandarService } from './calandar.service';
-import { CalandarController } from './calandar.controller';
+import { CalendarService } from './calendar.service';
+import { CalendarController } from './calendar.controller';
 import { TypeORMRepositoryModule } from 'src/common/repository/typeorm.repository';
 import { CalendarRepository } from 'src/common/repository/calendar.repository';
 import { ElderlyRepository } from 'src/common/repository/elderly.repository';
@@ -12,7 +12,7 @@ import { ElderlyRepository } from 'src/common/repository/elderly.repository';
       ElderlyRepository
     ]),
   ],
-  controllers: [CalandarController],
-  providers: [CalandarService]
+  controllers: [CalendarController],
+  providers: [CalendarService]
 })
-export class CalandarModule {}
+export class CalendarModule {}
