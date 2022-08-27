@@ -93,7 +93,7 @@ export class ChatService {
         };
         this.logger.debug(`${_url}/tts/inference`);
         const _res = await this.httpService.axiosRef.post(`${_url}/tts/inference`, _data, {
-            responseType: 'stream'
+            responseType: 'blob'
         });
         return _res;
     }
