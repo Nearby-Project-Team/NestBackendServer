@@ -76,7 +76,10 @@ export class VoiceService {
 
     async trainVoiceComplete(item: TrainCompleteDto) {
         // TTS API를 부르고 해당 결과 Voice를 AWS에 저장함. 
-        const _res = await this.httpService.axiosRef.get('/tts/train');
+        const _res = await this.httpService.axiosRef.post('/tts/train', { 
+            caregiver_id: item.email,
+            voice_target: item.voice_target
+        });
         if (_res.status >= 400) return {
             msg: "Failed!"
         };
