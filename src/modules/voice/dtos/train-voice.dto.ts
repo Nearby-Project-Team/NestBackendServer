@@ -12,7 +12,7 @@ export class TrainVoiceDto {
 
 export class TrainCompleteDto {
 
-    @IsString()
+    @IsEmail() // Test IsEmail
     email: string;
 
     @IsString()
