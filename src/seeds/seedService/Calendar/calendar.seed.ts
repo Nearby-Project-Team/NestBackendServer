@@ -4,7 +4,7 @@ import { CalendarEntity } from '../../../common/entity/calendar.entity';
 import { Repository } from 'typeorm';
 import { ElderlyEntity } from '../../../common/entity/elderly.entity';
 import { CalandarSeedData } from '../../seedingData/calendar.seed';
-import { ICalendarEntity } from '../../../seeds/seedingInterface/ICalendarEntity';
+import { ICalendarEntity } from '../../seedingInterface/ICalendarEntity';
 import { ElderlySeedData } from '../../seedingData/elderly.seed';
 
 @Injectable()
