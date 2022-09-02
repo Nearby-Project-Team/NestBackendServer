@@ -14,7 +14,6 @@ import { ElderlyEntity } from './elderly.entity';
 import { VoiceFileEntity } from './voiceFile.entity';
 import { VoiceModelEntity } from './voiceModel.entity';
 import { VerificationEntity } from './verificationLog.entity';
-import { AlertVoiceFileEntity } from './alertVoiceFile.entity';
 
 @Entity({ name: 'Caregiver' })
 export class CaregiverEntity extends BaseEntity {
