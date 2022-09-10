@@ -23,6 +23,9 @@ export class ElderlyRepository extends Repository<ElderlyEntity> {
 
     async findElderlyById(uuid: string) {
         const _e = await this.findOne({
+            relations: {
+                caregiver_id: true
+            },
             where: {
                 uuid: uuid
             }

@@ -29,9 +29,8 @@ export class S3Service implements MulterOptionsFactory {
             key: (req, file: Express.Multer.File, cb) => {
                 const url: string = req._parsedUrl.path;
                 const cg_id = url.split('/')[3];
-                const vname = url.split('/')[4];
-                const uuid = v4();
-                cb(null, `${cg_id}/${vname}/${uuid}${extname(file.originalname)}`);
+                const vname = url.split('/')[4]; // 추후에 수정이 필요함. => 어쨌든 화자 정보
+                cb(null, `${cg_id}/${vname}/audio/${file.originalname}`);
             }
         });
 

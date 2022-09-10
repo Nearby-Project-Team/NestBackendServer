@@ -4,11 +4,13 @@ import { TypeOrmModuleOptions, TypeOrmOptionsFactory } from "@nestjs/typeorm";
 import { CaregiverEntity } from '../../entity/caregiver.entity';
 import { ElderlyEntity } from '../../entity/elderly.entity';
 import { ChattingEntity } from '../../entity/chatting.entity';
-import { CalandarEntity } from '../../entity/calandar.entity';
+import { CalendarEntity } from '../../entity/calendar.entity';
 import { VerificationEntity } from '../../entity/verificationLog.entity';
 import { VoiceFileEntity } from '../../entity/voiceFile.entity';
 import { VoiceModelEntity } from '../../entity/voiceModel.entity';
 import { VoiceModelRelationEntity } from '../../entity/voiceRelation.entity';
+import { AlertVoiceFileEntity } from '../../entity/alertVoiceFile.entity';
+import { AlertDataEntity } from '../../entity/alertData.entity';
 
 @Injectable()
 export class MySQLConfigService implements TypeOrmOptionsFactory {
@@ -26,11 +28,13 @@ export class MySQLConfigService implements TypeOrmOptionsFactory {
                 CaregiverEntity,
                 ElderlyEntity,
                 ChattingEntity,
-                CalandarEntity,
+                CalendarEntity,
                 VerificationEntity,
                 VoiceFileEntity,
                 VoiceModelEntity,
-                VoiceModelRelationEntity
+                VoiceModelRelationEntity,
+                AlertVoiceFileEntity,
+                AlertDataEntity
             ],
             synchronize: process.env.NODE_ENV === 'development'
         }

@@ -12,6 +12,11 @@ import { S3Service } from '../../providers/multer/s3.service';
 import { AWSProviderModule } from '../../providers/aws/aws.module';
 import { PassportModule } from '@nestjs/passport';
 import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
+import { ElderlyRepository } from '../../common/repository/elderly.repository';
+import { HttpModule } from '@nestjs/axios';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TTSConfigModule } from '../../common/configs/TTS/tts.module';
+import { TTSConfigService } from '../../common/configs/TTS/tts.config';
 
 @Module({
   imports: [
@@ -21,13 +26,21 @@ import { JwtStrategy } from 'src/auth/strategy/jwt.strategy';
       VoiceModelRelationEntity
     ]),
     TypeORMRepositoryModule.forCustomRepository([
-      CaregiverRepository
+      CaregiverRepository,
+      ElderlyRepository
     ]),
     AWSProviderModule,
     MulterModule.registerAsync({
-      useClass: S3Service
+      imports: [ ConfigModule ],
+      useClass: S3Service,
+      inject: [ ConfigService ]
     }),
-    PassportModule
+    PassportModule,
+    HttpModule.registerAsync({
+      imports: [ TTSConfigModule ],
+      useClass: TTSConfigService,
+      inject: [ TTSConfigService ]
+    }),
   ],
   controllers: [VoiceController],
   providers: [

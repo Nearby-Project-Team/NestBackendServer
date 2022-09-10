@@ -1,4 +1,5 @@
 import { ElderlyEntity } from './elderly.entity';
+import { ScheduleTypeEnum } from 'src/common/types/schedule.type';
 import {
     Column,
     PrimaryGeneratedColumn,
@@ -9,8 +10,8 @@ import {
     JoinColumn
 } from 'typeorm';
 
-@Entity({ name: 'Calandar' })
-export class CalandarEntity extends BaseEntity {
+@Entity({ name: 'Calendar' })
+export class CalendarEntity extends BaseEntity {
 
     @PrimaryGeneratedColumn('uuid')
     uuid: string
@@ -30,7 +31,7 @@ export class CalandarEntity extends BaseEntity {
         type: 'varchar',
         length: 50
     })
-    notificationType: string
+    notificationType: ScheduleTypeEnum;
 
     @CreateDateColumn()
     createdAt: Date

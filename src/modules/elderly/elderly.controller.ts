@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Res, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/common/guard/jwt-auth/jwt.guard';
 import { ElderlyInfoDto } from './dtos/elderlyInfo.dto';
 import { ElderlySearchDto } from './dtos/elderlySearch.dto';
@@ -42,25 +42,34 @@ export class ElderlyController {
     return await this.elderlyService.verifyElderly(token, email, info);
   }
 
-  @Get('/list')
+  @Get('/list/:cg_email')
   async getElderlyList(
-
+    @Param('cg_email') cg_email: string
   ) {
-
+    return await this.elderlyService.getElderlyList(cg_email);
   }
 
-  @Get('/calendar/:cg_email')
+  @Get('/calendar')
   async getElderlyCalendar(
-
+    @Query('elderly_id') elderly_id: string,
+    @Query('page') page: number
   ) {
-
+    return await this.elderlyService.getElderlyCalendar(elderly_id, page);
   }
 
-  @Get('/chat/:cg_email')
-  async getElderlyChatting(
-
+  @Get('/calender/all')
+  async getElderlyCalendarAll(
+    @Query('elderly_id') elderly_id: string
   ) {
+    return await this.elderlyService.getElderlyCalendarAll(elderly_id);
+  }
 
+  @Get('/chat')
+  async getElderlyChatting(
+    @Query('elderly_id') elderly_id: string,
+    @Query('page') page: number
+  ) {
+    return await this.elderlyService.getElderlyChatting(elderly_id, page);
   }
 
 }

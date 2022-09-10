@@ -18,7 +18,10 @@ import { WsException } from '@nestjs/websockets';
 import { ElderlyRepository } from '../../common/repository/elderly.repository';
 import { WebSocketErrorTypeEnum } from 'src/common/error/ErrorType/WebSocketErrorType.enum';
 import { WebSocketExceptionDispatcher } from 'src/common/exceptions/websocket.exception';
-
+import { ConfigService } from '@nestjs/config';
+import { HttpService } from '@nestjs/axios';
+import { InferenceVoiceDto } from './dtos/inference.dto';
+import { VoiceModelRepository } from '../../common/repository/voiceModel.repository';
 
 @WebSocketGateway(9091, {
   namespace: 'chat',
@@ -31,7 +34,8 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     private readonly logger: Logger,
     private readonly chatService: ChatService,
     private readonly chatRoomService: ChatRoomService,
-    private readonly elderlyRepository: ElderlyRepository
+    private readonly elderlyRepository: ElderlyRepository,
+    private readonly httpService: HttpService,
   ) {}
 
   @WebSocketServer()
@@ -112,9 +116,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
       true
     );
     // 3. TTS를 통한 음성 합성
-
-    // 4. Client를 향해 Emit
-    this.server.to(`room:${_u.uuid}`).emit('receive_message', chatbotRes.data.response);
+    const _res = await this.chatService.getTTSInferenceResult(_u.caregiver_id.email, chatbotRes.data.response);
+    if (!_res || _res.status >= 400) this.server.to(`room:${_u.uuid}`).emit('receive_message', "Failed to Synthesize voice");
+    else this.server.to(`room:${_u.uuid}`).emit('receive_message', _res.data); // 음성 파일 생성됨 (메모리) => FS 저장(이름 상관 없음) => 메모리에 올려서 HTTP로 Nest 보내야함
+    // this.server.to(`room:${_u.uuid}`).emit('receive_message', chatbotRes.data);
   }
 
   @SubscribeMessage('send_message_caregiver')
@@ -124,11 +129,11 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
   ) {
     // TTS로 음성을 합성하여 내보냄.
     const _u = await this.chatService.getUserFromSocket(client); // 사용자 인증을 거침
-    if (_u instanceof CaregiverEntity) throw new WsException('Invalid Access! This API is not for Elderly!!');
+    if (_u instanceof ElderlyEntity) throw new WsException('Invalid Access! This API is not for Elderly!!');
     // 1. TTS를 통한 음성 합성
-    
-    // 2. Client를 향해 Emit
-    this.server.to(`room:${_u.uuid}`).emit('receive_message');
+    const _res = await this.chatService.getTTSInferenceResult(_u.email, data);
+    if (!_res || _res.status >= 400) this.server.to(`room:${_u.uuid}`).emit('receive_message', "Failed to Synthesize voice");
+    else this.server.to(`room:${_u.uuid}`).emit('receive_message', _res.data);
   }
 
   @SubscribeMessage('get_chat_room_list') // Caregievr 전용

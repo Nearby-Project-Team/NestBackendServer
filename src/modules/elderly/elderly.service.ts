@@ -8,7 +8,6 @@ import { ElderlyRepository } from 'src/common/repository/elderly.repository';
 import { AgreementEnum } from 'src/common/types/agreement.type';
 import { ElderlyInfoDto } from './dtos/elderlyInfo.dto';
 import { LinkCaregiverDto } from './dtos/linkCaregiver.dto';
-import { baseUrlConfig } from '../../common/configs/url/url.config';
 import { ElderlySearchDto } from './dtos/elderlySearch.dto';
 import { ElderlyEntity } from 'src/common/entity/elderly.entity';
 import { AppError } from 'src/common/error/ErrorEntity/AppError';
@@ -16,12 +15,18 @@ import { AppErrorTypeEnum } from 'src/common/error/ErrorType/AppErrorType.enum';
 import { JwtService } from '@nestjs/jwt';
 import { ElderlyTokenPayloadDto } from '../../common/dtos/elderly/token-payload.dto';
 import { UserTypeEnum } from 'src/common/types/user.type';
+import { CalendarRepository } from '../../common/repository/calendar.repository';
+import { CalendarInfoDto } from './dtos/calendar-info.dto';
+import { ChattingRepository } from '../../common/repository/chatting.repository';
+import { ChattingInfoDto } from './dtos/chat-info.dto';
 
 @Injectable()
 export class ElderlyService {
     constructor(
         private readonly elderlyRepository: ElderlyRepository,
         private readonly cgRepository: CaregiverRepository,
+        private readonly calendarRepository: CalendarRepository,
+        private readonly chattingRepository: ChattingRepository,
         private readonly jwtService: JwtService
     ) {}
 
@@ -49,7 +54,8 @@ export class ElderlyService {
 
     async loginElderly(elderly_id: string, name: string) {
         const _e = await this.elderlyRepository.findElderlyById(elderly_id);
-        if (_e === null || _e.name !== name) throw new RequestError(RequestErrorTypeEnum.INVALID_PASSWORD);
+        if (_e === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
+        if (_e.name !== name) throw new RequestError(RequestErrorTypeEnum.INVALID_PASSWORD);
         return {
             msg: "Login Success!"
         };
@@ -106,10 +112,11 @@ export class ElderlyService {
     }
 
     async getElderlyList(cg_email: string) {
-        const [_l, num] = await this.elderlyRepository.findAllElderlyCaregiver(cg_email);
+        const email = Buffer.from(cg_email, 'base64').toString('utf-8');
+        const [_l, num] = await this.elderlyRepository.findAllElderlyCaregiver(email);
         const result = _l.map((elderly): ElderlyInfoDto => {
             return {
-                cg_email: cg_email,
+                cg_email: email,
                 name: elderly.name,
                 birthdate: elderly.birthday,
                 phone_number: elderly.phone_number,
@@ -123,12 +130,54 @@ export class ElderlyService {
         };
     }
 
-    async getElderlyCalendar(cg_email: string, elderly_id: string) {
-        
+    async getElderlyCalendar(elderly_id: string, page: number) {
+        const [_c, num] = await this.calendarRepository.findAllCalendarByElderlyId(elderly_id, page);
+        if (num === 0) throw new AppError(AppErrorTypeEnum.NO_USERS_IN_DB);
+        const result = _c.map((calendar): CalendarInfoDto => {
+            return {
+                content: calendar.contents,
+                scheduleDate: calendar.ScheduleDate,
+                notificationType: calendar.notificationType,
+                createdAt: calendar.createdAt
+            };
+        });
+
+        return {
+            count: num,
+            data: result
+        };
     }
 
-    async getElderlyChatting(cg_email: string, elderly_id: string) {
+    async getElderlyCalendarAll(elderly_id: string) {
+        const [_c, num] = await this.calendarRepository.findAllCalendar(elderly_id);
+        if (num === 0) throw new AppError(AppErrorTypeEnum.NO_USERS_IN_DB);
+        const result = _c.map((calendar): CalendarInfoDto => {
+            return {
+                content: calendar.contents,
+                scheduleDate: calendar.ScheduleDate,
+                notificationType: calendar.notificationType,
+                createdAt: calendar.createdAt
+            };
+        });
+        return {
+            count: num,
+            data: result
+        };
+    }
 
+    async getElderlyChatting(elderly_id: string, page: number) {
+        const [_c, num] = await this.chattingRepository.getChattingHistory(elderly_id, page);
+        const result = _c.map((chat): ChattingInfoDto => {
+            return {
+                content: chat.contents,
+                sender: chat.sender,
+                createdAt: chat.createdAt
+            };
+        });
+        return {
+            count: num,
+            data: result
+        };
     }
 
 }
