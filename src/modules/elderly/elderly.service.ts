@@ -19,6 +19,7 @@ import { CalendarRepository } from '../../common/repository/calendar.repository'
 import { CalendarInfoDto } from './dtos/calendar-info.dto';
 import { ChattingRepository } from '../../common/repository/chatting.repository';
 import { ChattingInfoDto } from './dtos/chat-info.dto';
+import { ScheduleTypeEnum } from 'src/common/types/schedule.type';
 
 @Injectable()
 export class ElderlyService {
@@ -116,6 +117,7 @@ export class ElderlyService {
         const [_l, num] = await this.elderlyRepository.findAllElderlyCaregiver(email);
         const result = _l.map((elderly): ElderlyInfoDto => {
             return {
+                elderly_id: elderly.uuid,
                 cg_email: email,
                 name: elderly.name,
                 birthdate: elderly.birthday,
@@ -151,6 +153,22 @@ export class ElderlyService {
     async getElderlyCalendarAll(elderly_id: string) {
         const [_c, num] = await this.calendarRepository.findAllCalendar(elderly_id);
         if (num === 0) throw new AppError(AppErrorTypeEnum.NO_USERS_IN_DB);
+        const result = _c.map((calendar): CalendarInfoDto => {
+            return {
+                content: calendar.contents,
+                scheduleDate: calendar.ScheduleDate,
+                notificationType: calendar.notificationType,
+                createdAt: calendar.createdAt
+            };
+        });
+        return {
+            count: num,
+            data: result
+        };
+    }
+
+    async getElderlyTypedCalendar(elderly_id: string, no_type: ScheduleTypeEnum) {
+        const [_c, num] = await this.calendarRepository.findTypedCalendar(elderly_id, no_type);
         const result = _c.map((calendar): CalendarInfoDto => {
             return {
                 content: calendar.contents,

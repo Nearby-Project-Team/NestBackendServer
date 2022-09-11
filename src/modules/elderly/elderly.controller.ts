@@ -4,6 +4,7 @@ import { ElderlyInfoDto } from './dtos/elderlyInfo.dto';
 import { ElderlySearchDto } from './dtos/elderlySearch.dto';
 import { LinkCaregiverDto } from './dtos/linkCaregiver.dto';
 import { ElderlyService } from './elderly.service';
+import { ScheduleTypeEnum } from 'src/common/types/schedule.type';
 
 @Controller('elderly')
 export class ElderlyController {
@@ -62,6 +63,14 @@ export class ElderlyController {
     @Query('elderly_id') elderly_id: string
   ) {
     return await this.elderlyService.getElderlyCalendarAll(elderly_id);
+  }
+
+  @Get('/calendar/type')
+  async getElderlyCalendarType(
+    @Query('elderly_id') elderly_id: string,
+    @Query('notification_type') no_type: ScheduleTypeEnum
+  ) {
+    return await this.elderlyService.getElderlyTypedCalendar(elderly_id, no_type);
   }
 
   @Get('/chat')

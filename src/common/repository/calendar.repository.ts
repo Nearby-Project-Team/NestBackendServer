@@ -1,6 +1,7 @@
 import { Repository } from "typeorm";
 import { CustomRepository } from "../decorators/typeorm.decorator";
 import { CalendarEntity } from "../entity/calendar.entity";
+import { ScheduleTypeEnum } from 'src/common/types/schedule.type';
 
 @CustomRepository(CalendarEntity)
 export class CalendarRepository extends Repository<CalendarEntity> {
@@ -36,6 +37,24 @@ export class CalendarRepository extends Repository<CalendarEntity> {
                 elderly_id: {
                     uuid: elderly_id
                 }
+            },
+            order: {
+                createdAt: 'DESC'
+            }
+        });
+        return _c;
+    }
+
+    async findTypedCalendar(elderly_id: string, type: ScheduleTypeEnum) {
+        const _c = await this.findAndCount({
+            relations: {
+                elderly_id: true
+            },
+            where: {
+                elderly_id: {
+                    uuid: elderly_id
+                },
+                notificationType: type
             },
             order: {
                 createdAt: 'DESC'
