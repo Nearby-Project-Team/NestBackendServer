@@ -76,7 +76,8 @@ export class AuthService {
 
     async register(user: RegisterDto) {
         const _u = await this.cgRepository.findUserByEmail(user.email);
-        if (_u) throw new AppError(AppErrorTypeEnum.USER_EXISTS);
+        const _up = await this.cgRepository.findUserByPhoneNumber(user.phone_number);
+        if (_u || _up) throw new AppError(AppErrorTypeEnum.USER_EXISTS);
 
         const refreshToken = randomBytes(20).toString('hex');
         const newUser = this.cgRepository.create({ 

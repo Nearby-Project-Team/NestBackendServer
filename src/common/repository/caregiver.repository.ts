@@ -12,4 +12,13 @@ export class CaregiverRepository extends Repository<CaregiverEntity> {
         }); 
         return _u;
     }
+
+    async findUserByPhoneNumber(phone_number: string) {
+        const _u = await this.findOne({
+            where: {
+                phone_number: phone_number
+            }
+        });
+        return _u;
+    }
 }

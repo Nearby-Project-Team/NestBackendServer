@@ -133,8 +133,9 @@ export class ElderlyService {
     }
 
     async getElderlyCalendar(elderly_id: string, page: number) {
+        const _e = await this.elderlyRepository.findElderlyById(elderly_id);
+        if (_e === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
         const [_c, num] = await this.calendarRepository.findAllCalendarByElderlyId(elderly_id, page);
-        if (num === 0) throw new AppError(AppErrorTypeEnum.NO_USERS_IN_DB);
         const result = _c.map((calendar): CalendarInfoDto => {
             return {
                 content: calendar.contents,
@@ -151,6 +152,8 @@ export class ElderlyService {
     }
 
     async getElderlyCalendarAll(elderly_id: string) {
+        const _e = await this.elderlyRepository.findElderlyById(elderly_id);
+        if (_e === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
         const [_c, num] = await this.calendarRepository.findAllCalendar(elderly_id);
         if (num === 0) throw new AppError(AppErrorTypeEnum.NO_USERS_IN_DB);
         const result = _c.map((calendar): CalendarInfoDto => {
@@ -168,6 +171,8 @@ export class ElderlyService {
     }
 
     async getElderlyTypedCalendar(elderly_id: string, no_type: ScheduleTypeEnum) {
+        const _e = await this.elderlyRepository.findElderlyById(elderly_id);
+        if (_e === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
         const [_c, num] = await this.calendarRepository.findTypedCalendar(elderly_id, no_type);
         const result = _c.map((calendar): CalendarInfoDto => {
             return {
