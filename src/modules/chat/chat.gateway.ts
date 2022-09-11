@@ -18,10 +18,7 @@ import { WsException } from '@nestjs/websockets';
 import { ElderlyRepository } from '../../common/repository/elderly.repository';
 import { WebSocketErrorTypeEnum } from 'src/common/error/ErrorType/WebSocketErrorType.enum';
 import { WebSocketExceptionDispatcher } from 'src/common/exceptions/websocket.exception';
-import { ConfigService } from '@nestjs/config';
 import { HttpService } from '@nestjs/axios';
-import { InferenceVoiceDto } from './dtos/inference.dto';
-import { VoiceModelRepository } from '../../common/repository/voiceModel.repository';
 
 @WebSocketGateway(9091, {
   namespace: 'chat',
@@ -119,7 +116,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     const _res = await this.chatService.getTTSInferenceResult(_u.caregiver_id.email, chatbotRes.data.response);
     if (!_res || _res.status >= 400) this.server.to(`room:${_u.uuid}`).emit('receive_message', "Failed to Synthesize voice");
     else { 
-      this.server.to(`room:${_u.uuid}`).emit('receive_message', chatbotRes.data);
+      this.server.to(`room:${_u.uuid}`).emit('receive_message', chatbotRes.data.response);
       this.server.to(`room:${_u.uuid}`).emit('receive_voice', _res.data); // 음성 파일 생성됨 (메모리) => FS 저장(이름 상관 없음) => 메모리에 올려서 HTTP로 Nest 보내야함
     }
     // this.server.to(`room:${_u.uuid}`).emit('receive_message', chatbotRes.data);
