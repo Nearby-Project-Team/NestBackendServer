@@ -118,7 +118,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     // 3. TTS를 통한 음성 합성
     const _res = await this.chatService.getTTSInferenceResult(_u.caregiver_id.email, chatbotRes.data.response);
     if (!_res || _res.status >= 400) this.server.to(`room:${_u.uuid}`).emit('receive_message', "Failed to Synthesize voice");
-    else this.server.to(`room:${_u.uuid}`).emit('receive_message', _res.data); // 음성 파일 생성됨 (메모리) => FS 저장(이름 상관 없음) => 메모리에 올려서 HTTP로 Nest 보내야함
+    else { 
+      this.server.to(`room:${_u.uuid}`).emit('receive_message', chatbotRes.data);
+      this.server.to(`room:${_u.uuid}`).emit('receive_voice', _res.data); // 음성 파일 생성됨 (메모리) => FS 저장(이름 상관 없음) => 메모리에 올려서 HTTP로 Nest 보내야함
+    }
     // this.server.to(`room:${_u.uuid}`).emit('receive_message', chatbotRes.data);
   }
 
@@ -133,7 +136,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     // 1. TTS를 통한 음성 합성
     const _res = await this.chatService.getTTSInferenceResult(_u.email, data);
     if (!_res || _res.status >= 400) this.server.to(`room:${_u.uuid}`).emit('receive_message', "Failed to Synthesize voice");
-    else this.server.to(`room:${_u.uuid}`).emit('receive_message', _res.data);
+    else {
+      this.server.to(`room:${_u.uuid}`).emit('receive_message', data);
+      this.server.to(`room:${_u.uuid}`).emit('receive_voice', _res.data);
+    }
   }
 
   @SubscribeMessage('get_chat_room_list') // Caregievr 전용
