@@ -91,8 +91,8 @@ export class ChatService {
             voice_target: _vm.name,
             msg: msg
         };
-        this.logger.debug(`${_url}/tts/inference`);
-        this.logger.debug(JSON.stringify(_data));
+        // this.logger.debug(`${_url}/tts/inference`);
+        // this.logger.debug(JSON.stringify(_data));
         const _res = await this.httpService.axiosRef.post(`${_url}/tts/inference`, _data, {
             responseType: 'blob'
         });
