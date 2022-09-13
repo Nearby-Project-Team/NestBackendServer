@@ -1,13 +1,10 @@
 import { 
-    IsEmail, 
-    IsPhoneNumber, 
     IsString 
 } from "class-validator";
 
 export class RegisterDto {
 
     @IsString()
-    @IsEmail()
     public readonly email: string;
 
     @IsString()

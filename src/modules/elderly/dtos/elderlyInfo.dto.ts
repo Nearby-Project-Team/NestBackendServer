@@ -1,4 +1,4 @@
-import { IsDateString, IsString, IsEmail, IsUUID } from "class-validator";
+import { IsDateString, IsString, IsUUID } from "class-validator";
 import { AgreementEnum } from "src/common/types/agreement.type";
 
 export class ElderlyInfoDto {
@@ -6,7 +6,7 @@ export class ElderlyInfoDto {
     @IsUUID()
     elderly_id: string;
 
-    @IsEmail() 
+    @IsString() 
     cg_email: string;
 
     @IsString()

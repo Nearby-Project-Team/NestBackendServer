@@ -1,8 +1,8 @@
-import { IsAlpha, IsAlphanumeric, IsEmail } from 'class-validator';
+import { IsAlpha, IsAlphanumeric, IsString } from 'class-validator';
 
 export class CreateCaregiverDTO {
     
-    @IsEmail()
+    @IsString()
     email: string
 
     @IsAlpha()
