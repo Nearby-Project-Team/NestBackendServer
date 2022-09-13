@@ -37,7 +37,9 @@ export class ElderlyService {
         const _u = await this.cgRepository.findUserByEmail(cg_email);
         if (_u === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
         const _e = this.elderlyRepository.create({ 
-            ...e_info, 
+            name: e_info.name,
+            birthday: e_info.birthdate,
+            phone_number: e_info.phone_number, 
             agreement: AgreementEnum.agree, 
             caregiver_id: _u
         });
