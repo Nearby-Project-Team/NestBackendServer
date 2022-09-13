@@ -28,10 +28,10 @@ export class ElderlyController {
 
   @Post('/login')
   async elderlyLogin(
-    @Body('uuid') elderly_id: string,
+    @Body('cg_email') cg_email: string,
     @Body('name') elderly_name: string,
   ) {
-    return this.elderlyService.loginElderly(elderly_id, elderly_name);
+    return this.elderlyService.loginElderly(cg_email, elderly_name);
   }
 
   @Post('/verify/:email/:token')

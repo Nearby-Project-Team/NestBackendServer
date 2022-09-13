@@ -56,10 +56,20 @@ export class ElderlyService {
         };
     }
 
-    async loginElderly(elderly_id: string, name: string) {
-        const _e = await this.elderlyRepository.findElderlyById(elderly_id);
+    async loginElderly(cg_email: string, name: string) {
+        const _e = await this.elderlyRepository.findOne({
+            relations: {
+                caregiver_id: true
+            },
+            where: {
+                caregiver_id: {
+                    email: cg_email
+                },
+                name: name
+            }
+        });
         if (_e === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
-        if (_e.name !== name) throw new RequestError(RequestErrorTypeEnum.INVALID_PASSWORD);
+        
         return {
             msg: "Login Success!"
         };
