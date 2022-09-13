@@ -87,7 +87,7 @@ export class ChatService {
         this.logger.debug(caregiver_id);
         const _vm = await this.vmRepository.findVoiceModelByCaregiverId(_u.uuid);
         this.logger.debug(_vm.status);
-        if (_vm.status !== VoiceTypeEnum.NOT_TRAINED) return false;
+        if (_vm.status === VoiceTypeEnum.NOT_TRAINED) return false;
         const _data: InferenceVoiceDto = {
             caregiver_id: caregiver_id,
             voice_target: _vm.name,
