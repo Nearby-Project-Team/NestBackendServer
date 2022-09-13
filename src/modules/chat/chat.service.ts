@@ -84,7 +84,9 @@ export class ChatService {
     async getTTSInferenceResult(caregiver_id: string, msg: string) {
         const _url = this.configService.get<string>('TTS_URL');
         const _u = await this.cgRepository.findUserByEmail(caregiver_id);
+        this.logger.debug(caregiver_id);
         const _vm = await this.vmRepository.findVoiceModelByCaregiverId(_u.uuid);
+        this.logger.debug(_vm.status);
         if (_vm.status !== VoiceTypeEnum.NOT_TRAINED) return false;
         const _data: InferenceVoiceDto = {
             caregiver_id: caregiver_id,
