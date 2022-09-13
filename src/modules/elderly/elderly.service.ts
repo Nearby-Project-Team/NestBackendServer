@@ -71,7 +71,7 @@ export class ElderlyService {
         if (_e === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
         
         return {
-            msg: "Login Success!"
+            uuid: _e.uuid
         };
     }
 
