@@ -33,8 +33,8 @@ export class ElderlyService {
     ) {}
 
     async registerElderly(info: ElderlyRegisterDto) {
-        const { cg_email, ...e_info } = info;
-        const _u = await this.cgRepository.findUserByEmail(cg_email);
+        const { email, ...e_info } = info;
+        const _u = await this.cgRepository.findUserByEmail(email);
         if (_u === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
         const _e = this.elderlyRepository.create({ 
             name: e_info.name,
@@ -51,19 +51,19 @@ export class ElderlyService {
         await this.elderlyRepository.save(_e); // save refresh token in DB
 
         return { 
-            // url: `${baseUrlConfig()}/elderly/verify/${Buffer.from(cg_email, 'utf-8').toString('base64')}/${token}` // 링크를 QR 코드로 전달
-            uuid: _e.uuid
+            // url: `${baseUrlConfig()}/elderly/verify/${Buffer.from(email, 'utf-8').toString('base64')}/${token}` // 링크를 QR 코드로 전달
+            elderly_id: _e.uuid
         };
     }
 
-    async loginElderly(cg_email: string, name: string) {
+    async loginElderly(email: string, name: string) {
         const _e = await this.elderlyRepository.findOne({
             relations: {
                 caregiver_id: true
             },
             where: {
                 caregiver_id: {
-                    email: cg_email
+                    email: email
                 },
                 name: name
             }
@@ -71,12 +71,12 @@ export class ElderlyService {
         if (_e === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
         
         return {
-            uuid: _e.uuid
+            elderly_id: _e.uuid
         };
     }
 
     async linkWithCaregiver(link: LinkCaregiverDto) {
-        const _u = await this.cgRepository.findUserByEmail(link.cg_email);
+        const _u = await this.cgRepository.findUserByEmail(link.email);
         const _e = await this.elderlyRepository.findElderlyById(link.elderly_id);
         if (_e === null || _u === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
 
@@ -92,8 +92,8 @@ export class ElderlyService {
     }
 
     async verifyElderly(token: string, email: string, info: ElderlySearchDto) {
-        const cg_email = Buffer.from(email, 'base64').toString('utf-8');
-        const _u = await this.cgRepository.findUserByEmail(cg_email);
+        const _email = Buffer.from(email, 'base64').toString('utf-8');
+        const _u = await this.cgRepository.findUserByEmail(_email);
         if (_u === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
         const [_e_list, _] = await this.elderlyRepository.findElderlyByNameAndCG(info.name, _u.uuid);
         const _e = _e_list.map((elderly) => {
@@ -125,13 +125,13 @@ export class ElderlyService {
         else throw new AppError(AppErrorTypeEnum.INVALID_VERIFICATION);
     }
 
-    async getElderlyList(cg_email: string) {
-        const email = Buffer.from(cg_email, 'base64').toString('utf-8');
+    async getElderlyList(email: string) {
+        const _email = Buffer.from(email, 'base64').toString('utf-8');
         const [_l, num] = await this.elderlyRepository.findAllElderlyCaregiver(email);
         const result = _l.map((elderly): ElderlyInfoDto => {
             return {
                 elderly_id: elderly.uuid,
-                cg_email: email,
+                email: _email,
                 name: elderly.name,
                 birthdate: elderly.birthday,
                 phone_number: elderly.phone_number,

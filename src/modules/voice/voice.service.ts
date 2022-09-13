@@ -112,19 +112,19 @@ export class VoiceService {
     }
 
     async isVoiceTrained(email: string) {
-        const cg_email = Buffer.from(email, 'base64').toString('utf8');
+        const _email = Buffer.from(email, 'base64').toString('utf8');
         const _vm = await this.vmRepository.findOne({
             relations: {
                 caregiver_id: true
             }, 
             where: {
                 caregiver_id: {
-                    email: cg_email
+                    email: _email
                 }
             }
         });
         if (_vm === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
-        
+
         return {
             voice_status: _vm.status
         };

@@ -7,7 +7,7 @@ export class ElderlyInfoDto {
     elderly_id: string;
 
     @IsString() 
-    cg_email: string;
+    email: string;
 
     @IsString()
     name: string;

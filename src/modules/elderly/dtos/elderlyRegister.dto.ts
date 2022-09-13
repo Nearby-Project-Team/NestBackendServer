@@ -4,7 +4,7 @@ import { AgreementEnum } from "src/common/types/agreement.type";
 export class ElderlyRegisterDto {
 
     @IsString() 
-    cg_email: string;
+    email: string;
 
     @IsString()
     name: string;

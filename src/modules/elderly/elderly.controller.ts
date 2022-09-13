@@ -28,10 +28,10 @@ export class ElderlyController {
 
   @Post('/login')
   async elderlyLogin(
-    @Body('cg_email') cg_email: string,
+    @Body('email') email: string,
     @Body('name') elderly_name: string,
   ) {
-    return this.elderlyService.loginElderly(cg_email, elderly_name);
+    return this.elderlyService.loginElderly(email, elderly_name);
   }
 
   @Post('/verify/:email/:token')
@@ -43,11 +43,11 @@ export class ElderlyController {
     return await this.elderlyService.verifyElderly(token, email, info);
   }
 
-  @Get('/list/:cg_email')
+  @Get('/list/:email')
   async getElderlyList(
-    @Param('cg_email') cg_email: string
+    @Param('email') email: string
   ) {
-    return await this.elderlyService.getElderlyList(cg_email);
+    return await this.elderlyService.getElderlyList(email);
   }
 
   @Get('/calendar')
