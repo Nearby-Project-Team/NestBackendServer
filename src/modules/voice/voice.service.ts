@@ -46,13 +46,18 @@ export class VoiceService {
         const email_base64 = Buffer.from(item.email, 'utf-8').toString('base64');
         if (_u === null) throw new AppError(AppErrorTypeEnum.NO_USERS_IN_DB);
 
-        const _res = await this.httpService.axiosRef.post('/tts/train', { 
-            caregiver_id: item.email,
-            voice_target: item.vname
-        });
-        if (_res.status >= 400) return {
-            msg: "Failed!"
-        };
+        try {
+            const _res = await this.httpService.axiosRef.post('/tts/train', { 
+                caregiver_id: item.email,
+                voice_target: item.vname
+            });
+            if (_res.status >= 400) return {
+                msg: "Failed!"
+            };
+        } catch(err) {
+            console.log("Timeout Error!");
+        }
+        
 
         const _vm = this.vmRepository.create({
             status: VoiceTypeEnum.NOT_TRAINED,
