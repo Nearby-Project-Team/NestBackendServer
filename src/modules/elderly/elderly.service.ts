@@ -20,6 +20,7 @@ import { CalendarInfoDto } from './dtos/calendar-info.dto';
 import { ChattingRepository } from '../../common/repository/chatting.repository';
 import { ChattingInfoDto } from './dtos/chat-info.dto';
 import { ScheduleTypeEnum } from 'src/common/types/schedule.type';
+import { ElderlyRegisterDto } from './dtos/elderlyRegister.dto';
 
 @Injectable()
 export class ElderlyService {
@@ -31,7 +32,7 @@ export class ElderlyService {
         private readonly jwtService: JwtService
     ) {}
 
-    async registerElderly(info: ElderlyInfoDto) {
+    async registerElderly(info: ElderlyRegisterDto) {
         const { cg_email, ...e_info } = info;
         const _u = await this.cgRepository.findUserByEmail(cg_email);
         if (_u === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);

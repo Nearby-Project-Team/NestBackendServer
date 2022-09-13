@@ -1,6 +1,6 @@
 import { Body, Controller, Get, Param, Post, Query, Res, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/common/guard/jwt-auth/jwt.guard';
-import { ElderlyInfoDto } from './dtos/elderlyInfo.dto';
+import { ElderlyRegisterDto } from './dtos/elderlyRegister.dto';
 import { ElderlySearchDto } from './dtos/elderlySearch.dto';
 import { LinkCaregiverDto } from './dtos/linkCaregiver.dto';
 import { ElderlyService } from './elderly.service';
@@ -13,7 +13,7 @@ export class ElderlyController {
   // @UseGuards(JwtGuard) // Caregiver가 요청
   @Post('/register')
   async elderlyRegister(
-    @Body() body: ElderlyInfoDto
+    @Body() body: ElderlyRegisterDto
   ) {
     return this.elderlyService.registerElderly(body);
   }
