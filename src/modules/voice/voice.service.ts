@@ -90,14 +90,19 @@ export class VoiceService {
 
     async trainVoiceComplete(item: TrainCompleteDto) {
         // TTS API를 부르고 해당 결과 Voice를 AWS에 저장함. 
-        await this.vmRepository.update({
-            caregiver_id: {
-                email: item.email
+        const _vm = await this.vmRepository.findOne({
+            relations: {
+                caregiver_id: true
             },
-            name: item.voice_target
-        }, {
-            status: VoiceTypeEnum.TRAINED
+            where: {
+                caregiver_id: {
+                    email: item.email
+                },
+                name: item.voice_target
+            }
         });
+        _vm.status = VoiceTypeEnum.TRAINED;
+        _vm.save();
 
         return {
             msg: "Success!"

@@ -43,10 +43,10 @@ export class VoiceModelEntity extends BaseEntity {
     @JoinColumn({
         name: 'caregiver_id'
     })
-    caregiver_id: CaregiverEntity
+    caregiver_id: CaregiverEntity;
 
     @OneToMany(type => VoiceModelRelationEntity, (vRelation) => vRelation.voiceModel_id)
-    voiceRelation: VoiceModelRelationEntity[]
+    voiceRelation: VoiceModelRelationEntity[];
 
     @OneToMany(type => AlertVoiceFileEntity, (alert_voice) => alert_voice.voice_id)
     alert_id: AlertVoiceFileEntity[];
