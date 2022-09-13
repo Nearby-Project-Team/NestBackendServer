@@ -11,6 +11,8 @@ import { ElderlyRepository } from '../../common/repository/elderly.repository';
 import { HttpService } from '@nestjs/axios';
 import { TrainVoiceDto, TrainCompleteDto } from './dtos/train-voice.dto';
 import { VoiceTypeEnum } from 'src/common/types/voice.type';
+import { RequestError } from '../../common/error/ErrorEntity/RequestError';
+import { RequestErrorTypeEnum } from 'src/common/error/ErrorType/RequestErrorType.enum';
 
 @Injectable()
 export class VoiceService {
@@ -106,6 +108,25 @@ export class VoiceService {
 
         return {
             msg: "Success!"
+        };
+    }
+
+    async isVoiceTrained(email: string) {
+        const cg_email = Buffer.from(email, 'base64').toString('utf8');
+        const _vm = await this.vmRepository.findOne({
+            relations: {
+                caregiver_id: true
+            }, 
+            where: {
+                caregiver_id: {
+                    email: cg_email
+                }
+            }
+        });
+        if (_vm === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
+        
+        return {
+            voice_status: _vm.status
         };
     }
 

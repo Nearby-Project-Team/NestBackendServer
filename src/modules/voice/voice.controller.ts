@@ -1,4 +1,4 @@
-import { Body, Controller, Param, Patch, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Get, Param, Patch, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { VoiceService } from './voice.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { TrainVoiceDto, TrainCompleteDto } from './dtos/train-voice.dto';
@@ -33,6 +33,13 @@ export class VoiceController {
     @Body() body: TrainCompleteDto
   ) {
     return await this.voiceService.trainVoiceComplete(body);
+  }
+
+  @Get('/trained')
+  async isVoiceTrained(
+    @Query('email') email: string
+  ) {
+    return await this.voiceService.isVoiceTrained(email);
   }
 
 }
