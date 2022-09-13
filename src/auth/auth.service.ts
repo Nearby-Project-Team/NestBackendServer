@@ -94,14 +94,14 @@ export class AuthService {
             caregiver_id: newUser
         });
         await this.verificationRepository.save(_v);
-        await this.mailerService.sendMail({
-            to: user.email,
-            subject: 'NearBy Service Register Email',
-            template: join(__dirname, '../view/register.ejs'),
-            context: {
-                "authToken": `${token}`
-            }
-        });
+        // await this.mailerService.sendMail({
+        //     to: user.email,
+        //     subject: 'NearBy Service Register Email',
+        //     template: join(__dirname, '../view/register.ejs'),
+        //     context: {
+        //         "authToken": `${token}`
+        //     }
+        // });
 
         return {
             msg: "Register Success!"
