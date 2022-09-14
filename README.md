@@ -6,7 +6,7 @@
 
 --------------------------------------
 
-<img src="./img/SWArchitecture.png" ></img>
+<img src="./img/SWArchitecture.jpg" ></img>
 
 
 This repository is for Central Backend Server in the figure above. 
