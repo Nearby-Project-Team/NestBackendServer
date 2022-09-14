@@ -32,6 +32,7 @@ export class ChatService {
 
     async getUserFromSocket(client: Socket): Promise<ElderlyEntity | CaregiverEntity> {
         const cookie = client.handshake?.headers?.cookie;
+        if (cookie === null) throw new WsException("Not Valid Access!");
         const {  
             user_type,
             user_info
