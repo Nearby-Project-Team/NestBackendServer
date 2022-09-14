@@ -132,10 +132,10 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
     if (_u instanceof ElderlyEntity) throw new WsException('Invalid Access! This API is not for Elderly!!');
     // 1. TTS를 통한 음성 합성
     const _res = await this.chatService.getTTSInferenceResult(_u.email, data);
-    if (!_res || _res.status >= 400) this.server.to(`room:${_u.uuid}`).emit('receive_message', "Failed to Synthesize voice");
+    if (!_res || _res.status >= 400) this.server.to(client.data.roomId).emit('receive_message', "Failed to Synthesize voice");
     else {
-      this.server.to(`room:${_u.uuid}`).emit('receive_message', data);
-      this.server.to(`room:${_u.uuid}`).emit('receive_voice', _res.data);
+      this.server.to(client.data.roomId).emit('receive_message', data);
+      this.server.to(client.data.roomId).emit('receive_voice', _res.data);
     }
   }
 
