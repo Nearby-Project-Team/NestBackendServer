@@ -27,8 +27,8 @@ export class RequestError extends Error {
                 res = {
                     type: RequestErrorTypeEnum.INVALID_PASSWORD,
                     httpStatus: HttpStatus.FORBIDDEN,
-                    errorMessage: 'Invalid User Password',
-                    userMessage: 'Provided User Passowrd is not match with Original Password!'
+                    errorMessage: 'Invalid User Credentials',
+                    userMessage: 'Provided User Credentials Wrong'
                 };
                 break;
             case RequestErrorTypeEnum.USER_NOT_FOUND:
@@ -36,7 +36,7 @@ export class RequestError extends Error {
                     type: RequestErrorTypeEnum.USER_NOT_FOUND,
                     httpStatus: HttpStatus.BAD_REQUEST,
                     errorMessage: 'User not Found',
-                    userMessage: 'User Email Not found!'
+                    userMessage: 'User Email/UUID Not found!'
                 };
                 break;
             case RequestErrorTypeEnum.INVALID_USER:

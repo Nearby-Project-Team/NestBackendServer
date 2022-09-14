@@ -23,6 +23,9 @@ export class ElderlyRepository extends Repository<ElderlyEntity> {
 
     async findElderlyById(uuid: string) {
         const _e = await this.findOne({
+            relations: {
+                caregiver_id: true
+            },
             where: {
                 uuid: uuid
             }
@@ -42,6 +45,22 @@ export class ElderlyRepository extends Repository<ElderlyEntity> {
             }
         });
         return elderlyList;
+    }
+
+    async checkElderlyLinkedCargiver(elderly_id: string, email: string) {
+        const _e = await this.findOne({
+            relations: {
+                caregiver_id: true
+            },
+            where: {
+                uuid: elderly_id,
+                caregiver_id: {
+                    email: email
+                }
+            }
+        });
+        if (_e === null) return false;
+        else return true;
     }
 
 }

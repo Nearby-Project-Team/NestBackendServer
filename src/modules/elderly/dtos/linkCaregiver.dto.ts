@@ -1,9 +1,9 @@
-import { IsEmail, IsString, IsUUID } from "class-validator";
+import { IsString, IsUUID } from "class-validator";
 
 export class LinkCaregiverDto {
     
-    @IsEmail() 
-    cg_email: string;
+    @IsString() 
+    email: string;
 
     @IsUUID()
     elderly_id: string;

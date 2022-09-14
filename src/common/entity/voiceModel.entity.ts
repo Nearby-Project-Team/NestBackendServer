@@ -10,12 +10,20 @@ import {
     JoinColumn,
     OneToMany
 } from 'typeorm';
+import { VoiceTypeEnum } from '../types/voice.type';
+import { AlertVoiceFileEntity } from './alertVoiceFile.entity';
 
 @Entity({ name: 'VoiceModel' })
 export class VoiceModelEntity extends BaseEntity {
 
     @PrimaryGeneratedColumn('uuid')
     uuid: string
+
+    @Column({
+        type: 'varchar',
+        length: 255
+    })
+    name: string;
 
     @Column({
         type: 'text'
@@ -26,7 +34,7 @@ export class VoiceModelEntity extends BaseEntity {
         type: 'varchar',
         length: '10'
     })
-    status: string
+    status: VoiceTypeEnum
 
     @CreateDateColumn()
     createdAt: Date
@@ -35,9 +43,12 @@ export class VoiceModelEntity extends BaseEntity {
     @JoinColumn({
         name: 'caregiver_id'
     })
-    caregiver_id: CaregiverEntity
+    caregiver_id: CaregiverEntity;
 
     @OneToMany(type => VoiceModelRelationEntity, (vRelation) => vRelation.voiceModel_id)
-    voiceRelation: VoiceModelRelationEntity[]
+    voiceRelation: VoiceModelRelationEntity[];
+
+    @OneToMany(type => AlertVoiceFileEntity, (alert_voice) => alert_voice.voice_id)
+    alert_id: AlertVoiceFileEntity[];
 
 };

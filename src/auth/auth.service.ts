@@ -20,6 +20,7 @@ import { CaregiverTokenPayloadDto } from '../common/dtos/caregiver/token-payload
 import { UserTypeEnum } from 'src/common/types/user.type';
 import { ElderlyTokenPayloadDto } from '../common/dtos/elderly/token-payload.dto';
 import { ElderlyRepository } from '../common/repository/elderly.repository';
+import { join } from 'path';
 
 @Injectable()
 export class AuthService {
@@ -75,7 +76,8 @@ export class AuthService {
 
     async register(user: RegisterDto) {
         const _u = await this.cgRepository.findUserByEmail(user.email);
-        if (_u) throw new AppError(AppErrorTypeEnum.USER_EXISTS);
+        const _up = await this.cgRepository.findUserByPhoneNumber(user.phone_number);
+        if (_u || _up) throw new AppError(AppErrorTypeEnum.USER_EXISTS);
 
         const refreshToken = randomBytes(20).toString('hex');
         const newUser = this.cgRepository.create({ 
@@ -92,14 +94,14 @@ export class AuthService {
             caregiver_id: newUser
         });
         await this.verificationRepository.save(_v);
-        await this.mailerService.sendMail({
-            to: user.email,
-            subject: 'NearBy Service Register Email',
-            template: './dist/view/register.ejs',
-            context: {
-                "authToken": `${token}`
-            }
-        });
+        // await this.mailerService.sendMail({
+        //     to: user.email,
+        //     subject: 'NearBy Service Register Email',
+        //     template: join(__dirname, '../view/register.ejs'),
+        //     context: {
+        //         "authToken": `${token}`
+        //     }
+        // });
 
         return {
             msg: "Register Success!"

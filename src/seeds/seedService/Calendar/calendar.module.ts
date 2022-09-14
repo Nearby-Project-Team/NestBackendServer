@@ -1,17 +1,17 @@
 import { Module } from "@nestjs/common";
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ElderlyEntity } from '../../../common/entity/elderly.entity';
-import { CalandarEntity } from '../../../common/entity/calandar.entity';
-import { CalandarSeederService } from './calandar.seed';
+import { CalendarEntity } from '../../../common/entity/calendar.entity';
+import { CalendarSeederService } from './calendar.seed';
 
 @Module({
     imports: [
         TypeOrmModule.forFeature([
             ElderlyEntity,
-            CalandarEntity
+            CalendarEntity
         ]),
     ],
-    providers: [ CalandarSeederService ],
-    exports: [ CalandarSeederService ]
+    providers: [ CalendarSeederService ],
+    exports: [ CalendarSeederService ]
 })
 export class CalandarSeederModule {}

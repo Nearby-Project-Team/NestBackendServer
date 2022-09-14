@@ -43,7 +43,7 @@ export class AppError extends Error {
             case AppErrorTypeEnum.NO_USERS_IN_DB:
                 res = {
                     type: AppErrorTypeEnum.NO_USERS_IN_DB,
-                    httpStatus: HttpStatus.NOT_FOUND,
+                    httpStatus: HttpStatus.BAD_REQUEST,
                     errorMessage: 'No Users exits in the database',
                     userMessage: 'No Users. Create some.'
                 };
@@ -70,6 +70,14 @@ export class AppError extends Error {
                     httpStatus: HttpStatus.FORBIDDEN,
                     errorMessage: 'Invalid verification token!',
                     userMessage: 'Cannot verify the user! check the verification info!'
+                };
+                break;
+            case AppErrorTypeEnum.DB_SAVE_FAILED:
+                res = {
+                    type: AppErrorTypeEnum.DB_SAVE_FAILED,
+                    httpStatus: HttpStatus.NOT_ACCEPTABLE,
+                    errorMessage: 'DB Row Creation Failed',
+                    userMessage: 'DB Row Creation Failed'
                 };
                 break;
         }

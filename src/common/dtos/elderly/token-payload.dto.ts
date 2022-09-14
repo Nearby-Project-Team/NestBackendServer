@@ -1,4 +1,4 @@
-import { IsEmail, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
 import { UserTypeEnum } from 'src/common/types/user.type';
 
 export class ElderlyTokenPayloadDto {
