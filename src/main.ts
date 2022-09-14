@@ -12,13 +12,13 @@ async function bootstrap() {
   const redisIoAdapter = new RedisIoAdapter(app);
   await redisIoAdapter.connectToRedis();
   app.useWebSocketAdapter(redisIoAdapter);
+  app.use(cookieParser());
   app.useGlobalPipes(new ValidationPipe({ 
     transform: true,
     whitelist: true,
     forbidUnknownValues: true
   }));
   app.useGlobalFilters(new GlobalErrorDispatcher());
-  app.use(cookieParser());
   await app.listen(3000);
 }
 bootstrap();
