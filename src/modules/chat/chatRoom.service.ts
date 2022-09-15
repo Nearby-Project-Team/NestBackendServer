@@ -16,20 +16,14 @@ export class ChatRoomService {
         client.data.roomId = roomId;
         client.rooms.clear();
         client.join(roomId);
-        // client.to(roomId).emit('receive_message', {
-        //     nickName: 'Info',
-        //     msg: `${client.data.name} 님이 입장하셨습니다.`
-        // });
+        client.to(roomId).emit('user_connect', `${client.data.name} 님이 입장하셨습니다.`);
     }
 
     exitChatRoom(client: Socket, roomId: string) { 
         client.data.roomId = `room:lobby`;
         client.rooms.clear();
         client.join(`room:lobby`);
-        // client.to(roomId).emit('receive_message', {
-        //     nickname: 'Info',
-        //     message: `${client.data.name} 님이 퇴장하셨습니다.`
-        // });
+        client.to(roomId).emit('user_disconnect', `${client.data.name} 님이 퇴장하셨습니다.`);
     }
 
     async getChatRoom(elderly_id: string): Promise<ChatRoomDto> {
