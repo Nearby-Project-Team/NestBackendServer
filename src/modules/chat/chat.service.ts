@@ -96,7 +96,7 @@ export class ChatService {
         // this.logger.debug(`${_url}/tts/inference`);
         this.logger.debug(JSON.stringify(_data));
         const _res = await this.httpService.axiosRef.post(`${_url}/tts/inference`, _data, {
-            responseType: 'blob'
+            responseType: 'arraybuffer'
         });
         return _res;
     }
