@@ -113,6 +113,7 @@ export class ChatGateway implements OnGatewayConnection, OnGatewayDisconnect, On
       true
     );
     // 3. TTS를 통한 음성 합성
+    this.logger.debug(`${client.id} ${client.data.roomId}`);
     const _res = await this.chatService.getTTSInferenceResult(_u.caregiver_id.email, chatbotRes.data.response);
     if (!_res || _res.status >= 400) this.server.to(`room:${_u.uuid}`).emit('receive_message', "Failed to Synthesize voice");
     else { 
