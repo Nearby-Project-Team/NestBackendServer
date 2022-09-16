@@ -37,7 +37,7 @@ export class AuthService {
         const user = await this.cgRepository.findUserByEmail(email);
         if (user === null) throw new RequestError(RequestErrorTypeEnum.USER_NOT_FOUND);
         const authResult = await compare(password, user.password);
-        if (authResult && (user.status === 'Y' || user.status === "A")) {
+        if (authResult && (user.status === 'Y' || user.status === "A") && user.agreement == "Y") {
             const { email, name, phone_number } = user;
             return {
                 msg: "Login Success!",
@@ -80,28 +80,29 @@ export class AuthService {
         if (_u || _up) throw new AppError(AppErrorTypeEnum.USER_EXISTS);
 
         const refreshToken = randomBytes(20).toString('hex');
+        const token = randomBytes(20).toString('hex');
+        await this.mailerService.sendMail({
+            to: user.email,
+            subject: 'NearBy Service Register Email',
+            template: join(__dirname, '../view/register.ejs'),
+            context: {
+                "authToken": `${token}`
+            }
+        });
+
         const newUser = this.cgRepository.create({ 
             ...user, 
             token: refreshToken,
-            status: "Y", 
+            status: "N", 
             agreement: "N" 
         }); 
         await this.cgRepository.save(newUser);
-        const token = randomBytes(20).toString('hex');
         const _v = this.verificationRepository.create({
             verification_type: VerificationTypeEnum.register,
             verification_token: token,
             caregiver_id: newUser
         });
         await this.verificationRepository.save(_v);
-        // await this.mailerService.sendMail({
-        //     to: user.email,
-        //     subject: 'NearBy Service Register Email',
-        //     template: join(__dirname, '../view/register.ejs'),
-        //     context: {
-        //         "authToken": `${token}`
-        //     }
-        // });
 
         return {
             msg: "Register Success!"
