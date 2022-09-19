@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Param, Post, Query, Res, UseGuards } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { JwtGuard } from 'src/common/guard/jwt-auth/jwt.guard';
 import { ElderlyRegisterDto } from './dtos/elderlyRegister.dto';
 import { ElderlySearchDto } from './dtos/elderlySearch.dto';
@@ -10,7 +10,7 @@ import { ScheduleTypeEnum } from 'src/common/types/schedule.type';
 export class ElderlyController {
   constructor(private readonly elderlyService: ElderlyService) {}
 
-  // @UseGuards(JwtGuard) // Caregiver가 요청
+  @UseGuards(JwtGuard) // Caregiver가 요청
   @Post('/register')
   async elderlyRegister(
     @Body() body: ElderlyRegisterDto
@@ -18,7 +18,7 @@ export class ElderlyController {
     return this.elderlyService.registerElderly(body);
   }
 
-  // @UseGuards(JwtGuard)
+  @UseGuards(JwtGuard)
   @Post('/link')
   async linkWithCaregiver(
     @Body() info: LinkCaregiverDto
@@ -43,6 +43,7 @@ export class ElderlyController {
     return await this.elderlyService.verifyElderly(token, email, info);
   }
 
+  @UseGuards(JwtGuard)
   @Get('/list/:email')
   async getElderlyList(
     @Param('email') email: string
@@ -50,6 +51,7 @@ export class ElderlyController {
     return await this.elderlyService.getElderlyList(email);
   }
 
+  @UseGuards(JwtGuard)
   @Get('/calendar')
   async getElderlyCalendar(
     @Query('elderly_id') elderly_id: string,
@@ -58,6 +60,7 @@ export class ElderlyController {
     return await this.elderlyService.getElderlyCalendar(elderly_id, page);
   }
 
+  @UseGuards(JwtGuard)
   @Get('/calender/all')
   async getElderlyCalendarAll(
     @Query('elderly_id') elderly_id: string
@@ -65,6 +68,7 @@ export class ElderlyController {
     return await this.elderlyService.getElderlyCalendarAll(elderly_id);
   }
 
+  @UseGuards(JwtGuard)
   @Get('/calendar/type')
   async getElderlyCalendarType(
     @Query('elderly_id') elderly_id: string,
@@ -73,6 +77,7 @@ export class ElderlyController {
     return await this.elderlyService.getElderlyTypedCalendar(elderly_id, no_type);
   }
 
+  @UseGuards(JwtGuard)
   @Get('/chat')
   async getElderlyChatting(
     @Query('elderly_id') elderly_id: string,

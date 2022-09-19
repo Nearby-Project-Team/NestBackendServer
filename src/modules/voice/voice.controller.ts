@@ -1,8 +1,21 @@
-import { Body, Controller, Get, Param, Patch, Post, Query, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { 
+  Body, 
+  Controller, 
+  Get, 
+  Param, 
+  Patch, 
+  Post, 
+  Query, 
+  UploadedFile, 
+  UseInterceptors, 
+  UseGuards 
+} from '@nestjs/common';
+import { JwtGuard } from 'src/common/guard/jwt-auth/jwt.guard';
 import { VoiceService } from './voice.service';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { TrainVoiceDto, TrainCompleteDto } from './dtos/train-voice.dto';
 
+@UseGuards(JwtGuard)
 @Controller('voice')
 export class VoiceController {
   constructor(
